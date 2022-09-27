@@ -1,5 +1,6 @@
 #include "fsfw/osal/common/TcpIpBase.h"
 
+#include "fsfw/serviceinterface.h"
 #include "fsfw/platform.h"
 
 #ifdef PLATFORM_UNIX
