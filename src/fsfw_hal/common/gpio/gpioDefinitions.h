@@ -5,6 +5,13 @@
 #include <string>
 #include <unordered_map>
 
+#ifdef PLATFORM_WIN
+// What is this crap?
+#undef IN
+#undef OUT
+#undef CALLBACK
+#endif
+
 using gpioId_t = uint16_t;
 
 namespace gpio {
