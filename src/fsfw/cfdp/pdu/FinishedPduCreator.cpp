@@ -17,7 +17,7 @@ ReturnValue_t FinishPduCreator::serialize(uint8_t **buffer, size_t *size, size_t
   if (result != returnvalue::OK) {
     return result;
   }
-  if (*size + 1 >= maxSize) {
+  if (*size + 1 > maxSize) {
     return SerializeIF::BUFFER_TOO_SHORT;
   }
   **buffer = finishInfo.getConditionCode() << 4 | finishInfo.getDeliveryCode() << 2 |
