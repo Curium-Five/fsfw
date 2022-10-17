@@ -318,27 +318,3 @@ bool LocalPool::hasDataAtId(store_address_t storeId) const {
   }
   return false;
 }
-
-ReturnValue_t LocalPool::getFreeElement(store_address_t* storeId, size_t size, uint8_t** pData) {
-  return StorageManagerIF::getFreeElement(storeId, size, pData);
-}
-
-ConstAccessorPair LocalPool::getData(store_address_t storeId) {
-  return StorageManagerIF::getData(storeId);
-}
-
-ReturnValue_t LocalPool::addData(store_address_t* storeId, const uint8_t* data, size_t size) {
-  return StorageManagerIF::addData(storeId, data, size);
-}
-
-ReturnValue_t LocalPool::getData(store_address_t storeId, ConstStorageAccessor& accessor) {
-  return StorageManagerIF::getData(storeId, accessor);
-}
-
-ReturnValue_t LocalPool::modifyData(store_address_t storeId, StorageAccessor& accessor) {
-  return StorageManagerIF::modifyData(storeId, accessor);
-}
-
-AccessorPair LocalPool::modifyData(store_address_t storeId) {
-  return StorageManagerIF::modifyData(storeId);
-}

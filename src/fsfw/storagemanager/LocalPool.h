@@ -88,19 +88,13 @@ class LocalPool : public SystemObject, public StorageManagerIF {
    */
   ReturnValue_t addData(store_address_t* storeId, const uint8_t* data, size_t size,
                         bool ignoreFault) override;
-  ReturnValue_t addData(store_address_t* storeId, const uint8_t* data, size_t size) override;
 
-  ReturnValue_t getFreeElement(store_address_t* storeId, size_t size, uint8_t** pData) override;
   ReturnValue_t getFreeElement(store_address_t* storeId, size_t size, uint8_t** pData,
                                bool ignoreFault) override;
 
-  ConstAccessorPair getData(store_address_t storeId) override;
-  ReturnValue_t getData(store_address_t storeId, ConstStorageAccessor& accessor) override;
   ReturnValue_t getData(store_address_t storeId, const uint8_t** packet_ptr, size_t* size) override;
 
-  AccessorPair modifyData(store_address_t storeId) override;
   ReturnValue_t modifyData(store_address_t storeId, uint8_t** packet_ptr, size_t* size) override;
-  ReturnValue_t modifyData(store_address_t storeId, StorageAccessor& accessor) override;
 
   ReturnValue_t deleteData(store_address_t storeId) override;
   ReturnValue_t deleteData(uint8_t* ptr, size_t size, store_address_t* storeId) override;
@@ -135,6 +129,11 @@ class LocalPool : public SystemObject, public StorageManagerIF {
    */
   [[nodiscard]] max_subpools_t getNumberOfSubPools() const override;
   [[nodiscard]] bool hasDataAtId(store_address_t storeId) const override;
+
+  using StorageManagerIF::getFreeElement;
+  using StorageManagerIF::getData;
+  using StorageManagerIF::addData;
+  using StorageManagerIF::modifyData;
 
  protected:
   /**
