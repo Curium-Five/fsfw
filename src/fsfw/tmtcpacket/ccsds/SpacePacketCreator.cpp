@@ -14,6 +14,7 @@ SpacePacketCreator::SpacePacketCreator(ccsds::PacketType packetType, bool secHea
     : params(SpacePacketParams(PacketId(packetType, secHeaderFlag, apid),
                                PacketSeqCtrl(seqFlags, seqCount), dataLen)) {
   params.version = version;
+  checkFieldValidity();
 }
 
 uint16_t SpacePacketCreator::getPacketIdRaw() const { return params.packetId.raw(); }
