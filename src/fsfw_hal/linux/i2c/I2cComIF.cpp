@@ -214,7 +214,7 @@ ReturnValue_t I2cComIF::readReceivedMessage(CookieIF* cookie, uint8_t** buffer, 
   }
   *buffer = i2cDeviceMapIter->second.replyBuffer.data();
   *size = i2cDeviceMapIter->second.replyLen;
-
+  i2cDeviceMapIter->second.replyLen = 0;
   return returnvalue::OK;
 }
 
