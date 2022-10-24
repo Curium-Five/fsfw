@@ -9,10 +9,9 @@ PoolManager::PoolManager(object_id_t setObjectId, const LocalPoolConfig& localPo
 
 PoolManager::~PoolManager() { MutexFactory::instance()->deleteMutex(mutex); }
 
-ReturnValue_t PoolManager::reserveSpace(const size_t size, store_address_t* address,
-                                        bool ignoreFault) {
+ReturnValue_t PoolManager::reserveSpace(const size_t size, store_address_t* address) {
   MutexGuard mutexHelper(mutex, MutexIF::TimeoutType::WAITING, mutexTimeoutMs);
-  ReturnValue_t status = LocalPool::reserveSpace(size, address, ignoreFault);
+  ReturnValue_t status = LocalPool::reserveSpace(size, address);
   return status;
 }
 
