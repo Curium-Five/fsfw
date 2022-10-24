@@ -57,6 +57,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `DeviceHandlerBase`: New signature of `handleDeviceTm` which expects
   a `const SerializeIF&` and additional helper variant which expects `const uint8_t*`
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/671
+- Improvements for `AcceptsTelemetryIF` and `AcceptsTelecommandsIF`:
+  - Make functions `const` where it makes sense
+  - Add `const char* getName const` abstract function
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/684
 
 # [v5.0.0] 25.07.2022
 

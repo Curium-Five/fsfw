@@ -97,7 +97,7 @@ ReturnValue_t PusDistributor::registerService(AcceptsTelecommandsIF* service) {
   return returnvalue::OK;
 }
 
-MessageQueueId_t PusDistributor::getRequestQueue() { return tcQueue->getId(); }
+MessageQueueId_t PusDistributor::getRequestQueue() const { return tcQueue->getId(); }
 
 ReturnValue_t PusDistributor::callbackAfterSending(ReturnValue_t queueStatus) {
   if (queueStatus != returnvalue::OK) {
@@ -115,7 +115,7 @@ ReturnValue_t PusDistributor::callbackAfterSending(ReturnValue_t queueStatus) {
   }
 }
 
-uint16_t PusDistributor::getIdentifier() { return checker.getApid(); }
+uint32_t PusDistributor::getIdentifier() const { return checker.getApid(); }
 
 ReturnValue_t PusDistributor::initialize() {
   if (store == nullptr) {
