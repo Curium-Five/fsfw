@@ -130,6 +130,9 @@ class LocalPool : public SystemObject, public StorageManagerIF {
   [[nodiscard]] max_subpools_t getNumberOfSubPools() const override;
   [[nodiscard]] bool hasDataAtId(store_address_t storeId) const override;
 
+  // Using functions provided by StorageManagerIF requires either a fully qualified path
+  // like for example localPool.StorageManagerIF::getFreeElement(...) or re-exporting
+  // the fully qualified path with the using directive.
   using StorageManagerIF::getFreeElement;
   using StorageManagerIF::getData;
   using StorageManagerIF::addData;
