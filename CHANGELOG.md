@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Fixes
 
+- I2C Bugfixes: Do not keep iterator as member and fix some incorrect handling with the iterator.
+  Also properly reset the reply size for successfull transfers and erroneous transfers.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/700
 - Bugfix for Serial Buffer Stream: Setting `doActive` to false now
   actually fully disables printing.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/680
@@ -54,6 +57,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `DeviceHandlerBase`: New signature of `handleDeviceTm` which expects
   a `const SerializeIF&` and additional helper variant which expects `const uint8_t*`
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/671
+- Improvements for `AcceptsTelemetryIF` and `AcceptsTelecommandsIF`:
+  - Make functions `const` where it makes sense
+  - Add `const char* getName const` abstract function
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/684
 
 # [v5.0.0] 25.07.2022
 

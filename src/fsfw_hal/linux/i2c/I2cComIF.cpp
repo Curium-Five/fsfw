@@ -41,7 +41,7 @@ ReturnValue_t I2cComIF::initializeInterface(CookieIF* cookie) {
 
   i2cAddress = i2cCookie->getAddress();
 
-  i2cDeviceMapIter = i2cDeviceMap.find(i2cAddress);
+  auto i2cDeviceMapIter = i2cDeviceMap.find(i2cAddress);
   if (i2cDeviceMapIter == i2cDeviceMap.end()) {
     size_t maxReplyLen = i2cCookie->getMaxReplyLen();
     I2cInstance i2cInstance = {std::vector<uint8_t>(maxReplyLen), 0};
@@ -89,7 +89,7 @@ ReturnValue_t I2cComIF::sendMessage(CookieIF* cookie, const uint8_t* sendData, s
   }
 
   address_t i2cAddress = i2cCookie->getAddress();
-  i2cDeviceMapIter = i2cDeviceMap.find(i2cAddress);
+  auto i2cDeviceMapIter = i2cDeviceMap.find(i2cAddress);
   if (i2cDeviceMapIter == i2cDeviceMap.end()) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::error << "I2cComIF::sendMessage: i2cAddress of Cookie not "
@@ -140,20 +140,19 @@ ReturnValue_t I2cComIF::requestReceiveMessage(CookieIF* cookie, size_t requestLe
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::error << "I2cComIF::requestReceiveMessage: Invalid I2C Cookie!" << std::endl;
 #endif
-    i2cDeviceMapIter->second.replyLen = 0;
     return NULLPOINTER;
   }
 
   address_t i2cAddress = i2cCookie->getAddress();
-  i2cDeviceMapIter = i2cDeviceMap.find(i2cAddress);
+  auto i2cDeviceMapIter = i2cDeviceMap.find(i2cAddress);
   if (i2cDeviceMapIter == i2cDeviceMap.end()) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::error << "I2cComIF::requestReceiveMessage: i2cAddress of Cookie not "
                << "registered in i2cDeviceMap" << std::endl;
 #endif
-    i2cDeviceMapIter->second.replyLen = 0;
     return returnvalue::FAILED;
   }
+  i2cDeviceMapIter->second.replyLen = 0;
 
   deviceFile = i2cCookie->getDeviceFile();
   UnixFileGuard fileHelper(deviceFile, &fd, O_RDWR, "I2cComIF::requestReceiveMessage");
@@ -162,7 +161,6 @@ ReturnValue_t I2cComIF::requestReceiveMessage(CookieIF* cookie, size_t requestLe
   }
   result = openDevice(deviceFile, i2cAddress, &fd);
   if (result != returnvalue::OK) {
-    i2cDeviceMapIter->second.replyLen = 0;
     return result;
   }
 
@@ -177,7 +175,6 @@ ReturnValue_t I2cComIF::requestReceiveMessage(CookieIF* cookie, size_t requestLe
     sif::error << "I2cComIF::requestReceiveMessage: Read only " << readLen << " from " << requestLen
                << " bytes" << std::endl;
 #endif
-    i2cDeviceMapIter->second.replyLen = 0;
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::debug << "I2cComIF::requestReceiveMessage: Read " << readLen << " of " << requestLen
                << " bytes" << std::endl;
@@ -204,7 +201,7 @@ ReturnValue_t I2cComIF::readReceivedMessage(CookieIF* cookie, uint8_t** buffer, 
   }
 
   address_t i2cAddress = i2cCookie->getAddress();
-  i2cDeviceMapIter = i2cDeviceMap.find(i2cAddress);
+  auto i2cDeviceMapIter = i2cDeviceMap.find(i2cAddress);
   if (i2cDeviceMapIter == i2cDeviceMap.end()) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::error << "I2cComIF::readReceivedMessage: i2cAddress of Cookie not "
@@ -214,7 +211,7 @@ ReturnValue_t I2cComIF::readReceivedMessage(CookieIF* cookie, uint8_t** buffer, 
   }
   *buffer = i2cDeviceMapIter->second.replyBuffer.data();
   *size = i2cDeviceMapIter->second.replyLen;
-
+  i2cDeviceMapIter->second.replyLen = 0;
   return returnvalue::OK;
 }
 
