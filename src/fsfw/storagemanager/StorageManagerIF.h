@@ -55,7 +55,7 @@ class StorageManagerIF {
   /**
    * @brief This is the empty virtual destructor as required for C++ interfaces.
    */
-  ~StorageManagerIF() = default;
+  virtual ~StorageManagerIF() = default;
   /**
    * @brief	With addData, a free storage position is allocated and data
    * 			stored there.
