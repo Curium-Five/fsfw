@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Fixes
 
+- I2C Bugfixes: Do not keep iterator as member and fix some incorrect handling with the iterator.
+  Also properly reset the reply size for successfull transfers and erroneous transfers.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/700
 - Bugfix for Serial Buffer Stream: Setting `doActive` to false now
   actually fully disables printing.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/680
@@ -26,6 +29,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Changes
 
+- Remove default secondary header argument for
+  `uint16_t getTcSpacePacketIdFromApid(uint16_t apid, bool secondaryHeaderFlag)` and
+  `uint16_t getTmSpacePacketIdFromApid(uint16_t apid, bool secondaryHeaderFlag)`
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/689
 - Removed `HasReturnvaluesIF` class in favor of `returnvalue` namespace with `OK` and `FAILED`
   constants.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/659
