@@ -86,11 +86,9 @@ class LocalPool : public SystemObject, public StorageManagerIF {
   /**
    * Documentation: See StorageManagerIF.h
    */
-  ReturnValue_t addData(store_address_t* storeId, const uint8_t* data, size_t size,
-                        bool ignoreFault) override;
+  ReturnValue_t addData(store_address_t* storeId, const uint8_t* data, size_t size) override;
 
-  ReturnValue_t getFreeElement(store_address_t* storeId, size_t size, uint8_t** pData,
-                               bool ignoreFault) override;
+  ReturnValue_t getFreeElement(store_address_t* storeId, size_t size, uint8_t** pData) override;
 
   ReturnValue_t getData(store_address_t storeId, const uint8_t** packet_ptr, size_t* size) override;
 
@@ -135,7 +133,6 @@ class LocalPool : public SystemObject, public StorageManagerIF {
   // the fully qualified path with the using directive.
   using StorageManagerIF::getFreeElement;
   using StorageManagerIF::getData;
-  using StorageManagerIF::addData;
   using StorageManagerIF::modifyData;
 
  protected:
@@ -146,7 +143,7 @@ class LocalPool : public SystemObject, public StorageManagerIF {
    * @return	- returnvalue::OK on success,
    * 			- the return codes of #getPoolIndex or #findEmpty otherwise.
    */
-  virtual ReturnValue_t reserveSpace(size_t size, store_address_t* address, bool ignoreFault);
+  virtual ReturnValue_t reserveSpace(size_t size, store_address_t* address);
 
  private:
   /**
@@ -189,6 +186,8 @@ class LocalPool : public SystemObject, public StorageManagerIF {
    */
   std::vector<std::vector<size_type>> sizeLists =
       std::vector<std::vector<size_type>>(NUMBER_OF_SUBPOOLS);
+
+  bool ignoreFault = false;
 
   //! A variable to determine whether higher n pools are used if
   //! the store is full.

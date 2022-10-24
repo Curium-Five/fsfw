@@ -66,12 +66,7 @@ class StorageManagerIF {
    * @return	Returns @returnvalue::OK if data was added.
    * 		@returnvalue::FAILED if data could not be added, storageId is unchanged then.
    */
-  virtual ReturnValue_t addData(store_address_t* storageId, const uint8_t* data, size_t size,
-                                bool ignoreFault) = 0;
-
-  virtual ReturnValue_t addData(store_address_t* storageId, const uint8_t* data, size_t size) {
-    return addData(storageId, data, size, false);
-  }
+  virtual ReturnValue_t addData(store_address_t* storageId, const uint8_t* data, size_t size) = 0;
 
   /**
    * @brief	With deleteData, the storageManager frees the memory region
@@ -186,12 +181,7 @@ class StorageManagerIF {
    * @return	Returns @returnvalue::OK if data was added.
    * 		@returnvalue::FAILED if data could not be added, storageId is unchanged then.
    */
-  virtual ReturnValue_t getFreeElement(store_address_t* storageId, size_t size, uint8_t** dataPtr,
-                                       bool ignoreFault) = 0;
-
-  virtual ReturnValue_t getFreeElement(store_address_t* storageId, size_t size, uint8_t** dataPtr) {
-    return getFreeElement(storageId, size, dataPtr, false);
-  }
+  virtual ReturnValue_t getFreeElement(store_address_t* storageId, size_t size, uint8_t** dataPtr) = 0;
 
   [[nodiscard]] virtual bool hasDataAtId(store_address_t storeId) const = 0;
 

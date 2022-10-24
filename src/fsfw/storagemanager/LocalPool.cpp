@@ -31,9 +31,8 @@ LocalPool::LocalPool(object_id_t setObjectId, const LocalPoolConfig& poolConfig,
 
 LocalPool::~LocalPool() = default;
 
-ReturnValue_t LocalPool::addData(store_address_t* storageId, const uint8_t* data, size_t size,
-                                 bool ignoreFault) {
-  ReturnValue_t status = reserveSpace(size, storageId, ignoreFault);
+ReturnValue_t LocalPool::addData(store_address_t* storageId, const uint8_t* data, size_t size) {
+  ReturnValue_t status = reserveSpace(size, storageId);
   if (status == returnvalue::OK) {
     write(*storageId, data, size);
   }
@@ -49,8 +48,8 @@ ReturnValue_t LocalPool::getData(store_address_t packetId, const uint8_t** packe
 }
 
 ReturnValue_t LocalPool::getFreeElement(store_address_t* storageId, const size_t size,
-                                        uint8_t** pData, bool ignoreFault) {
-  ReturnValue_t status = reserveSpace(size, storageId, ignoreFault);
+                                        uint8_t** pData) {
+  ReturnValue_t status = reserveSpace(size, storageId);
   if (status == returnvalue::OK) {
     *pData = &store[storageId->poolIndex][getRawPosition(*storageId)];
   } else {
@@ -167,7 +166,7 @@ void LocalPool::clearStore() {
   }
 }
 
-ReturnValue_t LocalPool::reserveSpace(size_t size, store_address_t* storeId, bool ignoreFault) {
+ReturnValue_t LocalPool::reserveSpace(size_t size, store_address_t* storeId) {
   ReturnValue_t status = getSubPoolIndex(size, &storeId->poolIndex);
   if (status != returnvalue::OK) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
