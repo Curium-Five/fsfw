@@ -61,6 +61,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   interface itself so it can be re-used more easily. Also add new
   abstract function `bool hasDataAtId(store_address_t storeId) const`.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/685
+- Improvements for `AcceptsTelemetryIF` and `AcceptsTelecommandsIF`:
+  - Make functions `const` where it makes sense
+  - Add `const char* getName const` abstract function
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/684
 
 # [v5.0.0] 25.07.2022
 
