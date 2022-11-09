@@ -2,6 +2,7 @@
 #define FSFW_TIMEMANAGER_TIMEREADERIF_H
 
 #include <cstdlib>
+
 #include "fsfw/platform.h"
 
 #ifdef PLATFORM_WIN

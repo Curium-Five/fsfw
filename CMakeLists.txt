@@ -340,9 +340,9 @@ if(FSFW_BUILD_TESTS)
                           -ftest-coverage)
 
       if(WIN32)
-        setup_target_for_coverage_gcovr_html(
-          NAME ${FSFW_TEST_TGT}_coverage EXECUTABLE ${FSFW_TEST_TGT}
-          DEPENDENCIES ${FSFW_TEST_TGT})
+        #setup_target_for_coverage_gcovr_html(
+        #  NAME ${FSFW_TEST_TGT}_coverage EXECUTABLE ${FSFW_TEST_TGT}
+        #  DEPENDENCIES ${FSFW_TEST_TGT})
       else()
         setup_target_for_coverage_lcov(
           NAME ${FSFW_TEST_TGT}_coverage EXECUTABLE ${FSFW_TEST_TGT}

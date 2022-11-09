@@ -1,7 +1,8 @@
 #include "fsfw/osal/windows/winTaskHelpers.h"
 
-#include <mutex>
 #include <windows.h>
+
+#include <mutex>
 
 TaskPriority tasks::makeWinPriority(PriorityClass prioClass, PriorityNumber prioNumber) {
   return (static_cast<uint16_t>(prioClass) << 16) | static_cast<uint16_t>(prioNumber);
