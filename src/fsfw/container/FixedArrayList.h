@@ -28,9 +28,11 @@ class FixedArrayList : public ArrayList<T, count_t> {
   }
 
   FixedArrayList& operator=(FixedArrayList other) {
-    memcpy(this->data, other.data, sizeof(this->data));
     this->entries = data;
     this->size = other.size;
+    for (size_t idx = 0; idx < this->size; idx++) {
+      data[idx] = other.data[idx];
+    }
     return *this;
   }
 
