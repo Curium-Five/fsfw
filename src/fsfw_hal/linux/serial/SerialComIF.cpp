@@ -1,7 +1,6 @@
-#include "UartComIF.h"
-
 #include <errno.h>
 #include <fcntl.h>
+#include <fsfw_hal/linux/serial/SerialComIF.h>
 #include <termios.h>
 #include <unistd.h>
 
@@ -11,13 +10,12 @@
 #include "fsfw/serviceinterface.h"
 #include "fsfw_hal/linux/utility.h"
 
-UartComIF::UartComIF(object_id_t objectId) : SystemObject(objectId) {}
+SerialComIF::SerialComIF(object_id_t objectId) : SystemObject(objectId) {}
 
-UartComIF::~UartComIF() {}
+SerialComIF::~SerialComIF() {}
 
-ReturnValue_t UartComIF::initializeInterface(CookieIF* cookie) {
+ReturnValue_t SerialComIF::initializeInterface(CookieIF* cookie) {
   std::string deviceFile;
-  UartDeviceMapIter uartDeviceMapIter;
 
   if (cookie == nullptr) {
     return NULLPOINTER;
@@ -33,7 +31,7 @@ ReturnValue_t UartComIF::initializeInterface(CookieIF* cookie) {
 
   deviceFile = uartCookie->getDeviceFile();
 
-  uartDeviceMapIter = uartDeviceMap.find(deviceFile);
+  auto uartDeviceMapIter = uartDeviceMap.find(deviceFile);
   if (uartDeviceMapIter == uartDeviceMap.end()) {
     int fileDescriptor = configureUartPort(uartCookie);
     if (fileDescriptor < 0) {
@@ -60,7 +58,7 @@ ReturnValue_t UartComIF::initializeInterface(CookieIF* cookie) {
   return returnvalue::OK;
 }
 
-int UartComIF::configureUartPort(UartCookie* uartCookie) {
+int SerialComIF::configureUartPort(UartCookie* uartCookie) {
   struct termios options = {};
 
   std::string deviceFile = uartCookie->getDeviceFile();
@@ -89,11 +87,11 @@ int UartComIF::configureUartPort(UartCookie* uartCookie) {
     return fd;
   }
 
-  setParityOptions(&options, uartCookie);
+  uart::setParity(options, uartCookie->getParity());
   setStopBitOptions(&options, uartCookie);
   setDatasizeOptions(&options, uartCookie);
   setFixedOptions(&options);
-  setUartMode(&options, *uartCookie);
+  uart::setMode(options, uartCookie->getUartMode());
   if (uartCookie->getInputShouldBeFlushed()) {
     tcflush(fd, TCIFLUSH);
   }
@@ -102,7 +100,7 @@ int UartComIF::configureUartPort(UartCookie* uartCookie) {
   options.c_cc[VTIME] = 0;
   options.c_cc[VMIN] = 0;
 
-  configureBaudrate(&options, uartCookie);
+  uart::setBaudrate(options, uartCookie->getBaudrate());
 
   /* Save option settings */
   if (tcsetattr(fd, TCSANOW, &options) != 0) {
@@ -115,24 +113,7 @@ int UartComIF::configureUartPort(UartCookie* uartCookie) {
   return fd;
 }
 
-void UartComIF::setParityOptions(struct termios* options, UartCookie* uartCookie) {
-  /* Clear parity bit */
-  options->c_cflag &= ~PARENB;
-  switch (uartCookie->getParity()) {
-    case Parity::EVEN:
-      options->c_cflag |= PARENB;
-      options->c_cflag &= ~PARODD;
-      break;
-    case Parity::ODD:
-      options->c_cflag |= PARENB;
-      options->c_cflag |= PARODD;
-      break;
-    default:
-      break;
-  }
-}
-
-void UartComIF::setStopBitOptions(struct termios* options, UartCookie* uartCookie) {
+void SerialComIF::setStopBitOptions(struct termios* options, UartCookie* uartCookie) {
   /* Clear stop field. Sets stop bit to one bit */
   options->c_cflag &= ~CSTOPB;
   switch (uartCookie->getStopBits()) {
@@ -144,7 +125,7 @@ void UartComIF::setStopBitOptions(struct termios* options, UartCookie* uartCooki
   }
 }
 
-void UartComIF::setDatasizeOptions(struct termios* options, UartCookie* uartCookie) {
+void SerialComIF::setDatasizeOptions(struct termios* options, UartCookie* uartCookie) {
   /* Clear size bits */
   options->c_cflag &= ~CSIZE;
   switch (uartCookie->getBitsPerWord()) {
@@ -168,7 +149,7 @@ void UartComIF::setDatasizeOptions(struct termios* options, UartCookie* uartCook
   }
 }
 
-void UartComIF::setFixedOptions(struct termios* options) {
+void SerialComIF::setFixedOptions(struct termios* options) {
   /* Disable RTS/CTS hardware flow control */
   options->c_cflag &= ~CRTSCTS;
   /* Turn on READ & ignore ctrl lines (CLOCAL = 1) */
@@ -191,142 +172,9 @@ void UartComIF::setFixedOptions(struct termios* options) {
   options->c_oflag &= ~ONLCR;
 }
 
-void UartComIF::configureBaudrate(struct termios* options, UartCookie* uartCookie) {
-  switch (uartCookie->getBaudrate()) {
-    case UartBaudRate::RATE_50:
-      cfsetispeed(options, B50);
-      cfsetospeed(options, B50);
-      break;
-    case UartBaudRate::RATE_75:
-      cfsetispeed(options, B75);
-      cfsetospeed(options, B75);
-      break;
-    case UartBaudRate::RATE_110:
-      cfsetispeed(options, B110);
-      cfsetospeed(options, B110);
-      break;
-    case UartBaudRate::RATE_134:
-      cfsetispeed(options, B134);
-      cfsetospeed(options, B134);
-      break;
-    case UartBaudRate::RATE_150:
-      cfsetispeed(options, B150);
-      cfsetospeed(options, B150);
-      break;
-    case UartBaudRate::RATE_200:
-      cfsetispeed(options, B200);
-      cfsetospeed(options, B200);
-      break;
-    case UartBaudRate::RATE_300:
-      cfsetispeed(options, B300);
-      cfsetospeed(options, B300);
-      break;
-    case UartBaudRate::RATE_600:
-      cfsetispeed(options, B600);
-      cfsetospeed(options, B600);
-      break;
-    case UartBaudRate::RATE_1200:
-      cfsetispeed(options, B1200);
-      cfsetospeed(options, B1200);
-      break;
-    case UartBaudRate::RATE_1800:
-      cfsetispeed(options, B1800);
-      cfsetospeed(options, B1800);
-      break;
-    case UartBaudRate::RATE_2400:
-      cfsetispeed(options, B2400);
-      cfsetospeed(options, B2400);
-      break;
-    case UartBaudRate::RATE_4800:
-      cfsetispeed(options, B4800);
-      cfsetospeed(options, B4800);
-      break;
-    case UartBaudRate::RATE_9600:
-      cfsetispeed(options, B9600);
-      cfsetospeed(options, B9600);
-      break;
-    case UartBaudRate::RATE_19200:
-      cfsetispeed(options, B19200);
-      cfsetospeed(options, B19200);
-      break;
-    case UartBaudRate::RATE_38400:
-      cfsetispeed(options, B38400);
-      cfsetospeed(options, B38400);
-      break;
-    case UartBaudRate::RATE_57600:
-      cfsetispeed(options, B57600);
-      cfsetospeed(options, B57600);
-      break;
-    case UartBaudRate::RATE_115200:
-      cfsetispeed(options, B115200);
-      cfsetospeed(options, B115200);
-      break;
-    case UartBaudRate::RATE_230400:
-      cfsetispeed(options, B230400);
-      cfsetospeed(options, B230400);
-      break;
-#ifndef __APPLE__
-    case UartBaudRate::RATE_460800:
-      cfsetispeed(options, B460800);
-      cfsetospeed(options, B460800);
-      break;
-    case UartBaudRate::RATE_500000:
-      cfsetispeed(options, B500000);
-      cfsetospeed(options, B500000);
-      break;
-    case UartBaudRate::RATE_576000:
-      cfsetispeed(options, B576000);
-      cfsetospeed(options, B576000);
-      break;
-    case UartBaudRate::RATE_921600:
-      cfsetispeed(options, B921600);
-      cfsetospeed(options, B921600);
-      break;
-    case UartBaudRate::RATE_1000000:
-      cfsetispeed(options, B1000000);
-      cfsetospeed(options, B1000000);
-      break;
-    case UartBaudRate::RATE_1152000:
-      cfsetispeed(options, B1152000);
-      cfsetospeed(options, B1152000);
-      break;
-    case UartBaudRate::RATE_1500000:
-      cfsetispeed(options, B1500000);
-      cfsetospeed(options, B1500000);
-      break;
-    case UartBaudRate::RATE_2000000:
-      cfsetispeed(options, B2000000);
-      cfsetospeed(options, B2000000);
-      break;
-    case UartBaudRate::RATE_2500000:
-      cfsetispeed(options, B2500000);
-      cfsetospeed(options, B2500000);
-      break;
-    case UartBaudRate::RATE_3000000:
-      cfsetispeed(options, B3000000);
-      cfsetospeed(options, B3000000);
-      break;
-    case UartBaudRate::RATE_3500000:
-      cfsetispeed(options, B3500000);
-      cfsetospeed(options, B3500000);
-      break;
-    case UartBaudRate::RATE_4000000:
-      cfsetispeed(options, B4000000);
-      cfsetospeed(options, B4000000);
-      break;
-#endif  // ! __APPLE__
-    default:
-#if FSFW_CPP_OSTREAM_ENABLED == 1
-      sif::warning << "UartComIF::configureBaudrate: Baudrate not supported" << std::endl;
-#endif
-      break;
-  }
-}
-
-ReturnValue_t UartComIF::sendMessage(CookieIF* cookie, const uint8_t* sendData, size_t sendLen) {
+ReturnValue_t SerialComIF::sendMessage(CookieIF* cookie, const uint8_t* sendData, size_t sendLen) {
   int fd = 0;
   std::string deviceFile;
-  UartDeviceMapIter uartDeviceMapIter;
 
   if (sendLen == 0) {
     return returnvalue::OK;
@@ -348,7 +196,7 @@ ReturnValue_t UartComIF::sendMessage(CookieIF* cookie, const uint8_t* sendData, 
   }
 
   deviceFile = uartCookie->getDeviceFile();
-  uartDeviceMapIter = uartDeviceMap.find(deviceFile);
+  auto uartDeviceMapIter = uartDeviceMap.find(deviceFile);
   if (uartDeviceMapIter == uartDeviceMap.end()) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::debug << "UartComIF::sendMessage: Device file " << deviceFile << "not in UART map"
@@ -370,11 +218,10 @@ ReturnValue_t UartComIF::sendMessage(CookieIF* cookie, const uint8_t* sendData, 
   return returnvalue::OK;
 }
 
-ReturnValue_t UartComIF::getSendSuccess(CookieIF* cookie) { return returnvalue::OK; }
+ReturnValue_t SerialComIF::getSendSuccess(CookieIF* cookie) { return returnvalue::OK; }
 
-ReturnValue_t UartComIF::requestReceiveMessage(CookieIF* cookie, size_t requestLen) {
+ReturnValue_t SerialComIF::requestReceiveMessage(CookieIF* cookie, size_t requestLen) {
   std::string deviceFile;
-  UartDeviceMapIter uartDeviceMapIter;
 
   UartCookie* uartCookie = dynamic_cast<UartCookie*>(cookie);
   if (uartCookie == nullptr) {
@@ -386,7 +233,7 @@ ReturnValue_t UartComIF::requestReceiveMessage(CookieIF* cookie, size_t requestL
 
   UartModes uartMode = uartCookie->getUartMode();
   deviceFile = uartCookie->getDeviceFile();
-  uartDeviceMapIter = uartDeviceMap.find(deviceFile);
+  auto uartDeviceMapIter = uartDeviceMap.find(deviceFile);
 
   if (uartMode == UartModes::NON_CANONICAL and requestLen == 0) {
     return returnvalue::OK;
@@ -409,8 +256,8 @@ ReturnValue_t UartComIF::requestReceiveMessage(CookieIF* cookie, size_t requestL
   }
 }
 
-ReturnValue_t UartComIF::handleCanonicalRead(UartCookie& uartCookie, UartDeviceMapIter& iter,
-                                             size_t requestLen) {
+ReturnValue_t SerialComIF::handleCanonicalRead(UartCookie& uartCookie,
+                                               UartDeviceMap::iterator& iter, size_t requestLen) {
   ReturnValue_t result = returnvalue::OK;
   uint8_t maxReadCycles = uartCookie.getReadCycles();
   uint8_t currentReadCycles = 0;
@@ -467,8 +314,9 @@ ReturnValue_t UartComIF::handleCanonicalRead(UartCookie& uartCookie, UartDeviceM
   return result;
 }
 
-ReturnValue_t UartComIF::handleNoncanonicalRead(UartCookie& uartCookie, UartDeviceMapIter& iter,
-                                                size_t requestLen) {
+ReturnValue_t SerialComIF::handleNoncanonicalRead(UartCookie& uartCookie,
+                                                  UartDeviceMap::iterator& iter,
+                                                  size_t requestLen) {
   int fd = iter->second.fileDescriptor;
   auto bufferPtr = iter->second.replyBuffer.data();
   // Size check to prevent buffer overflow
@@ -501,9 +349,8 @@ ReturnValue_t UartComIF::handleNoncanonicalRead(UartCookie& uartCookie, UartDevi
   return returnvalue::OK;
 }
 
-ReturnValue_t UartComIF::readReceivedMessage(CookieIF* cookie, uint8_t** buffer, size_t* size) {
+ReturnValue_t SerialComIF::readReceivedMessage(CookieIF* cookie, uint8_t** buffer, size_t* size) {
   std::string deviceFile;
-  UartDeviceMapIter uartDeviceMapIter;
 
   UartCookie* uartCookie = dynamic_cast<UartCookie*>(cookie);
   if (uartCookie == nullptr) {
@@ -514,7 +361,7 @@ ReturnValue_t UartComIF::readReceivedMessage(CookieIF* cookie, uint8_t** buffer,
   }
 
   deviceFile = uartCookie->getDeviceFile();
-  uartDeviceMapIter = uartDeviceMap.find(deviceFile);
+  auto uartDeviceMapIter = uartDeviceMap.find(deviceFile);
   if (uartDeviceMapIter == uartDeviceMap.end()) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::debug << "UartComIF::readReceivedMessage: Device file " << deviceFile << " not in uart map"
@@ -532,9 +379,8 @@ ReturnValue_t UartComIF::readReceivedMessage(CookieIF* cookie, uint8_t** buffer,
   return returnvalue::OK;
 }
 
-ReturnValue_t UartComIF::flushUartRxBuffer(CookieIF* cookie) {
+ReturnValue_t SerialComIF::flushUartRxBuffer(CookieIF* cookie) {
   std::string deviceFile;
-  UartDeviceMapIter uartDeviceMapIter;
   UartCookie* uartCookie = dynamic_cast<UartCookie*>(cookie);
   if (uartCookie == nullptr) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
@@ -543,7 +389,7 @@ ReturnValue_t UartComIF::flushUartRxBuffer(CookieIF* cookie) {
     return NULLPOINTER;
   }
   deviceFile = uartCookie->getDeviceFile();
-  uartDeviceMapIter = uartDeviceMap.find(deviceFile);
+  auto uartDeviceMapIter = uartDeviceMap.find(deviceFile);
   if (uartDeviceMapIter != uartDeviceMap.end()) {
     int fd = uartDeviceMapIter->second.fileDescriptor;
     tcflush(fd, TCIFLUSH);
@@ -552,9 +398,8 @@ ReturnValue_t UartComIF::flushUartRxBuffer(CookieIF* cookie) {
   return returnvalue::FAILED;
 }
 
-ReturnValue_t UartComIF::flushUartTxBuffer(CookieIF* cookie) {
+ReturnValue_t SerialComIF::flushUartTxBuffer(CookieIF* cookie) {
   std::string deviceFile;
-  UartDeviceMapIter uartDeviceMapIter;
   UartCookie* uartCookie = dynamic_cast<UartCookie*>(cookie);
   if (uartCookie == nullptr) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
@@ -563,7 +408,7 @@ ReturnValue_t UartComIF::flushUartTxBuffer(CookieIF* cookie) {
     return NULLPOINTER;
   }
   deviceFile = uartCookie->getDeviceFile();
-  uartDeviceMapIter = uartDeviceMap.find(deviceFile);
+  auto uartDeviceMapIter = uartDeviceMap.find(deviceFile);
   if (uartDeviceMapIter != uartDeviceMap.end()) {
     int fd = uartDeviceMapIter->second.fileDescriptor;
     tcflush(fd, TCOFLUSH);
@@ -572,9 +417,8 @@ ReturnValue_t UartComIF::flushUartTxBuffer(CookieIF* cookie) {
   return returnvalue::FAILED;
 }
 
-ReturnValue_t UartComIF::flushUartTxAndRxBuf(CookieIF* cookie) {
+ReturnValue_t SerialComIF::flushUartTxAndRxBuf(CookieIF* cookie) {
   std::string deviceFile;
-  UartDeviceMapIter uartDeviceMapIter;
   UartCookie* uartCookie = dynamic_cast<UartCookie*>(cookie);
   if (uartCookie == nullptr) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
@@ -583,21 +427,11 @@ ReturnValue_t UartComIF::flushUartTxAndRxBuf(CookieIF* cookie) {
     return NULLPOINTER;
   }
   deviceFile = uartCookie->getDeviceFile();
-  uartDeviceMapIter = uartDeviceMap.find(deviceFile);
+  auto uartDeviceMapIter = uartDeviceMap.find(deviceFile);
   if (uartDeviceMapIter != uartDeviceMap.end()) {
     int fd = uartDeviceMapIter->second.fileDescriptor;
     tcflush(fd, TCIOFLUSH);
     return returnvalue::OK;
   }
   return returnvalue::FAILED;
-}
-
-void UartComIF::setUartMode(struct termios* options, UartCookie& uartCookie) {
-  UartModes uartMode = uartCookie.getUartMode();
-  if (uartMode == UartModes::NON_CANONICAL) {
-    /* Disable canonical mode */
-    options->c_lflag &= ~ICANON;
-  } else if (uartMode == UartModes::CANONICAL) {
-    options->c_lflag |= ICANON;
-  }
 }

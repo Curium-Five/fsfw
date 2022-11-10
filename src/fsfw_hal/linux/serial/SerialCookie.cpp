@@ -1,9 +1,8 @@
-#include "UartCookie.h"
-
 #include <fsfw/serviceinterface.h>
+#include <fsfw_hal/linux/serial/SerialCookie.h>
 
-UartCookie::UartCookie(object_id_t handlerId, std::string deviceFile, UartModes uartMode,
-                       UartBaudRate baudrate, size_t maxReplyLen)
+UartCookie::UartCookie(object_id_t handlerId, std::string deviceFile, UartBaudRate baudrate,
+                       size_t maxReplyLen, UartModes uartMode)
     : handlerId(handlerId),
       deviceFile(deviceFile),
       uartMode(uartMode),

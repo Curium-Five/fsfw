@@ -3,11 +3,11 @@
 
 #include <fsfw/devicehandlers/DeviceCommunicationIF.h>
 #include <fsfw/objectmanager/SystemObject.h>
+#include <fsfw_hal/linux/serial/SerialCookie.h>
+#include <fsfw_hal/linux/serial/helper.h>
 
 #include <unordered_map>
 #include <vector>
-
-#include "UartCookie.h"
 
 /**
  * @brief 	This is the communication interface to access serial ports on linux based operating
@@ -18,7 +18,7 @@
  *
  * @author 	J. Meier
  */
-class UartComIF : public DeviceCommunicationIF, public SystemObject {
+class SerialComIF : public DeviceCommunicationIF, public SystemObject {
  public:
   static constexpr uint8_t uartRetvalId = CLASS_ID::HAL_UART;
 
@@ -26,9 +26,9 @@ class UartComIF : public DeviceCommunicationIF, public SystemObject {
   static constexpr ReturnValue_t UART_READ_SIZE_MISSMATCH = returnvalue::makeCode(uartRetvalId, 2);
   static constexpr ReturnValue_t UART_RX_BUFFER_TOO_SMALL = returnvalue::makeCode(uartRetvalId, 3);
 
-  UartComIF(object_id_t objectId);
+  SerialComIF(object_id_t objectId);
 
-  virtual ~UartComIF();
+  virtual ~SerialComIF();
 
   ReturnValue_t initializeInterface(CookieIF* cookie) override;
   ReturnValue_t sendMessage(CookieIF* cookie, const uint8_t* sendData, size_t sendLen) override;
@@ -62,7 +62,6 @@ class UartComIF : public DeviceCommunicationIF, public SystemObject {
   };
 
   using UartDeviceMap = std::unordered_map<UartDeviceFile_t, UartElements>;
-  using UartDeviceMapIter = UartDeviceMap::iterator;
 
   /**
    * The uart devie map stores informations of initialized uart ports.
@@ -78,17 +77,6 @@ class UartComIF : public DeviceCommunicationIF, public SystemObject {
    */
   int configureUartPort(UartCookie* uartCookie);
 
-  /**
-   * @brief   This function adds the parity settings to the termios options struct.
-   *
-   * @param options   Pointer to termios options struct which will be modified to enable or disable
-   *                  parity checking.
-   * @param uartCookie    Pointer to uart cookie containing the information about the desired
-   *                      parity settings.
-   *
-   */
-  void setParityOptions(struct termios* options, UartCookie* uartCookie);
-
   void setStopBitOptions(struct termios* options, UartCookie* uartCookie);
 
   /**
@@ -101,17 +89,9 @@ class UartComIF : public DeviceCommunicationIF, public SystemObject {
    */
   void setDatasizeOptions(struct termios* options, UartCookie* uartCookie);
 
-  /**
-   * @brief   This functions adds the  baudrate specified in the uartCookie to the termios options
-   *          struct.
-   */
-  void configureBaudrate(struct termios* options, UartCookie* uartCookie);
-
-  void setUartMode(struct termios* options, UartCookie& uartCookie);
-
-  ReturnValue_t handleCanonicalRead(UartCookie& uartCookie, UartDeviceMapIter& iter,
+  ReturnValue_t handleCanonicalRead(UartCookie& uartCookie, UartDeviceMap::iterator& iter,
                                     size_t requestLen);
-  ReturnValue_t handleNoncanonicalRead(UartCookie& uartCookie, UartDeviceMapIter& iter,
+  ReturnValue_t handleNoncanonicalRead(UartCookie& uartCookie, UartDeviceMap::iterator& iter,
                                        size_t requestLen);
 };
 
