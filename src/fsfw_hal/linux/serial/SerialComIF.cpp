@@ -1,6 +1,7 @@
+#include "SerialComIF.h"
+
 #include <errno.h>
 #include <fcntl.h>
-#include <fsfw_hal/linux/serial/SerialComIF.h>
 #include <termios.h>
 #include <unistd.h>
 
