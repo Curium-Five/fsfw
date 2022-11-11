@@ -21,7 +21,7 @@ ReturnValue_t SerialComIF::initializeInterface(CookieIF* cookie) {
     return NULLPOINTER;
   }
 
-  UartCookie* uartCookie = dynamic_cast<UartCookie*>(cookie);
+  SerialCookie* uartCookie = dynamic_cast<SerialCookie*>(cookie);
   if (uartCookie == nullptr) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::error << "UartComIF::initializeInterface: Invalid UART Cookie!" << std::endl;
@@ -58,7 +58,7 @@ ReturnValue_t SerialComIF::initializeInterface(CookieIF* cookie) {
   return returnvalue::OK;
 }
 
-int SerialComIF::configureUartPort(UartCookie* uartCookie) {
+int SerialComIF::configureUartPort(SerialCookie* uartCookie) {
   struct termios options = {};
 
   std::string deviceFile = uartCookie->getDeviceFile();
@@ -113,7 +113,7 @@ int SerialComIF::configureUartPort(UartCookie* uartCookie) {
   return fd;
 }
 
-void SerialComIF::setStopBitOptions(struct termios* options, UartCookie* uartCookie) {
+void SerialComIF::setStopBitOptions(struct termios* options, SerialCookie* uartCookie) {
   /* Clear stop field. Sets stop bit to one bit */
   options->c_cflag &= ~CSTOPB;
   switch (uartCookie->getStopBits()) {
@@ -125,7 +125,7 @@ void SerialComIF::setStopBitOptions(struct termios* options, UartCookie* uartCoo
   }
 }
 
-void SerialComIF::setDatasizeOptions(struct termios* options, UartCookie* uartCookie) {
+void SerialComIF::setDatasizeOptions(struct termios* options, SerialCookie* uartCookie) {
   /* Clear size bits */
   options->c_cflag &= ~CSIZE;
   switch (uartCookie->getBitsPerWord()) {
@@ -187,7 +187,7 @@ ReturnValue_t SerialComIF::sendMessage(CookieIF* cookie, const uint8_t* sendData
     return returnvalue::FAILED;
   }
 
-  UartCookie* uartCookie = dynamic_cast<UartCookie*>(cookie);
+  SerialCookie* uartCookie = dynamic_cast<SerialCookie*>(cookie);
   if (uartCookie == nullptr) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::warning << "UartComIF::sendMessasge: Invalid UART Cookie!" << std::endl;
@@ -223,7 +223,7 @@ ReturnValue_t SerialComIF::getSendSuccess(CookieIF* cookie) { return returnvalue
 ReturnValue_t SerialComIF::requestReceiveMessage(CookieIF* cookie, size_t requestLen) {
   std::string deviceFile;
 
-  UartCookie* uartCookie = dynamic_cast<UartCookie*>(cookie);
+  SerialCookie* uartCookie = dynamic_cast<SerialCookie*>(cookie);
   if (uartCookie == nullptr) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::debug << "UartComIF::requestReceiveMessage: Invalid Uart Cookie!" << std::endl;
@@ -256,7 +256,7 @@ ReturnValue_t SerialComIF::requestReceiveMessage(CookieIF* cookie, size_t reques
   }
 }
 
-ReturnValue_t SerialComIF::handleCanonicalRead(UartCookie& uartCookie,
+ReturnValue_t SerialComIF::handleCanonicalRead(SerialCookie& uartCookie,
                                                UartDeviceMap::iterator& iter, size_t requestLen) {
   ReturnValue_t result = returnvalue::OK;
   uint8_t maxReadCycles = uartCookie.getReadCycles();
@@ -314,7 +314,7 @@ ReturnValue_t SerialComIF::handleCanonicalRead(UartCookie& uartCookie,
   return result;
 }
 
-ReturnValue_t SerialComIF::handleNoncanonicalRead(UartCookie& uartCookie,
+ReturnValue_t SerialComIF::handleNoncanonicalRead(SerialCookie& uartCookie,
                                                   UartDeviceMap::iterator& iter,
                                                   size_t requestLen) {
   int fd = iter->second.fileDescriptor;
@@ -352,7 +352,7 @@ ReturnValue_t SerialComIF::handleNoncanonicalRead(UartCookie& uartCookie,
 ReturnValue_t SerialComIF::readReceivedMessage(CookieIF* cookie, uint8_t** buffer, size_t* size) {
   std::string deviceFile;
 
-  UartCookie* uartCookie = dynamic_cast<UartCookie*>(cookie);
+  SerialCookie* uartCookie = dynamic_cast<SerialCookie*>(cookie);
   if (uartCookie == nullptr) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::debug << "UartComIF::readReceivedMessage: Invalid uart cookie!" << std::endl;
@@ -381,7 +381,7 @@ ReturnValue_t SerialComIF::readReceivedMessage(CookieIF* cookie, uint8_t** buffe
 
 ReturnValue_t SerialComIF::flushUartRxBuffer(CookieIF* cookie) {
   std::string deviceFile;
-  UartCookie* uartCookie = dynamic_cast<UartCookie*>(cookie);
+  SerialCookie* uartCookie = dynamic_cast<SerialCookie*>(cookie);
   if (uartCookie == nullptr) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::warning << "UartComIF::flushUartRxBuffer: Invalid uart cookie!" << std::endl;
@@ -400,7 +400,7 @@ ReturnValue_t SerialComIF::flushUartRxBuffer(CookieIF* cookie) {
 
 ReturnValue_t SerialComIF::flushUartTxBuffer(CookieIF* cookie) {
   std::string deviceFile;
-  UartCookie* uartCookie = dynamic_cast<UartCookie*>(cookie);
+  SerialCookie* uartCookie = dynamic_cast<SerialCookie*>(cookie);
   if (uartCookie == nullptr) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::warning << "UartComIF::flushUartTxBuffer: Invalid uart cookie!" << std::endl;
@@ -419,7 +419,7 @@ ReturnValue_t SerialComIF::flushUartTxBuffer(CookieIF* cookie) {
 
 ReturnValue_t SerialComIF::flushUartTxAndRxBuf(CookieIF* cookie) {
   std::string deviceFile;
-  UartCookie* uartCookie = dynamic_cast<UartCookie*>(cookie);
+  SerialCookie* uartCookie = dynamic_cast<SerialCookie*>(cookie);
   if (uartCookie == nullptr) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::warning << "UartComIF::flushUartTxAndRxBuf: Invalid uart cookie!" << std::endl;

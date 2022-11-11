@@ -14,7 +14,7 @@
  *
  * @author 	J. Meier
  */
-class UartCookie : public CookieIF {
+class SerialCookie : public CookieIF {
  public:
   /**
    * @brief	Constructor for the uart cookie.
@@ -29,10 +29,10 @@ class UartCookie : public CookieIF {
    *                        8 databits (number of bits transfered with one uart frame)
    *                        One stop bit
    */
-  UartCookie(object_id_t handlerId, std::string deviceFile, UartBaudRate baudrate,
+  SerialCookie(object_id_t handlerId, std::string deviceFile, UartBaudRate baudrate,
              size_t maxReplyLen, UartModes uartMode = UartModes::NON_CANONICAL);
 
-  virtual ~UartCookie();
+  virtual ~SerialCookie();
 
   UartBaudRate getBaudrate() const;
   size_t getMaxReplyLen() const;

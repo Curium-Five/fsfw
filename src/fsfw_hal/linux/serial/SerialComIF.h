@@ -75,9 +75,9 @@ class SerialComIF : public DeviceCommunicationIF, public SystemObject {
    *                      uart device file, baudrate, parity, stopbits etc.
    * @return  The file descriptor of the configured uart.
    */
-  int configureUartPort(UartCookie* uartCookie);
+  int configureUartPort(SerialCookie* uartCookie);
 
-  void setStopBitOptions(struct termios* options, UartCookie* uartCookie);
+  void setStopBitOptions(struct termios* options, SerialCookie* uartCookie);
 
   /**
    * @brief   This function sets options which are not configurable by the uartCookie.
@@ -87,11 +87,11 @@ class SerialComIF : public DeviceCommunicationIF, public SystemObject {
   /**
    * @brief   With this function the datasize settings are added to the termios options struct.
    */
-  void setDatasizeOptions(struct termios* options, UartCookie* uartCookie);
+  void setDatasizeOptions(struct termios* options, SerialCookie* uartCookie);
 
-  ReturnValue_t handleCanonicalRead(UartCookie& uartCookie, UartDeviceMap::iterator& iter,
+  ReturnValue_t handleCanonicalRead(SerialCookie& uartCookie, UartDeviceMap::iterator& iter,
                                     size_t requestLen);
-  ReturnValue_t handleNoncanonicalRead(UartCookie& uartCookie, UartDeviceMap::iterator& iter,
+  ReturnValue_t handleNoncanonicalRead(SerialCookie& uartCookie, UartDeviceMap::iterator& iter,
                                        size_t requestLen);
 };
 

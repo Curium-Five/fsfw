@@ -1,7 +1,7 @@
 #include <fsfw/serviceinterface.h>
 #include <fsfw_hal/linux/serial/SerialCookie.h>
 
-UartCookie::UartCookie(object_id_t handlerId, std::string deviceFile, UartBaudRate baudrate,
+SerialCookie::SerialCookie(object_id_t handlerId, std::string deviceFile, UartBaudRate baudrate,
                        size_t maxReplyLen, UartModes uartMode)
     : handlerId(handlerId),
       deviceFile(deviceFile),
@@ -9,42 +9,42 @@ UartCookie::UartCookie(object_id_t handlerId, std::string deviceFile, UartBaudRa
       baudrate(baudrate),
       maxReplyLen(maxReplyLen) {}
 
-UartCookie::~UartCookie() {}
+SerialCookie::~SerialCookie() {}
 
-UartBaudRate UartCookie::getBaudrate() const { return baudrate; }
+UartBaudRate SerialCookie::getBaudrate() const { return baudrate; }
 
-size_t UartCookie::getMaxReplyLen() const { return maxReplyLen; }
+size_t SerialCookie::getMaxReplyLen() const { return maxReplyLen; }
 
-std::string UartCookie::getDeviceFile() const { return deviceFile; }
+std::string SerialCookie::getDeviceFile() const { return deviceFile; }
 
-void UartCookie::setParityOdd() { parity = Parity::ODD; }
+void SerialCookie::setParityOdd() { parity = Parity::ODD; }
 
-void UartCookie::setParityEven() { parity = Parity::EVEN; }
+void SerialCookie::setParityEven() { parity = Parity::EVEN; }
 
-Parity UartCookie::getParity() const { return parity; }
+Parity SerialCookie::getParity() const { return parity; }
 
-void UartCookie::setBitsPerWord(BitsPerWord bitsPerWord_) { bitsPerWord = bitsPerWord_; }
+void SerialCookie::setBitsPerWord(BitsPerWord bitsPerWord_) { bitsPerWord = bitsPerWord_; }
 
-BitsPerWord UartCookie::getBitsPerWord() const { return bitsPerWord; }
+BitsPerWord SerialCookie::getBitsPerWord() const { return bitsPerWord; }
 
-StopBits UartCookie::getStopBits() const { return stopBits; }
+StopBits SerialCookie::getStopBits() const { return stopBits; }
 
-void UartCookie::setTwoStopBits() { stopBits = StopBits::TWO_STOP_BITS; }
+void SerialCookie::setTwoStopBits() { stopBits = StopBits::TWO_STOP_BITS; }
 
-void UartCookie::setOneStopBit() { stopBits = StopBits::ONE_STOP_BIT; }
+void SerialCookie::setOneStopBit() { stopBits = StopBits::ONE_STOP_BIT; }
 
-UartModes UartCookie::getUartMode() const { return uartMode; }
+UartModes SerialCookie::getUartMode() const { return uartMode; }
 
-void UartCookie::setReadCycles(uint8_t readCycles) { this->readCycles = readCycles; }
+void SerialCookie::setReadCycles(uint8_t readCycles) { this->readCycles = readCycles; }
 
-void UartCookie::setToFlushInput(bool enable) { this->flushInput = enable; }
+void SerialCookie::setToFlushInput(bool enable) { this->flushInput = enable; }
 
-uint8_t UartCookie::getReadCycles() const { return readCycles; }
+uint8_t SerialCookie::getReadCycles() const { return readCycles; }
 
-bool UartCookie::getInputShouldBeFlushed() { return this->flushInput; }
+bool SerialCookie::getInputShouldBeFlushed() { return this->flushInput; }
 
-object_id_t UartCookie::getHandlerId() const { return this->handlerId; }
+object_id_t SerialCookie::getHandlerId() const { return this->handlerId; }
 
-void UartCookie::setNoFixedSizeReply() { replySizeFixed = false; }
+void SerialCookie::setNoFixedSizeReply() { replySizeFixed = false; }
 
-bool UartCookie::isReplySizeFixed() { return replySizeFixed; }
+bool SerialCookie::isReplySizeFixed() { return replySizeFixed; }
