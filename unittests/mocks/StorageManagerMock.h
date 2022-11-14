@@ -8,15 +8,13 @@ class StorageManagerMock : public LocalPool {
  public:
   StorageManagerMock(object_id_t setObjectId, const LocalPoolConfig &poolConfig);
 
-  ReturnValue_t addData(store_address_t *storageId, const uint8_t *data, size_t size,
-                        bool ignoreFault) override;
+  ReturnValue_t addData(store_address_t *storageId, const uint8_t *data, size_t size) override;
   ReturnValue_t deleteData(store_address_t packet_id) override;
   ReturnValue_t deleteData(uint8_t *buffer, size_t size, store_address_t *storeId) override;
   ReturnValue_t getData(store_address_t packet_id, const uint8_t **packet_ptr,
                         size_t *size) override;
   ReturnValue_t modifyData(store_address_t packet_id, uint8_t **packet_ptr, size_t *size) override;
-  ReturnValue_t getFreeElement(store_address_t *storageId, size_t size, uint8_t **p_data,
-                               bool ignoreFault) override;
+  ReturnValue_t getFreeElement(store_address_t *storageId, size_t size, uint8_t **p_data) override;
   [[nodiscard]] bool hasDataAtId(store_address_t storeId) const override;
   void clearStore() override;
   void clearSubPool(uint8_t poolIndex) override;

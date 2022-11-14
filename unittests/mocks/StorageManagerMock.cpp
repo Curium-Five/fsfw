@@ -1,11 +1,11 @@
 #include "StorageManagerMock.h"
 
 ReturnValue_t StorageManagerMock::addData(store_address_t *storageId, const uint8_t *data,
-                                          size_t size, bool ignoreFault) {
+                                          size_t size) {
   if (nextAddDataCallFails.first) {
     return nextAddDataCallFails.second;
   }
-  return LocalPool::addData(storageId, data, size, ignoreFault);
+  return LocalPool::addData(storageId, data, size);
 }
 ReturnValue_t StorageManagerMock::deleteData(store_address_t packet_id) {
   if (nextDeleteDataCallFails.first) {
@@ -36,11 +36,11 @@ ReturnValue_t StorageManagerMock::modifyData(store_address_t packet_id, uint8_t 
 }
 
 ReturnValue_t StorageManagerMock::getFreeElement(store_address_t *storageId, size_t size,
-                                                 uint8_t **p_data, bool ignoreFault) {
+                                                 uint8_t **p_data) {
   if (nextFreeElementCallFails.first) {
     return nextFreeElementCallFails.second;
   }
-  return LocalPool::getFreeElement(storageId, size, p_data, ignoreFault);
+  return LocalPool::getFreeElement(storageId, size, p_data);
 }
 
 bool StorageManagerMock::hasDataAtId(store_address_t storeId) const {
