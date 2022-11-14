@@ -131,7 +131,6 @@ class LocalPool : public SystemObject, public StorageManagerIF {
   // Using functions provided by StorageManagerIF requires either a fully qualified path
   // like for example localPool.StorageManagerIF::getFreeElement(...) or re-exporting
   // the fully qualified path with the using directive.
-  using StorageManagerIF::getFreeElement;
   using StorageManagerIF::getData;
   using StorageManagerIF::modifyData;
 
