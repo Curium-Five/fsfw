@@ -1,9 +1,11 @@
 #include <map>
 #include <thread>
 
-#include "../../tasks/TaskFactory.h"
+#include "fsfw/tasks/TaskFactory.h"
 
 #ifdef _WIN32
+
+#include <minwindef.h>
 
 namespace tasks {
 

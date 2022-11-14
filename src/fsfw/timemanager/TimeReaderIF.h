@@ -4,6 +4,13 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include "fsfw/platform.h"
+
+#ifdef PLATFORM_WIN
+// wtf? Required for timeval!
+#include <winsock.h>
+#endif
+
 #include "TimeStampIF.h"
 #include "fsfw/returnvalues/returnvalue.h"
 #include "fsfw/serialize/SerializeIF.h"
