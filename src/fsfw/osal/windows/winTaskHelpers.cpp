@@ -1,5 +1,7 @@
 #include "fsfw/osal/windows/winTaskHelpers.h"
 
+#include <windows.h>
+
 #include <mutex>
 
 TaskPriority tasks::makeWinPriority(PriorityClass prioClass, PriorityNumber prioNumber) {
