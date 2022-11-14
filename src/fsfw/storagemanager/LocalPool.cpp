@@ -31,9 +31,8 @@ LocalPool::LocalPool(object_id_t setObjectId, const LocalPoolConfig& poolConfig,
 
 LocalPool::~LocalPool() = default;
 
-ReturnValue_t LocalPool::addData(store_address_t* storageId, const uint8_t* data, size_t size,
-                                 bool ignoreFault) {
-  ReturnValue_t status = reserveSpace(size, storageId, ignoreFault);
+ReturnValue_t LocalPool::addData(store_address_t* storageId, const uint8_t* data, size_t size) {
+  ReturnValue_t status = reserveSpace(size, storageId);
   if (status == returnvalue::OK) {
     write(*storageId, data, size);
   }
@@ -49,8 +48,8 @@ ReturnValue_t LocalPool::getData(store_address_t packetId, const uint8_t** packe
 }
 
 ReturnValue_t LocalPool::getFreeElement(store_address_t* storageId, const size_t size,
-                                        uint8_t** pData, bool ignoreFault) {
-  ReturnValue_t status = reserveSpace(size, storageId, ignoreFault);
+                                        uint8_t** pData) {
+  ReturnValue_t status = reserveSpace(size, storageId);
   if (status == returnvalue::OK) {
     *pData = &store[storageId->poolIndex][getRawPosition(*storageId)];
   } else {
@@ -167,7 +166,7 @@ void LocalPool::clearStore() {
   }
 }
 
-ReturnValue_t LocalPool::reserveSpace(size_t size, store_address_t* storeId, bool ignoreFault) {
+ReturnValue_t LocalPool::reserveSpace(size_t size, store_address_t* storeId) {
   ReturnValue_t status = getSubPoolIndex(size, &storeId->poolIndex);
   if (status != returnvalue::OK) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
@@ -317,28 +316,4 @@ bool LocalPool::hasDataAtId(store_address_t storeId) const {
     return true;
   }
   return false;
-}
-
-ReturnValue_t LocalPool::getFreeElement(store_address_t* storeId, size_t size, uint8_t** pData) {
-  return StorageManagerIF::getFreeElement(storeId, size, pData);
-}
-
-ConstAccessorPair LocalPool::getData(store_address_t storeId) {
-  return StorageManagerIF::getData(storeId);
-}
-
-ReturnValue_t LocalPool::addData(store_address_t* storeId, const uint8_t* data, size_t size) {
-  return StorageManagerIF::addData(storeId, data, size);
-}
-
-ReturnValue_t LocalPool::getData(store_address_t storeId, ConstStorageAccessor& accessor) {
-  return StorageManagerIF::getData(storeId, accessor);
-}
-
-ReturnValue_t LocalPool::modifyData(store_address_t storeId, StorageAccessor& accessor) {
-  return StorageManagerIF::modifyData(storeId, accessor);
-}
-
-AccessorPair LocalPool::modifyData(store_address_t storeId) {
-  return StorageManagerIF::modifyData(storeId);
 }

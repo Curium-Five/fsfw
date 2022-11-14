@@ -57,7 +57,7 @@ class PoolManager : public LocalPool {
   //! Default mutex timeout value to prevent permanent blocking.
   uint32_t mutexTimeoutMs = 20;
 
-  ReturnValue_t reserveSpace(size_t size, store_address_t* address, bool ignoreFault) override;
+  ReturnValue_t reserveSpace(size_t size, store_address_t* address) override;
 
   /**
    * @brief	The mutex is created in the constructor and makes

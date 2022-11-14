@@ -122,6 +122,7 @@ if(UNIX)
   option(FSFW_HAL_LINUX_ADD_PERIPHERAL_DRIVERS "Add Linux peripheral drivers"
          OFF)
   option(FSFW_HAL_LINUX_ADD_LIBGPIOD "Attempt to add Linux GPIOD drivers" OFF)
+  option(FSFW_HAL_LINUX_ADD_SERIAL_DRIVERS "Add serial drivers" ON)
 endif()
 
 # Optional sources

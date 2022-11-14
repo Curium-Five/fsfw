@@ -86,21 +86,13 @@ class LocalPool : public SystemObject, public StorageManagerIF {
   /**
    * Documentation: See StorageManagerIF.h
    */
-  ReturnValue_t addData(store_address_t* storeId, const uint8_t* data, size_t size,
-                        bool ignoreFault) override;
   ReturnValue_t addData(store_address_t* storeId, const uint8_t* data, size_t size) override;
 
   ReturnValue_t getFreeElement(store_address_t* storeId, size_t size, uint8_t** pData) override;
-  ReturnValue_t getFreeElement(store_address_t* storeId, size_t size, uint8_t** pData,
-                               bool ignoreFault) override;
 
-  ConstAccessorPair getData(store_address_t storeId) override;
-  ReturnValue_t getData(store_address_t storeId, ConstStorageAccessor& accessor) override;
   ReturnValue_t getData(store_address_t storeId, const uint8_t** packet_ptr, size_t* size) override;
 
-  AccessorPair modifyData(store_address_t storeId) override;
   ReturnValue_t modifyData(store_address_t storeId, uint8_t** packet_ptr, size_t* size) override;
-  ReturnValue_t modifyData(store_address_t storeId, StorageAccessor& accessor) override;
 
   ReturnValue_t deleteData(store_address_t storeId) override;
   ReturnValue_t deleteData(uint8_t* ptr, size_t size, store_address_t* storeId) override;
@@ -136,6 +128,12 @@ class LocalPool : public SystemObject, public StorageManagerIF {
   [[nodiscard]] max_subpools_t getNumberOfSubPools() const override;
   [[nodiscard]] bool hasDataAtId(store_address_t storeId) const override;
 
+  // Using functions provided by StorageManagerIF requires either a fully qualified path
+  // like for example localPool.StorageManagerIF::getFreeElement(...) or re-exporting
+  // the fully qualified path with the using directive.
+  using StorageManagerIF::getData;
+  using StorageManagerIF::modifyData;
+
  protected:
   /**
    * With this helper method, a free element of @c size is reserved.
@@ -144,7 +142,7 @@ class LocalPool : public SystemObject, public StorageManagerIF {
    * @return	- returnvalue::OK on success,
    * 			- the return codes of #getPoolIndex or #findEmpty otherwise.
    */
-  virtual ReturnValue_t reserveSpace(size_t size, store_address_t* address, bool ignoreFault);
+  virtual ReturnValue_t reserveSpace(size_t size, store_address_t* address);
 
  private:
   /**
@@ -187,6 +185,8 @@ class LocalPool : public SystemObject, public StorageManagerIF {
    */
   std::vector<std::vector<size_type>> sizeLists =
       std::vector<std::vector<size_type>>(NUMBER_OF_SUBPOOLS);
+
+  bool ignoreFault = false;
 
   //! A variable to determine whether higher n pools are used if
   //! the store is full.
