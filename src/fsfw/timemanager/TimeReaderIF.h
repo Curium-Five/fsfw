@@ -1,7 +1,15 @@
 #ifndef FSFW_TIMEMANAGER_TIMEREADERIF_H
 #define FSFW_TIMEMANAGER_TIMEREADERIF_H
 
+#include <cstdio>
 #include <cstdlib>
+
+#include "fsfw/platform.h"
+
+#ifdef PLATFORM_WIN
+// wtf? Required for timeval!
+#include <winsock.h>
+#endif
 
 #include "TimeStampIF.h"
 #include "fsfw/returnvalues/returnvalue.h"
