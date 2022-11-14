@@ -20,15 +20,19 @@ class FixedArrayList : public ArrayList<T, count_t> {
   FixedArrayList() : ArrayList<T, count_t>(data, MAX_SIZE) {}
 
   FixedArrayList(const FixedArrayList& other) : ArrayList<T, count_t>(data, MAX_SIZE) {
-    memcpy(this->data, other.data, sizeof(this->data));
     this->entries = data;
     this->size = other.size;
+    for (size_t idx = 0; idx < this->size; idx++) {
+      data[idx] = other.data[idx];
+    }
   }
 
   FixedArrayList& operator=(FixedArrayList other) {
-    memcpy(this->data, other.data, sizeof(this->data));
     this->entries = data;
     this->size = other.size;
+    for (size_t idx = 0; idx < this->size; idx++) {
+      data[idx] = other.data[idx];
+    }
     return *this;
   }
 
