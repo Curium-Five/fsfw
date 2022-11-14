@@ -8,6 +8,7 @@
 
 #if defined(PLATFORM_WIN)
 #include <sysinfoapi.h>
+#define timegm _mkgmtime
 #elif defined(PLATFORM_UNIX)
 #include <fstream>
 #endif
