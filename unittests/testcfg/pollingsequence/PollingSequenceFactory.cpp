@@ -4,6 +4,7 @@
 #include <fsfw/serviceinterface/ServiceInterface.h>
 #include <fsfw/tasks/FixedTimeslotTaskIF.h>
 
+#include "fsfw/FSFW.h"
 #include "tests/TestsConfig.h"
 
 ReturnValue_t pst::pollingSequenceInitDefault(FixedTimeslotTaskIF *thisSequence) {
@@ -20,7 +21,7 @@ ReturnValue_t pst::pollingSequenceInitDefault(FixedTimeslotTaskIF *thisSequence)
   if (thisSequence->checkSequence() == returnvalue::OK) {
     return returnvalue::OK;
   } else {
-#if FSFW_CPP_OSTREAM_ENABLED
+#if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::error << "pst::pollingSequenceInitDefault: Sequence invalid!" << std::endl;
 #else
     sif::printError("pst::pollingSequenceInitDefault: Sequence invalid!");

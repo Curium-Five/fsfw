@@ -48,11 +48,11 @@ ReturnValue_t PusTcCreator::serialize(uint8_t **buffer, size_t *size, size_t max
 }
 
 void PusTcCreator::updateSpLengthField() {
-  size_t len = ecss::PusTcDataFieldHeader::MIN_SIZE + 1;
+  size_t len = ecss::PusTcDataFieldHeader::MIN_SIZE + sizeof(ecss::PusChecksumT);
   if (pusParams.appData != nullptr) {
     len += pusParams.appData->getSerializedSize();
   }
-  spCreator.setDataLen(len);
+  spCreator.setCcsdsLenFromTotalDataFieldLen(len);
 }
 
 size_t PusTcCreator::getSerializedSize() const { return spCreator.getFullPacketLen(); }

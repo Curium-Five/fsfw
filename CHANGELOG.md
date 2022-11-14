@@ -65,6 +65,28 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - Make functions `const` where it makes sense
   - Add `const char* getName const` abstract function
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/684
+- Move some generic `StorageManagerIF` implementations from `LocalPool` to
+  interface itself so it can be re-used more easily. Also add new
+  abstract function `bool hasDataAtId(store_address_t storeId) const`.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/685
+
+## CFDP
+
+- Refactoring of CFDP stack which was done during implementation of the CFDP source and destination
+  handlers.
+   - New filesystem module, changes for filesystem abstraction `HasFileSystemIF` to better
+     fit requirements of CFDP
+   - New `HostFilesystem` implementation of the `HasFileSystemIF`
+   - New `cfdp::UserBase` class which is the abstraction for the CFDP user in an OBSW context.
+   - mib module for the CFDP stack
+   - PDU classes renamed from `...Serializer`/`...Deserializer` to `...Creator`/`...Reader`
+     respetively
+   - Renamed `TcDistributor` to `TcDistributorBase` to prevent confusion
+   - Refactored `TcDisitributorBase` to be more flexible and usable for CFDP distribution
+   - Renamed `CCSDSDistributor` to `CcsdsDistributor` and add feature which allows it
+     to remove the CCSDS header when routing a packet. This allows CCSDS agnostic receiver
+     implementation without an extra component
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/682
 
 # [v5.0.0] 25.07.2022
 

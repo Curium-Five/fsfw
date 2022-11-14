@@ -5,6 +5,8 @@
 #include <fsfw/returnvalues/returnvalue.h>
 #include <fsfw/storagemanager/StorageManagerIF.h>
 
+#include "fsfw/FSFW.h"
+
 namespace tconst {
 static constexpr MessageQueueId_t testQueueId = 42;
 }

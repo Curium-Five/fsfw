@@ -4,7 +4,7 @@ FaultHandlerOverrideTlv::FaultHandlerOverrideTlv(cfdp::ConditionCode conditionCo
                                                  cfdp::FaultHandlerCode handlerCode)
     : conditionCode(conditionCode), handlerCode(handlerCode) {}
 
-FaultHandlerOverrideTlv::FaultHandlerOverrideTlv() {}
+FaultHandlerOverrideTlv::FaultHandlerOverrideTlv() = default;
 
 uint8_t FaultHandlerOverrideTlv::getLengthField() const { return 1; }
 
@@ -32,8 +32,8 @@ ReturnValue_t FaultHandlerOverrideTlv::deSerialize(const uint8_t **buffer, size_
   if (*size < 3) {
     return SerializeIF::STREAM_TOO_SHORT;
   }
-  auto detectedType = static_cast<cfdp::TlvTypes>(**buffer);
-  if (detectedType != cfdp::TlvTypes::FAULT_HANDLER) {
+  auto detectedType = static_cast<cfdp::TlvType>(**buffer);
+  if (detectedType != cfdp::TlvType::FAULT_HANDLER) {
     return cfdp::INVALID_TLV_TYPE;
   }
   *buffer += 1;
@@ -51,4 +51,4 @@ ReturnValue_t FaultHandlerOverrideTlv::deSerialize(const uint8_t **buffer, size_
   return returnvalue::OK;
 }
 
-cfdp::TlvTypes FaultHandlerOverrideTlv::getType() const { return cfdp::TlvTypes::FAULT_HANDLER; }
+cfdp::TlvType FaultHandlerOverrideTlv::getType() const { return cfdp::TlvType::FAULT_HANDLER; }

@@ -11,12 +11,16 @@
 
 namespace cfdp {
 
-static constexpr uint8_t VERSION_BITS = 0b00100000;
+static constexpr char CFDP_VERSION_2_NAME[] = "CCSDS 727.0-B-5";
+
+// Second version of the protocol, only this one is supported here
+static constexpr uint8_t CFDP_VERSION_2 = 0b001;
+static constexpr uint8_t VERSION_BITS = CFDP_VERSION_2 << 5;
 
 static constexpr uint8_t CFDP_CLASS_ID = CLASS_ID::CFDP;
 
 static constexpr ReturnValue_t INVALID_TLV_TYPE = returnvalue::makeCode(CFDP_CLASS_ID, 1);
-static constexpr ReturnValue_t INVALID_DIRECTIVE_FIELDS = returnvalue::makeCode(CFDP_CLASS_ID, 2);
+static constexpr ReturnValue_t INVALID_DIRECTIVE_FIELD = returnvalue::makeCode(CFDP_CLASS_ID, 2);
 static constexpr ReturnValue_t INVALID_PDU_DATAFIELD_LEN = returnvalue::makeCode(CFDP_CLASS_ID, 3);
 static constexpr ReturnValue_t INVALID_ACK_DIRECTIVE_FIELDS =
     returnvalue::makeCode(CFDP_CLASS_ID, 4);
@@ -26,13 +30,14 @@ static constexpr ReturnValue_t METADATA_CANT_PARSE_OPTIONS =
     returnvalue::makeCode(CFDP_CLASS_ID, 5);
 static constexpr ReturnValue_t NAK_CANT_PARSE_OPTIONS = returnvalue::makeCode(CFDP_CLASS_ID, 6);
 static constexpr ReturnValue_t FINISHED_CANT_PARSE_FS_RESPONSES =
-    returnvalue::makeCode(CFDP_CLASS_ID, 6);
+    returnvalue::makeCode(CFDP_CLASS_ID, 7);
 static constexpr ReturnValue_t FILESTORE_REQUIRES_SECOND_FILE =
     returnvalue::makeCode(CFDP_CLASS_ID, 8);
 //! Can not parse filestore response because user did not pass a valid instance
 //! or remaining size is invalid
 static constexpr ReturnValue_t FILESTORE_RESPONSE_CANT_PARSE_FS_MESSAGE =
     returnvalue::makeCode(CFDP_CLASS_ID, 9);
+static constexpr ReturnValue_t INVALID_PDU_FORMAT = returnvalue::makeCode(CFDP_CLASS_ID, 10);
 
 //! Checksum types according to the SANA Checksum Types registry
 //! https://sanaregistry.org/r/checksum_identifiers/
@@ -45,17 +50,17 @@ enum ChecksumType {
   NULL_CHECKSUM = 15
 };
 
-enum PduType : bool { FILE_DIRECTIVE = 0, FILE_DATA = 1 };
+enum PduType : uint8_t { FILE_DIRECTIVE = 0, FILE_DATA = 1 };
 
-enum TransmissionModes : bool { ACKNOWLEDGED = 0, UNACKNOWLEDGED = 1 };
+enum TransmissionMode : uint8_t { ACKNOWLEDGED = 0, UNACKNOWLEDGED = 1 };
 
-enum SegmentMetadataFlag : bool { NOT_PRESENT = 0, PRESENT = 1 };
+enum SegmentMetadataFlag : bool { NOT_PRESENT = false, PRESENT = true };
 
-enum Direction : bool { TOWARDS_RECEIVER = 0, TOWARDS_SENDER = 1 };
+enum Direction : uint8_t { TOWARDS_RECEIVER = 0, TOWARDS_SENDER = 1 };
 
 enum SegmentationControl : bool {
-  NO_RECORD_BOUNDARIES_PRESERVATION = 0,
-  RECORD_BOUNDARIES_PRESERVATION = 1
+  NO_RECORD_BOUNDARIES_PRESERVATION = false,
+  RECORD_BOUNDARIES_PRESERVATION = true
 };
 
 enum WidthInBytes : uint8_t {
@@ -65,8 +70,9 @@ enum WidthInBytes : uint8_t {
   FOUR_BYTES = 4,
 };
 
-enum FileDirectives : uint8_t {
+enum FileDirective : uint8_t {
   INVALID_DIRECTIVE = 0x0f,
+  // The _DIRECTIVE suffix is mandatory here because of some nameclash!
   EOF_DIRECTIVE = 0x04,
   FINISH = 0x05,
   ACK = 0x06,
@@ -93,6 +99,14 @@ enum ConditionCode : uint8_t {
   CANCEL_REQUEST_RECEIVED = 0b1111
 };
 
+enum FaultHandlerCode {
+  RESERVED = 0b0000,
+  NOTICE_OF_CANCELLATION = 0b0001,
+  NOTICE_OF_SUSPENSION = 0b0010,
+  IGNORE_ERROR = 0b0011,
+  ABANDON_TRANSACTION = 0b0100
+};
+
 enum AckTransactionStatus {
   UNDEFINED = 0b00,
   ACTIVE = 0b01,
@@ -100,18 +114,18 @@ enum AckTransactionStatus {
   UNRECOGNIZED = 0b11
 };
 
-enum FinishedDeliveryCode { DATA_COMPLETE = 0, DATA_INCOMPLETE = 1 };
+enum FileDeliveryCode { DATA_COMPLETE = 0, DATA_INCOMPLETE = 1 };
 
-enum FinishedFileStatus {
+enum FileDeliveryStatus {
   DISCARDED_DELIBERATELY = 0,
   DISCARDED_FILESTORE_REJECTION = 1,
   RETAINED_IN_FILESTORE = 2,
   FILE_STATUS_UNREPORTED = 3
 };
 
-enum PromptResponseRequired : bool { PROMPT_NAK = 0, PROMPT_KEEP_ALIVE = 1 };
+enum PromptResponseRequired : uint8_t { PROMPT_NAK = 0, PROMPT_KEEP_ALIVE = 1 };
 
-enum TlvTypes : uint8_t {
+enum TlvType : uint8_t {
   FILESTORE_REQUEST = 0x00,
   FILESTORE_RESPONSE = 0x01,
   MSG_TO_USER = 0x02,

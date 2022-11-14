@@ -1,18 +1,12 @@
-target_sources(${FSFW_TEST_TGT} PRIVATE
-    CatchDefinitions.cpp
-    CatchFactory.cpp
-    printChar.cpp
-    testVersion.cpp
-)
+target_sources(${FSFW_TEST_TGT} PRIVATE CatchDefinitions.cpp CatchFactory.cpp
+                                        printChar.cpp testVersion.cpp)
 
-target_sources(${FSFW_TEST_TGT} PRIVATE
-    CatchRunner.cpp
-    CatchSetup.cpp
-)
+target_sources(${FSFW_TEST_TGT} PRIVATE CatchRunner.cpp CatchSetup.cpp)
 
 add_subdirectory(testcfg)
 add_subdirectory(mocks)
 
+add_subdirectory(tcdistributor)
 add_subdirectory(action)
 add_subdirectory(power)
 add_subdirectory(util)

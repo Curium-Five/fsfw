@@ -6,6 +6,12 @@ cfdp::Lv::Lv(const uint8_t* value, size_t size) : value(value, size, true) {
   }
 }
 
+cfdp::Lv::Lv(const std::vector<uint8_t>& data) : value(data.data(), data.size(), true) {
+  if (!data.empty()) {
+    zeroLen = false;
+  }
+}
+
 cfdp::Lv::Lv() : value(static_cast<uint8_t*>(nullptr), 0, true) {}
 
 cfdp::Lv::Lv(const Lv& other)
@@ -17,11 +23,11 @@ cfdp::Lv::Lv(const Lv& other)
 
 cfdp::Lv& cfdp::Lv::operator=(const Lv& other) {
   size_t otherSize = 0;
-  uint8_t* value = const_cast<uint8_t*>(other.getValue(&otherSize));
-  if (value == nullptr or otherSize == 0) {
+  auto* otherVal = const_cast<uint8_t*>(other.getValue(&otherSize));
+  if (otherVal == nullptr or otherSize == 0) {
     this->zeroLen = true;
   }
-  this->value.setConstBuffer(value, otherSize);
+  this->value.setConstBuffer(otherVal, otherSize);
   return *this;
 }
 

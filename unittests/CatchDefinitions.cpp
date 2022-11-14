@@ -3,6 +3,8 @@
 #include <fsfw/objectmanager/ObjectManager.h>
 #include <fsfw/serviceinterface/ServiceInterface.h>
 
+#include "fsfw/FSFW.h"
+
 StorageManagerIF* tglob::getIpcStoreHandle() {
   if (ObjectManager::instance() != nullptr) {
     return ObjectManager::instance()->get<StorageManagerIF>(objects::IPC_STORE);

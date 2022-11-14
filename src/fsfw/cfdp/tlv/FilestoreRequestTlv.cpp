@@ -3,10 +3,10 @@
 #include "fsfw/FSFW.h"
 
 FilestoreRequestTlv::FilestoreRequestTlv(cfdp::FilestoreActionCode actionCode,
-                                         cfdp::Lv &firstFileName)
+                                         cfdp::StringLv &firstFileName)
     : FilestoreTlvBase(actionCode, firstFileName) {}
 
-FilestoreRequestTlv::FilestoreRequestTlv(cfdp::Lv &firstFileName)
+FilestoreRequestTlv::FilestoreRequestTlv(cfdp::StringLv &firstFileName)
     : FilestoreTlvBase(cfdp::FilestoreActionCode::INVALID, firstFileName) {}
 
 void FilestoreRequestTlv::setSecondFileName(cfdp::Lv *secondFileName) {
@@ -76,4 +76,4 @@ ReturnValue_t FilestoreRequestTlv::deSerializeFromValue(const uint8_t **buffer, 
   return result;
 }
 
-cfdp::TlvTypes FilestoreRequestTlv::getType() const { return cfdp::TlvTypes::FILESTORE_REQUEST; }
+cfdp::TlvType FilestoreRequestTlv::getType() const { return cfdp::TlvType::FILESTORE_REQUEST; }
