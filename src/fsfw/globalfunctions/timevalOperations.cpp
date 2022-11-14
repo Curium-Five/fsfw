@@ -1,12 +1,9 @@
 #include "fsfw/globalfunctions/timevalOperations.h"
 
-#include <cstdio>
-
 timeval& operator+=(timeval& lhs, const timeval& rhs) {
   int64_t sum = static_cast<int64_t>(lhs.tv_sec) * 1000000. + lhs.tv_usec;
   sum += static_cast<int64_t>(rhs.tv_sec) * 1000000. + rhs.tv_usec;
-  int64_t tmp = sum / 1000000;
-  lhs.tv_sec = tmp;
+  lhs.tv_sec = sum / 1000000;
   lhs.tv_usec = sum - lhs.tv_sec * 1000000;
   return lhs;
 }
