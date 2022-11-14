@@ -61,10 +61,16 @@ ReturnValue_t Clock::convertTimevalToTimeOfDay(const timeval* from, TimeOfDay_t*
   if (result != returnvalue::OK) {
     return result;
   }
-  MutexGuard helper(timeMutex);
   // gmtime writes its output in a global buffer which is not Thread Safe
   // Therefore we have to use a Mutex here
+  MutexGuard helper(timeMutex);
+#ifdef PLATFORM_WIN
+  time_t time;
+  time = from->tv_sec;
+  timeInfo = gmtime(&time);
+#else
   timeInfo = gmtime(&from->tv_sec);
+#endif
   to->year = timeInfo->tm_year + 1900;
   to->month = timeInfo->tm_mon + 1;
   to->day = timeInfo->tm_mday;
