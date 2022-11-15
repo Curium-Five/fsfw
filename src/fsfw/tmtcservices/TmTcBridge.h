@@ -65,7 +65,7 @@ class TmTcBridge : public AcceptsTelemetryIF,
   ReturnValue_t performOperation(uint8_t operationCode = 0) override;
 
   /** AcceptsTelemetryIF override */
-  MessageQueueId_t getReportReceptionQueue(uint8_t virtualChannel = 0) override;
+  MessageQueueId_t getReportReceptionQueue(uint8_t virtualChannel) const override;
 
   /** AcceptsTelecommandsIF override */
   uint32_t getIdentifier() const override;
