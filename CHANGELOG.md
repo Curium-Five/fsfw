@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Added
 
+- `UioMapper` is able to resolve symlinks now.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/709
 - Add new `UnsignedByteField` class
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/660
 
