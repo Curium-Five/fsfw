@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Added
 
+- `DleParser` helper class to parse DLE encoded packets from a byte stream.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/711
 - Add new `UnsignedByteField` class
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/660
 
