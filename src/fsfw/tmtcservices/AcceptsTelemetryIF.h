@@ -21,9 +21,11 @@ class AcceptsTelemetryIF {
    * 			receiving message queue.
    * @return	The telemetry reception message queue id.
    */
-  virtual MessageQueueId_t getReportReceptionQueue(uint8_t virtualChannel) = 0;
+  [[nodiscard]] virtual MessageQueueId_t getReportReceptionQueue(uint8_t virtualChannel) const = 0;
 
-  virtual MessageQueueId_t getReportReceptionQueue() { return getReportReceptionQueue(0); }
+  [[nodiscard]] virtual MessageQueueId_t getReportReceptionQueue() const {
+    return getReportReceptionQueue(0);
+  }
 };
 
 #endif /* FSFW_TMTCSERVICES_ACCEPTSTELEMETRYIF_H_ */
