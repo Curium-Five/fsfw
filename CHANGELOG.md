@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Changes
 
+- `AcceptsTelemetryIF`: `getReportReceptionQueue` is const now
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/712
 - Remove default secondary header argument for
   `uint16_t getTcSpacePacketIdFromApid(uint16_t apid, bool secondaryHeaderFlag)` and
   `uint16_t getTmSpacePacketIdFromApid(uint16_t apid, bool secondaryHeaderFlag)`
