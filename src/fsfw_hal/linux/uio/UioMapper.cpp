@@ -1,6 +1,7 @@
 #include "UioMapper.h"
 
 #include <fcntl.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 #include <filesystem>
@@ -13,7 +14,23 @@ const char UioMapper::UIO_PATH_PREFIX[] = "/sys/class/uio/";
 const char UioMapper::MAP_SUBSTR[] = "/maps/map";
 const char UioMapper::SIZE_FILE_PATH[] = "/size";
 
-UioMapper::UioMapper(std::string uioFile, int mapNum) : uioFile(uioFile), mapNum(mapNum) {}
+UioMapper::UioMapper(std::string uioFile, int mapNum) : mapNum(mapNum) {
+  struct stat buf;
+  lstat(uioFile.c_str(), &buf);
+  if (S_ISLNK(buf.st_mode)) {
+    char* res = realpath(uioFile.c_str(), nullptr);
+    if (res) {
+      this->uioFile = res;
+    } else {
+#if FSFW_CPP_OSTREAM_ENABLED == 1
+      sif::error << "Could not resolve real path of UIO file " << uioFile << std::endl;
+#endif
+    }
+    free(res);
+  } else {
+    this->uioFile = std::move(uioFile);
+  }
+}
 
 UioMapper::~UioMapper() {}
 
@@ -22,7 +39,7 @@ ReturnValue_t UioMapper::getMappedAdress(uint32_t** address, Permissions permiss
   int fd = open(uioFile.c_str(), O_RDWR);
   if (fd < 1) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
-    sif::error << "PtmeAxiConfig::initialize: Invalid UIO device file" << std::endl;
+    sif::error << "UioMapper::getMappedAdress: Invalid UIO device file " << uioFile << std::endl;
 #endif
     return returnvalue::FAILED;
   }
