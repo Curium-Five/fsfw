@@ -9,7 +9,7 @@ class AcceptsTmMock : public SystemObject, public AcceptsTelemetryIF {
   AcceptsTmMock(object_id_t registeredId, MessageQueueId_t queueToReturn);
   explicit AcceptsTmMock(MessageQueueId_t queueToReturn);
 
-  MessageQueueId_t getReportReceptionQueue(uint8_t virtualChannel) override;
+  MessageQueueId_t getReportReceptionQueue(uint8_t virtualChannel) const override;
   const char* getName() const override;
 
   MessageQueueId_t returnedQueue;

@@ -6,7 +6,7 @@ AcceptsTmMock::AcceptsTmMock(object_id_t registeredId, MessageQueueId_t queueToR
 AcceptsTmMock::AcceptsTmMock(MessageQueueId_t queueToReturn)
     : SystemObject(objects::NO_OBJECT, false), returnedQueue(queueToReturn) {}
 
-MessageQueueId_t AcceptsTmMock::getReportReceptionQueue(uint8_t virtualChannel) {
+MessageQueueId_t AcceptsTmMock::getReportReceptionQueue(uint8_t virtualChannel) const {
   return returnedQueue;
 }
 
