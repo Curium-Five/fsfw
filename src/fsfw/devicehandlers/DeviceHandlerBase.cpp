@@ -359,6 +359,8 @@ void DeviceHandlerBase::doStateMachine() {
       if ((switchState == PowerSwitchIF::SWITCH_ON) || (switchState == NO_SWITCH)) {
         // NOTE: TransitionSourceMode and -SubMode are set by handleCommandedModeTransition
         childTransitionFailure = CHILD_TIMEOUT;
+        transitionSourceMode = _MODE_SHUT_DOWN;
+        transitionSourceSubMode = SUBMODE_NONE;
         setMode(_MODE_START_UP);
         callChildStatemachine();
       }
