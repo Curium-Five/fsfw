@@ -240,7 +240,7 @@ void TmTcBridge::registerCommDisconnect() {
   }
 }
 
-MessageQueueId_t TmTcBridge::getReportReceptionQueue(uint8_t virtualChannel) {
+MessageQueueId_t TmTcBridge::getReportReceptionQueue(uint8_t virtualChannel) const {
   return tmTcReceptionQueue->getId();
 }
 

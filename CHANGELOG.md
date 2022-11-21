@@ -34,6 +34,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Changes
 
+- `AcceptsTelemetryIF`: `getReportReceptionQueue` is const now
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/712
 - Moved some container returnvalues to dedicated header and namespace
   to they can be used without template specification.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/707
