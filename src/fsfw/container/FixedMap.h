@@ -4,8 +4,8 @@
 #include <type_traits>
 #include <utility>
 
-#include "../returnvalues/returnvalue.h"
 #include "ArrayList.h"
+#include "definitions.h"
 
 /**
  * @brief    Map implementation for maps with a pre-defined size.
@@ -24,11 +24,6 @@ class FixedMap : public SerializeIF {
                 "derived class from SerializeIF to be serialize-able");
 
  public:
-  static const uint8_t INTERFACE_ID = CLASS_ID::FIXED_MAP;
-  static const ReturnValue_t KEY_ALREADY_EXISTS = MAKE_RETURN_CODE(0x01);
-  static const ReturnValue_t MAP_FULL = MAKE_RETURN_CODE(0x02);
-  static const ReturnValue_t KEY_DOES_NOT_EXIST = MAKE_RETURN_CODE(0x03);
-
  private:
   static const key_t EMPTY_SLOT = -1;
   ArrayList<std::pair<key_t, T>, uint32_t> theMap;
@@ -76,10 +71,10 @@ class FixedMap : public SerializeIF {
 
   ReturnValue_t insert(key_t key, T value, Iterator* storedValue = nullptr) {
     if (exists(key) == returnvalue::OK) {
-      return KEY_ALREADY_EXISTS;
+      return containers::KEY_ALREADY_EXISTS;
     }
     if (_size == theMap.maxSize()) {
-      return MAP_FULL;
+      return containers::MAP_FULL;
     }
     theMap[_size].first = key;
     theMap[_size].second = value;
@@ -93,7 +88,7 @@ class FixedMap : public SerializeIF {
   ReturnValue_t insert(std::pair<key_t, T> pair) { return insert(pair.first, pair.second); }
 
   ReturnValue_t exists(key_t key) const {
-    ReturnValue_t result = KEY_DOES_NOT_EXIST;
+    ReturnValue_t result = containers::KEY_DOES_NOT_EXIST;
     if (findIndex(key) < _size) {
       result = returnvalue::OK;
     }
@@ -103,7 +98,7 @@ class FixedMap : public SerializeIF {
   ReturnValue_t erase(Iterator* iter) {
     uint32_t i;
     if ((i = findIndex((*iter).value->first)) >= _size) {
-      return KEY_DOES_NOT_EXIST;
+      return containers::KEY_DOES_NOT_EXIST;
     }
     theMap[i] = theMap[_size - 1];
     --_size;
@@ -114,7 +109,7 @@ class FixedMap : public SerializeIF {
   ReturnValue_t erase(key_t key) {
     uint32_t i;
     if ((i = findIndex(key)) >= _size) {
-      return KEY_DOES_NOT_EXIST;
+      return containers::KEY_DOES_NOT_EXIST;
     }
     theMap[i] = theMap[_size - 1];
     --_size;

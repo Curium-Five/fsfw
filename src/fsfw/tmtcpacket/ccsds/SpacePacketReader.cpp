@@ -21,7 +21,7 @@ SpacePacketReader::~SpacePacketReader() = default;
 
 inline uint16_t SpacePacketReader::getPacketIdRaw() const { return ccsds::getPacketId(*spHeader); }
 
-const uint8_t* SpacePacketReader::getPacketData() { return packetDataField; }
+const uint8_t* SpacePacketReader::getPacketData() const { return packetDataField; }
 
 ReturnValue_t SpacePacketReader::setData(uint8_t* data, size_t maxSize_, void* args) {
   return setInternalFields(data, maxSize_);
