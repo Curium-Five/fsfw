@@ -20,7 +20,7 @@ UioMapper::UioMapper(std::string uioFile, int mapNum) : mapNum(mapNum) {
   if (S_ISLNK(buf.st_mode)) {
     char* res = realpath(uioFile.c_str(), nullptr);
     if (res) {
-      uioFile = res;
+      this->uioFile = res;
       free(res);
     } else {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
@@ -28,7 +28,7 @@ UioMapper::UioMapper(std::string uioFile, int mapNum) : mapNum(mapNum) {
 #endif
     }
   } else {
-    uioFile = std::move(uioFile);
+    this->uioFile = std::move(uioFile);
   }
 }
 
