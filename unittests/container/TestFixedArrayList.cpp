@@ -31,7 +31,7 @@ TEST_CASE("FixedArrayList Tests", "[containers]") {
     for (auto i = 1; i < 260; i++) {
       REQUIRE(list.insert(i) == static_cast<int>(returnvalue::OK));
     }
-    REQUIRE(list.insert(260) == static_cast<int>(ArrayList<uint32_t, uint16_t>::FULL));
+    REQUIRE(list.insert(260) == static_cast<int>(containers::LIST_FULL));
     list.clear();
     REQUIRE(list.size == 0);
   }

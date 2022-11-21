@@ -7,6 +7,8 @@
 
 template class FixedMap<unsigned int, unsigned short>;
 
+using namespace returnvalue;
+
 TEST_CASE("FixedMap Tests", "[containers]") {
   INFO("FixedMap Tests");
 
@@ -24,9 +26,9 @@ TEST_CASE("FixedMap Tests", "[containers]") {
       REQUIRE(map.find(i)->second == i + 1);
       REQUIRE(not map.empty());
     }
-    REQUIRE(map.insert(0, 0) == static_cast<int>(FixedMap<uint32_t, uint16_t>::KEY_ALREADY_EXISTS));
-    REQUIRE(map.insert(31, 0) == static_cast<int>(FixedMap<uint32_t, uint16_t>::MAP_FULL));
-    REQUIRE(map.exists(31) == static_cast<int>(FixedMap<uint32_t, uint16_t>::KEY_DOES_NOT_EXIST));
+    REQUIRE(map.insert(0, 0) == static_cast<int>(containers::KEY_ALREADY_EXISTS));
+    REQUIRE(map.insert(31, 0) == static_cast<int>(containers::MAP_FULL));
+    REQUIRE(map.exists(31) == static_cast<int>(containers::KEY_DOES_NOT_EXIST));
     REQUIRE(map.size() == 30);
     REQUIRE(map.full());
     {
@@ -34,15 +36,14 @@ TEST_CASE("FixedMap Tests", "[containers]") {
       REQUIRE(map.find(5, &ptr) == static_cast<int>(returnvalue::OK));
       REQUIRE(*ptr == 6);
       REQUIRE(*(map.findValue(6)) == 7);
-      REQUIRE(map.find(31, &ptr) ==
-              static_cast<int>(FixedMap<uint32_t, uint16_t>::KEY_DOES_NOT_EXIST));
+      REQUIRE(map.find(31, &ptr) == static_cast<int>(containers::KEY_DOES_NOT_EXIST));
     }
 
     REQUIRE(map.getSerializedSize() ==
             (sizeof(uint32_t) + 30 * (sizeof(uint32_t) + sizeof(uint16_t))));
     REQUIRE(map.erase(2) == static_cast<int>(returnvalue::OK));
-    REQUIRE(map.erase(31) == static_cast<int>(FixedMap<uint32_t, uint16_t>::KEY_DOES_NOT_EXIST));
-    REQUIRE(map.exists(2) == static_cast<int>(FixedMap<uint32_t, uint16_t>::KEY_DOES_NOT_EXIST));
+    REQUIRE(map.erase(31) == static_cast<int>(containers::KEY_DOES_NOT_EXIST));
+    REQUIRE(map.exists(2) == static_cast<int>(containers::KEY_DOES_NOT_EXIST));
     REQUIRE(map.size() == 29);
 
     for (auto element : map) {
@@ -79,8 +80,7 @@ TEST_CASE("FixedMap Tests", "[containers]") {
     REQUIRE(map.insert(37, 38, nullptr) == static_cast<int>(returnvalue::OK));
     REQUIRE(map.find(37)->second == 38);
     REQUIRE(map.size() == 2);
-    REQUIRE(map.insert(37, 24, nullptr) ==
-            static_cast<int>(FixedMap<uint32_t, uint16_t>::KEY_ALREADY_EXISTS));
+    REQUIRE(map.insert(37, 24, nullptr) == static_cast<int>(containers::KEY_ALREADY_EXISTS));
     REQUIRE(map.find(37)->second != 24);
     REQUIRE(map.size() == 2);
   };
@@ -137,7 +137,7 @@ TEST_CASE("FixedMap Tests", "[containers]") {
     FixedMap<uint32_t, uint16_t>::Iterator it;
     std::pair<uint32_t, uint16_t> pair = std::make_pair(44, 43);
     it = FixedMap<uint32_t, uint16_t>::Iterator(&pair);
-    REQUIRE(map.erase(&it) == static_cast<int>(FixedMap<uint32_t, uint16_t>::KEY_DOES_NOT_EXIST));
+    REQUIRE(map.erase(&it) == static_cast<int>(containers::KEY_DOES_NOT_EXIST));
     REQUIRE(map.find(45) == map.end());
     size_t toLargeMap = 100;
     const uint8_t* ptr = reinterpret_cast<uint8_t*>(&toLargeMap);
