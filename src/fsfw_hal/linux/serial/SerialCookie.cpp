@@ -3,7 +3,7 @@
 #include <fsfw/serviceinterface.h>
 
 SerialCookie::SerialCookie(object_id_t handlerId, std::string deviceFile, UartBaudRate baudrate,
-                       size_t maxReplyLen, UartModes uartMode)
+                           size_t maxReplyLen, UartModes uartMode)
     : handlerId(handlerId),
       deviceFile(deviceFile),
       uartMode(uartMode),
