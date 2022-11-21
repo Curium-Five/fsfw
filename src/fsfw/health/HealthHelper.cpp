@@ -5,7 +5,11 @@
 HealthHelper::HealthHelper(HasHealthIF* owner, object_id_t objectId)
     : objectId(objectId), owner(owner) {}
 
-HealthHelper::~HealthHelper() { healthTable->removeObject(objectId); }
+HealthHelper::~HealthHelper() {
+  if (healthTable != nullptr) {
+    healthTable->removeObject(objectId);
+  }
+}
 
 ReturnValue_t HealthHelper::handleHealthCommand(CommandMessage* message) {
   switch (message->getCommand()) {
