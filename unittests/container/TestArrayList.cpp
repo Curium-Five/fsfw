@@ -43,7 +43,7 @@ TEST_CASE("Array List", "[containers]") {
     for (auto i = 0; i < 20; i++) {
       REQUIRE(list.insert(i) == static_cast<int>(returnvalue::OK));
     }
-    REQUIRE(list.insert(20) == static_cast<int>(ArrayList<uint16_t>::FULL));
+    REQUIRE(list.insert(20) == static_cast<int>(containers::LIST_FULL));
     ArrayList<uint16_t>::Iterator it = list.begin();
     REQUIRE((*it) == 0);
     it++;

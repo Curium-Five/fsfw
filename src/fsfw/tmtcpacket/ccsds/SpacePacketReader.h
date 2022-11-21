@@ -71,7 +71,7 @@ class SpacePacketReader : public SpacePacketIF,
   // Helper methods:
   [[nodiscard]] ReturnValue_t checkSize() const;
 
-  const uint8_t* getPacketData();
+  const uint8_t* getPacketData() const;
 
   ReturnValue_t setReadOnlyData(const uint8_t* data, size_t maxSize);
 

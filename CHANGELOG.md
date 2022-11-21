@@ -31,6 +31,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Changes
 
+- Moved some container returnvalues to dedicated header and namespace
+  to they can be used without template specification.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/707
 - Remove default secondary header argument for
   `uint16_t getTcSpacePacketIdFromApid(uint16_t apid, bool secondaryHeaderFlag)` and
   `uint16_t getTmSpacePacketIdFromApid(uint16_t apid, bool secondaryHeaderFlag)`
