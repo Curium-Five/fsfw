@@ -30,7 +30,7 @@ class SerialCookie : public CookieIF {
    *                        One stop bit
    */
   SerialCookie(object_id_t handlerId, std::string deviceFile, UartBaudRate baudrate,
-             size_t maxReplyLen, UartModes uartMode = UartModes::NON_CANONICAL);
+               size_t maxReplyLen, UartModes uartMode = UartModes::NON_CANONICAL);
 
   virtual ~SerialCookie();
 

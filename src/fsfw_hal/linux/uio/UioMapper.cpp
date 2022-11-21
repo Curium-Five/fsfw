@@ -20,15 +20,15 @@ UioMapper::UioMapper(std::string uioFile, int mapNum) : mapNum(mapNum) {
   if (S_ISLNK(buf.st_mode)) {
     char* res = realpath(uioFile.c_str(), nullptr);
     if (res) {
-      this->uioFile = res;
+      uioFile = res;
+      free(res);
     } else {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
       sif::error << "Could not resolve real path of UIO file " << uioFile << std::endl;
 #endif
     }
-    free(res);
   } else {
-    this->uioFile = std::move(uioFile);
+    uioFile = std::move(uioFile);
   }
 }
 
