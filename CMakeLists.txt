@@ -346,9 +346,15 @@ if(FSFW_BUILD_TESTS)
           DEPENDENCIES ${FSFW_TEST_TGT})
       else()
         setup_target_for_coverage_lcov(
-          NAME ${FSFW_TEST_TGT}_coverage EXECUTABLE ${FSFW_TEST_TGT}
-          DEPENDENCIES ${FSFW_TEST_TGT}
-          GENHTML_ARGS --html-epilog ${CMAKE_SOURCE_DIR}/unittests/lcov_epilog.html)
+          NAME
+          ${FSFW_TEST_TGT}_coverage
+          EXECUTABLE
+          ${FSFW_TEST_TGT}
+          DEPENDENCIES
+          ${FSFW_TEST_TGT}
+          GENHTML_ARGS
+          --html-epilog
+          ${CMAKE_SOURCE_DIR}/unittests/lcov_epilog.html)
       endif()
     endif()
   endif()

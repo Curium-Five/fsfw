@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Fixes
 
+- Only delete health table entry in `HealthHelper` destructor if
+  health table was set.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/710/files
 - I2C Bugfixes: Do not keep iterator as member and fix some incorrect handling with the iterator.
   Also properly reset the reply size for successfull transfers and erroneous transfers.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/700
@@ -26,11 +29,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - `DleParser` helper class to parse DLE encoded packets from a byte stream.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/711
+- `UioMapper` is able to resolve symlinks now.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/709
 - Add new `UnsignedByteField` class
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/660
 
 ## Changes
 
+- `AcceptsTelemetryIF`: `getReportReceptionQueue` is const now
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/712
 - Moved some container returnvalues to dedicated header and namespace
   to they can be used without template specification.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/707

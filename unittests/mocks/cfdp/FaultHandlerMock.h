@@ -17,7 +17,7 @@ class FaultHandlerMock : public FaultHandlerBase {
 
   void noticeOfSuspensionCb(TransactionId& id, ConditionCode code) override;
   void noticeOfCancellationCb(TransactionId& id, ConditionCode code) override;
-  void abandonCb(TransactionId& id,ConditionCode code) override;
+  void abandonCb(TransactionId& id, ConditionCode code) override;
   void ignoreCb(TransactionId& id, ConditionCode code) override;
 
   FaultInfo& getFhInfo(FaultHandlerCode fhCode);
