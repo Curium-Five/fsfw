@@ -107,6 +107,8 @@ class CommandExecutor {
    */
   void reset();
 
+  const std::vector<char>& getReadVector() const;
+
  private:
   std::string currentCmd;
   bool blocking = true;
