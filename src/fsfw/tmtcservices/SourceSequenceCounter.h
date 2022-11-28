@@ -5,20 +5,28 @@
 
 class SourceSequenceCounter {
  private:
-  uint16_t sequenceCount;
+  uint16_t sequenceCount = 0;
 
  public:
-  SourceSequenceCounter() : sequenceCount(0) {}
-  void increment() {
-    sequenceCount = (sequenceCount + 1) % (SpacePacketBase::LIMIT_SEQUENCE_COUNT);
-  }
-  void decrement() {
-    sequenceCount = (sequenceCount - 1) % (SpacePacketBase::LIMIT_SEQUENCE_COUNT);
-  }
+  SourceSequenceCounter(uint16_t initialSequenceCount = 0) : sequenceCount(initialSequenceCount) {}
+  void increment() { sequenceCount = (sequenceCount + 1) % (ccsds::LIMIT_SEQUENCE_COUNT); }
+  void decrement() { sequenceCount = (sequenceCount - 1) % (ccsds::LIMIT_SEQUENCE_COUNT); }
   uint16_t get() { return this->sequenceCount; }
-  void reset(uint16_t toValue = 0) {
-    sequenceCount = toValue % (SpacePacketBase::LIMIT_SEQUENCE_COUNT);
+  void reset(uint16_t toValue = 0) { sequenceCount = toValue % (ccsds::LIMIT_SEQUENCE_COUNT); }
+  SourceSequenceCounter& operator++(int) {
+    this->increment();
+    return *this;
   }
+  SourceSequenceCounter& operator--(int) {
+    this->decrement();
+    return *this;
+  }
+  SourceSequenceCounter& operator=(const uint16_t& newCount) {
+    sequenceCount = newCount;
+    return *this;
+  }
+
+  operator uint16_t() { return this->get(); }
 };
 
 #endif /* FSFW_TMTCSERVICES_SOURCESEQUENCECOUNTER_H_ */
