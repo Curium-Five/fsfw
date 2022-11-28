@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Added
 
+- `DleParser` helper class to parse DLE encoded packets from a byte stream.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/711
 - `UioMapper` is able to resolve symlinks now.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/709
 - Add new `UnsignedByteField` class

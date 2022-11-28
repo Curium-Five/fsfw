@@ -4,6 +4,7 @@ target_sources(
           AsciiConverter.cpp
           CRC.cpp
           DleEncoder.cpp
+          DleParser.cpp
           PeriodicOperationDivider.cpp
           timevalOperations.cpp
           Type.cpp
