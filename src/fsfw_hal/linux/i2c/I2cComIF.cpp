@@ -168,12 +168,18 @@ ReturnValue_t I2cComIF::requestReceiveMessage(CookieIF* cookie, size_t requestLe
 
   int readLen = read(fd, replyBuffer, requestLen);
   if (readLen != static_cast<int>(requestLen)) {
-#if FSFW_VERBOSE_LEVEL >= 1 and FSFW_CPP_OSTREAM_ENABLED == 1
-    sif::error << "I2cComIF::requestReceiveMessage: Reading from I2C "
-               << "device failed with error code " << errno << ". Description"
-               << " of error: " << strerror(errno) << std::endl;
-    sif::error << "I2cComIF::requestReceiveMessage: Read only " << readLen << " from " << requestLen
-               << " bytes" << std::endl;
+#if FSFW_VERBOSE_LEVEL >= 1
+#if FSFW_CPP_OSTREAM_ENABLED == 1
+    if (readLen < 0) {
+      sif::warning << "I2cComIF::requestReceiveMessage: Reading from I2C "
+                   << "device failed with error code " << errno << " | " << strerror(errno)
+                   << std::endl;
+    } else {
+      sif::warning << "I2cComIF::requestReceiveMessage: Read only " << readLen << " from "
+                   << requestLen << " bytes" << std::endl;
+    }
+#else
+#endif
 #endif
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::debug << "I2cComIF::requestReceiveMessage: Read " << readLen << " of " << requestLen
