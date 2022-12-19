@@ -11,7 +11,7 @@ class SourceSequenceCounter {
   SourceSequenceCounter(uint16_t initialSequenceCount = 0) : sequenceCount(initialSequenceCount) {}
   void increment() { sequenceCount = (sequenceCount + 1) % (ccsds::LIMIT_SEQUENCE_COUNT); }
   void decrement() { sequenceCount = (sequenceCount - 1) % (ccsds::LIMIT_SEQUENCE_COUNT); }
-  uint16_t get() { return this->sequenceCount; }
+  uint16_t get() const { return this->sequenceCount; }
   void reset(uint16_t toValue = 0) { sequenceCount = toValue % (ccsds::LIMIT_SEQUENCE_COUNT); }
   SourceSequenceCounter& operator++(int) {
     this->increment();
