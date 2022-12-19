@@ -32,6 +32,8 @@ ReturnValue_t CommandExecutor::execute() {
   } else if (state == States::PENDING) {
     return COMMAND_PENDING;
   }
+  // Reset data in read vector
+  std::memset(readVec.data(), 0, readVec.size());
   currentCmdFile = popen(currentCmd.c_str(), "r");
   if (currentCmdFile == nullptr) {
     lastError = errno;
@@ -205,3 +207,5 @@ ReturnValue_t CommandExecutor::executeBlocking() {
   }
   return returnvalue::OK;
 }
+
+const std::vector<char>& CommandExecutor::getReadVector() const { return readVec; }
