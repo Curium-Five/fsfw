@@ -9,7 +9,9 @@ DeviceHandlerCommander::DeviceHandlerCommander(object_id_t objectId)
       QUEUE_SIZE, MessageQueueMessage::MAX_MESSAGE_SIZE, &mqArgs);
 }
 
-DeviceHandlerCommander::~DeviceHandlerCommander() {}
+DeviceHandlerCommander::~DeviceHandlerCommander() {
+  QueueFactory::instance()->deleteMessageQueue(commandQueue);
+}
 
 ReturnValue_t DeviceHandlerCommander::performOperation(uint8_t operationCode) {
   readCommandQueue();

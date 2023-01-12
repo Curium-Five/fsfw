@@ -31,4 +31,7 @@ int customSetup() {
   return 0;
 }
 
-int customTeardown() { return 0; }
+int customTeardown() {
+  ObjectManager::clear();
+  return 0;
+}
