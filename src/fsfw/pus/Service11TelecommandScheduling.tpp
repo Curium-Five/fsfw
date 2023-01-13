@@ -6,7 +6,7 @@
 #include "fsfw/serialize/SerializeAdapter.h"
 #include "fsfw/serviceinterface.h"
 #include "fsfw/tmtcservices/AcceptsTelecommandsIF.h"
-#include "fsfw/tmtcpacket/pus/tc/PusTcReader.h"
+#include "fsfw/tmtcpacket/pus/tc/PusTcIF.h"
 #include "fsfw/globalfunctions/CRC.h"
 
 static constexpr auto DEF_END = SerializeIF::Endianness::BIG;
