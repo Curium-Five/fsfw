@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Fixes
 
+- TC Scheduler Service 11: Add size and CRC check for contained TC.
 - Only delete health table entry in `HealthHelper` destructor if
   health table was set.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/710/files
