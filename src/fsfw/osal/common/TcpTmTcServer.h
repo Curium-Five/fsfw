@@ -63,6 +63,8 @@ class TcpTmTcServer : public SystemObject, public TcpIpBase, public ExecutableOb
      */
     int tcpTmFlags = 0;
 
+    std::string tcpPort = DEFAULT_SERVER_PORT;
+
     /**
      * Sets the SO_REUSEADDR option on the socket. See
      * https://man7.org/linux/man-pages/man7/socket.7.html for more details. This option is
@@ -77,7 +79,6 @@ class TcpTmTcServer : public SystemObject, public TcpIpBase, public ExecutableOb
      */
     bool reusePort = false;
 
-    std::string tcpPort = DEFAULT_SERVER_PORT;
   };
   enum class ReceptionModes { SPACE_PACKETS };
 
