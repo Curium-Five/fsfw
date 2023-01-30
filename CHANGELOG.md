@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Fixes
 
+- HAL MGM3100 Handler: Use axis specific gain/scaling factors. Previously,
+  only the X scaling factor was used.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/724
 - TC Scheduler Service 11: Add size and CRC check for contained TC.
 - Only delete health table entry in `HealthHelper` destructor if
   health table was set.
