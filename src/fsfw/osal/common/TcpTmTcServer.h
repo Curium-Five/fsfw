@@ -41,11 +41,11 @@ class SpacePacketParser;
  */
 class TcpTmTcServer : public SystemObject, public TcpIpBase, public ExecutableObjectIF {
  public:
-  enum class ReceptionModes { SPACE_PACKETS };
-
   struct TcpConfig {
    public:
-    explicit TcpConfig(std::string tcpPort) : tcpPort(std::move(tcpPort)) {}
+    TcpConfig(bool reuseAddr, bool reusePort) : reuseAddr(reuseAddr), reusePort(reusePort) {}
+    TcpConfig(std::string tcpPort, bool reuseAddr, bool reusePort)
+        : tcpPort(std::move(tcpPort)), reuseAddr(reuseAddr), reusePort(reusePort) {}
 
     /**
      * Passed to the recv call
@@ -63,8 +63,23 @@ class TcpTmTcServer : public SystemObject, public TcpIpBase, public ExecutableOb
      */
     int tcpTmFlags = 0;
 
-    const std::string tcpPort;
+    /**
+     * Sets the SO_REUSEADDR option on the socket. See
+     * https://man7.org/linux/man-pages/man7/socket.7.html for more details. This option is
+     * especially useful in a debugging and development environment where an OBSW image might be
+     * re-flashed oftentimes and where all incoming telecommands are received on a dedicated TCP
+     * port.
+     */
+    bool reuseAddr = false;
+    /**
+     * Sets the SO_REUSEPORT option on the socket. See
+     * https://man7.org/linux/man-pages/man7/socket.7.html for more details.
+     */
+    bool reusePort = false;
+
+    std::string tcpPort = DEFAULT_SERVER_PORT;
   };
+  enum class ReceptionModes { SPACE_PACKETS };
 
   static const std::string DEFAULT_SERVER_PORT;
 
@@ -80,10 +95,9 @@ class TcpTmTcServer : public SystemObject, public TcpIpBase, public ExecutableOb
    *                              size will be the Ethernet MTU size
    * @param customTcpServerPort   The user can specify another port than the default (7301) here.
    */
-  TcpTmTcServer(object_id_t objectId, object_id_t tmtcTcpBridge,
+  TcpTmTcServer(object_id_t objectId, object_id_t tmtcTcpBridge, TcpTmTcServer::TcpConfig cfg,
                 size_t receptionBufferSize = RING_BUFFER_SIZE,
                 size_t ringBufferSize = RING_BUFFER_SIZE,
-                std::string customTcpServerPort = DEFAULT_SERVER_PORT,
                 ReceptionModes receptionMode = ReceptionModes::SPACE_PACKETS);
   ~TcpTmTcServer() override;
 
