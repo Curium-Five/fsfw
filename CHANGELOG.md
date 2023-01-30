@@ -28,6 +28,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Added
 
+- `TcpTmTcServer`: Allow setting the `SO_REUSEADDR` and `SO_REUSEPORT`
+  option on the TCP server. CTOR prototype has changed and expects an explicit
+  TCP configuration struct to be passed.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/722
 - `DleParser` helper class to parse DLE encoded packets from a byte stream.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/711
 - `UioMapper` is able to resolve symlinks now.
