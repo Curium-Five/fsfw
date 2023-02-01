@@ -5,6 +5,22 @@
 
 #include "fsfw/tmtcservices/CommandingServiceBase.h"
 
+struct HealthServiceCfg {
+  HealthServiceCfg(object_id_t objectId, uint16_t apid, HealthTable &healthTable,
+                   uint16_t maxNumHealthInfoPerCycle)
+      : objectId(objectId),
+        apid(apid),
+        table(healthTable),
+        maxNumHealthInfoPerCycle(maxNumHealthInfoPerCycle) {}
+  object_id_t objectId;
+  uint16_t apid;
+  HealthTable &table;
+  uint16_t maxNumHealthInfoPerCycle;
+  uint8_t service = 201;
+  uint8_t numParallelCommands = 4;
+  uint16_t commandTimeoutSeconds = 60;
+};
+
 /**
  * @brief   Custom PUS service to set health of all objects
  *          implementing hasHealthIF.
@@ -19,12 +35,10 @@
  * child class like this service
  *
  */
-class CService201HealthCommanding : public CommandingServiceBase {
+class CServiceHealthCommanding : public CommandingServiceBase {
  public:
-  CService201HealthCommanding(object_id_t objectId, uint16_t apid, uint8_t serviceId,
-                              HealthTable &table, uint8_t numParallelCommands = 4,
-                              uint16_t commandTimeoutSeconds = 60);
-  ~CService201HealthCommanding() override = default;
+  CServiceHealthCommanding(HealthServiceCfg args);
+  ~CServiceHealthCommanding() override = default;
 
  protected:
   /* CSB abstract function implementations */
@@ -40,8 +54,12 @@ class CService201HealthCommanding : public CommandingServiceBase {
                             CommandMessage *optionalNextCommand, object_id_t objectId,
                             bool *isStep) override;
 
+  void doPeriodicOperation() override;
+
  private:
   HealthTable &healthTable;
+  uint16_t maxNumHealthInfoPerCycle = 0;
+  bool reportAllHealth = false;
   ReturnValue_t iterateHealthTable(bool reset);
   static ReturnValue_t checkInterfaceAndAcquireMessageQueue(MessageQueueId_t *MessageQueueToSet,
                                                             const object_id_t *objectId);
