@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Fixes
 
+
 - TC Scheduler Service 11: Add size and CRC check for contained TC.
 - Only delete health table entry in `HealthHelper` destructor if
   health table was set.
@@ -28,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Added
 
+- `Service9TimeManagement`: Add `DUMP_TIME` (129) subservice.
 - `DleParser` helper class to parse DLE encoded packets from a byte stream.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/711
 - `UioMapper` is able to resolve symlinks now.
