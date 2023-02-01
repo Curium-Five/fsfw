@@ -100,5 +100,6 @@ ReturnValue_t PusTcCreator::setSerializableUserData(const SerializeIF &serializa
 void PusTcCreator::setup() {
   spCreator.setPacketType(ccsds::PacketType::TC);
   spCreator.setSecHeaderFlag();
+  spCreator.setSeqFlags(ccsds::SequenceFlags::UNSEGMENTED);
   updateSpLengthField();
 }
