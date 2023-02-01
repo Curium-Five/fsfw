@@ -1,6 +1,8 @@
 #ifndef FSFW_PUS_CSERVICE201HEALTHCOMMANDING_H_
 #define FSFW_PUS_CSERVICE201HEALTHCOMMANDING_H_
 
+#include <fsfw/health/HealthTable.h>
+
 #include "fsfw/tmtcservices/CommandingServiceBase.h"
 
 /**
@@ -20,7 +22,8 @@
 class CService201HealthCommanding : public CommandingServiceBase {
  public:
   CService201HealthCommanding(object_id_t objectId, uint16_t apid, uint8_t serviceId,
-                              uint8_t numParallelCommands = 4, uint16_t commandTimeoutSeconds = 60);
+                              HealthTable &table, uint8_t numParallelCommands = 4,
+                              uint16_t commandTimeoutSeconds = 60);
   ~CService201HealthCommanding() override = default;
 
  protected:
@@ -38,6 +41,8 @@ class CService201HealthCommanding : public CommandingServiceBase {
                             bool *isStep) override;
 
  private:
+  HealthTable &healthTable;
+  ReturnValue_t iterateHealthTable(bool reset);
   static ReturnValue_t checkInterfaceAndAcquireMessageQueue(MessageQueueId_t *MessageQueueToSet,
                                                             const object_id_t *objectId);
 
