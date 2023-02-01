@@ -121,7 +121,7 @@ ReturnValue_t CServiceHealthCommanding::handleReply(const CommandMessage *reply,
 void CServiceHealthCommanding::doPeriodicOperation() {
   if (reportAllHealth) {
     for (uint8_t i = 0; i < maxNumHealthInfoPerCycle; i++) {
-      ReturnValue_t result = iterateHealthTable(true);
+      ReturnValue_t result = iterateHealthTable(false);
       if (result != returnvalue::OK) {
         reportAllHealth = false;
         break;
