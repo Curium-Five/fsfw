@@ -12,7 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Fixes
 
-
+- `Service9TimeManagement`: Fix the time dump at the `SET_TIME` subservice: Include clock timeval
+  seconds instead of uptime.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/726
 - TC Scheduler Service 11: Add size and CRC check for contained TC.
 - Only delete health table entry in `HealthHelper` destructor if
   health table was set.
