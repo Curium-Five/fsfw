@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Fixes
 
+- PUS TMTC creator module: Sequence flags were set to continuation segment (0b00) instead
+  of the correct unsegmented flags (0b11) as specified in the standard.
 - TC Scheduler Service 11: Add size and CRC check for contained TC.
 - Only delete health table entry in `HealthHelper` destructor if
   health table was set.
