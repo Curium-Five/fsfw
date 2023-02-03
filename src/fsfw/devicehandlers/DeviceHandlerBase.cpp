@@ -1,7 +1,6 @@
 #include "fsfw/devicehandlers/DeviceHandlerBase.h"
 
-#include <fsfw/datapool/PoolReadGuard.h>
-
+#include "fsfw/datapool/PoolReadGuard.h"
 #include "fsfw/datapoollocal/LocalPoolVariable.h"
 #include "fsfw/devicehandlers/AcceptsDeviceResponsesIF.h"
 #include "fsfw/devicehandlers/DeviceTmReportingWrapper.h"
