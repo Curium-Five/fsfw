@@ -1,5 +1,7 @@
 #include "fsfw/devicehandlers/DeviceHandlerBase.h"
 
+#include <fsfw/datapool/PoolReadGuard.h>
+
 #include "fsfw/datapoollocal/LocalPoolVariable.h"
 #include "fsfw/devicehandlers/AcceptsDeviceResponsesIF.h"
 #include "fsfw/devicehandlers/DeviceTmReportingWrapper.h"
@@ -1508,7 +1510,10 @@ DeviceCommandId_t DeviceHandlerBase::getPendingCommand() const {
 void DeviceHandlerBase::setNormalDatapoolEntriesInvalid() {
   for (const auto& reply : deviceReplyMap) {
     if (reply.second.dataSet != nullptr) {
-      reply.second.dataSet->setValidity(false, true);
+      PoolReadGuard pg(reply.second.dataSet);
+      if (pg.getReadResult() == returnvalue::OK) {
+        reply.second.dataSet->setValidity(false, true);
+      }
     }
   }
 }
