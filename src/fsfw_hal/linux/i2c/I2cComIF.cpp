@@ -181,10 +181,6 @@ ReturnValue_t I2cComIF::requestReceiveMessage(CookieIF* cookie, size_t requestLe
 #else
 #endif
 #endif
-#if FSFW_CPP_OSTREAM_ENABLED == 1
-    sif::debug << "I2cComIF::requestReceiveMessage: Read " << readLen << " of " << requestLen
-               << " bytes" << std::endl;
-#endif
     return returnvalue::FAILED;
   }
 
