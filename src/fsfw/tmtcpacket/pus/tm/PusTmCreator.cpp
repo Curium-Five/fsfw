@@ -119,6 +119,7 @@ void PusTmCreator::setup() {
   updateSpLengthField();
   spCreator.setPacketType(ccsds::PacketType::TM);
   spCreator.setSecHeaderFlag();
+  spCreator.setSeqFlags(ccsds::SequenceFlags::UNSEGMENTED);
 }
 
 void PusTmCreator::setMessageTypeCounter(uint16_t messageTypeCounter) {
