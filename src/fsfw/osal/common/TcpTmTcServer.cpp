@@ -26,12 +26,12 @@
 const std::string TcpTmTcServer::DEFAULT_SERVER_PORT = tcpip::DEFAULT_SERVER_PORT;
 
 TcpTmTcServer::TcpTmTcServer(object_id_t objectId, object_id_t tmtcTcpBridge,
-                             size_t receptionBufferSize, size_t ringBufferSize,
-                             std::string customTcpServerPort, ReceptionModes receptionMode)
+                             TcpTmTcServer::TcpConfig cfg, size_t receptionBufferSize,
+                             size_t ringBufferSize, ReceptionModes receptionMode)
     : SystemObject(objectId),
       tmtcBridgeId(tmtcTcpBridge),
       receptionMode(receptionMode),
-      tcpConfig(std::move(customTcpServerPort)),
+      tcpConfig(cfg),
       receptionBuffer(receptionBufferSize),
       ringBuffer(ringBufferSize, true) {}
 
@@ -89,6 +89,15 @@ ReturnValue_t TcpTmTcServer::initialize() {
     freeaddrinfo(addrResult);
     handleError(Protocol::TCP, ErrorSources::SOCKET_CALL);
     return returnvalue::FAILED;
+  }
+
+  if (tcpConfig.reuseAddr) {
+    unsigned int enable = 1;
+    setsockopt(listenerTcpSocket, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable));
+  }
+  if (tcpConfig.reusePort) {
+    unsigned int enable = 1;
+    setsockopt(listenerTcpSocket, SOL_SOCKET, SO_REUSEPORT, &enable, sizeof(enable));
   }
 
   // Bind to the address found by getaddrinfo

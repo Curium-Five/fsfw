@@ -12,6 +12,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Fixes
 
+- HAL MGM3100 Handler: Use axis specific gain/scaling factors. Previously,
+  only the X scaling factor was used.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/724
+- DHB `setNormalDatapoolEntriesInvalid`: The default implementation did not set the validity
+  to false correctly because the `read` and `write` calls were missing.
+- PUS TMTC creator module: Sequence flags were set to continuation segment (0b00) instead
+  of the correct unsegmented flags (0b11) as specified in the standard.
+- TC Scheduler Service 11: Add size and CRC check for contained TC.
 - Only delete health table entry in `HealthHelper` destructor if
   health table was set.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/710/files
@@ -27,6 +35,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Added
 
+- `TcpTmTcServer`: Allow setting the `SO_REUSEADDR` and `SO_REUSEPORT`
+  option on the TCP server. CTOR prototype has changed and expects an explicit
+  TCP configuration struct to be passed.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/722
 - `DleParser` helper class to parse DLE encoded packets from a byte stream.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/711
 - `UioMapper` is able to resolve symlinks now.

@@ -6,6 +6,8 @@
 #include "fsfw/serialize/SerializeAdapter.h"
 #include "fsfw/serviceinterface.h"
 #include "fsfw/tmtcservices/AcceptsTelecommandsIF.h"
+#include "fsfw/tmtcpacket/pus/tc/PusTcIF.h"
+#include "fsfw/globalfunctions/CRC.h"
 
 static constexpr auto DEF_END = SerializeIF::Endianness::BIG;
 
@@ -171,6 +173,14 @@ inline ReturnValue_t Service11TelecommandScheduling<MAX_NUM_TCS>::doInsertActivi
     return returnvalue::FAILED;
   }
 
+  if (size < PusTcIF::MIN_SIZE) {
+    return CONTAINED_TC_TOO_SMALL;
+  }
+
+  if (CRC::crc16ccitt(data, size) != 0) {
+    return CONTAINED_TC_CRC_MISSMATCH;
+  }
+  
   // store currentPacket and receive the store address
   store_address_t addr{};
   if (tcStore->addData(&addr, data, size) != returnvalue::OK ||
