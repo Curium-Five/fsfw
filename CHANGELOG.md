@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Fixes
 
+- HAL MGM3100 Handler: Use axis specific gain/scaling factors. Previously,
+  only the X scaling factor was used.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/724
 - DHB `setNormalDatapoolEntriesInvalid`: The default implementation did not set the validity
   to false correctly because the `read` and `write` calls were missing.
 - PUS TMTC creator module: Sequence flags were set to continuation segment (0b00) instead
