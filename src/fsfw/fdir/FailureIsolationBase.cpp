@@ -23,7 +23,7 @@ FailureIsolationBase::~FailureIsolationBase() {
 #endif
     return;
   }
-  manager->unsubscribeFromAllEvents(eventQueue->getId(), ownerId);
+  manager->unregisterListener(eventQueue->getId());
   QueueFactory::instance()->deleteMessageQueue(eventQueue);
 }
 

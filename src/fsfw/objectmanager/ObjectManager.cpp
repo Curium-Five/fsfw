@@ -23,9 +23,17 @@ void ObjectManager::setObjectFactoryFunction(produce_function_t objFactoryFunc, 
 
 ObjectManager::ObjectManager() = default;
 
+void ObjectManager::clear() {
+  if (objManagerInstance != nullptr) {
+    delete objManagerInstance;
+    objManagerInstance = nullptr;
+  }
+}
+
 ObjectManager::~ObjectManager() {
-  for (auto const& iter : objectList) {
-    delete iter.second;
+  teardown = true;
+  for (auto iter = objectList.begin(); iter != objectList.end(); iter = objectList.erase(iter)) {
+    delete iter->second;
   }
 }
 
@@ -53,6 +61,12 @@ ReturnValue_t ObjectManager::insert(object_id_t id, SystemObjectIF* object) {
 }
 
 ReturnValue_t ObjectManager::remove(object_id_t id) {
+  // this function is called during destruction of System Objects
+  // disabeld for teardown to avoid iterator invalidation and
+  // double free
+  if (teardown) {
+    return returnvalue::OK;
+  }
   if (this->getSystemObject(id) != nullptr) {
     this->objectList.erase(id);
 #if FSFW_CPP_OSTREAM_ENABLED == 1
