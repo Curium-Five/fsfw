@@ -88,14 +88,6 @@ ReturnValue_t CServiceHealthCommanding::prepareCommand(CommandMessage *message, 
         return EXECUTION_COMPLETE;
       }
       return result;
-      while (true) {
-        ReturnValue_t result = iterateHealthTable(false);
-        if (result != returnvalue::OK) {
-          break;
-        }
-      }
-
-      return returnvalue::OK;
     }
     default: {
       // Should never happen, subservice was already checked
