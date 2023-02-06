@@ -7,14 +7,17 @@
 
 InternalErrorReporter::InternalErrorReporter(object_id_t setObjectId, uint32_t messageQueueDepth)
     : SystemObject(setObjectId),
-      commandQueue(QueueFactory::instance()->createMessageQueue(messageQueueDepth)),
       poolManager(this, commandQueue),
       internalErrorSid(setObjectId, InternalErrorDataset::ERROR_SET_ID),
       internalErrorDataset(this) {
+  commandQueue = QueueFactory::instance()->createMessageQueue(messageQueueDepth);
   mutex = MutexFactory::instance()->createMutex();
 }
 
-InternalErrorReporter::~InternalErrorReporter() { MutexFactory::instance()->deleteMutex(mutex); }
+InternalErrorReporter::~InternalErrorReporter() {
+  MutexFactory::instance()->deleteMutex(mutex);
+  QueueFactory::instance()->deleteMessageQueue(commandQueue);
+}
 
 void InternalErrorReporter::setDiagnosticPrintout(bool enable) {
   this->diagnosticPrintout = enable;

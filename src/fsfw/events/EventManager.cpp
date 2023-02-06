@@ -23,6 +23,7 @@ EventManager::EventManager(object_id_t setObjectId)
 }
 
 EventManager::~EventManager() {
+  listenerList.clear();
   QueueFactory::instance()->deleteMessageQueue(eventReportQueue);
   MutexFactory::instance()->deleteMutex(mutex);
 }
@@ -61,7 +62,12 @@ ReturnValue_t EventManager::registerListener(MessageQueueId_t listener,
   if (!result.second) {
     return returnvalue::FAILED;
   }
+
   return returnvalue::OK;
+}
+
+ReturnValue_t EventManager::unregisterListener(MessageQueueId_t listener) {
+  return listenerList.erase(listener) == 1 ? returnvalue::OK : returnvalue::FAILED;
 }
 
 ReturnValue_t EventManager::subscribeToEvent(MessageQueueId_t listener, EventId_t event) {
