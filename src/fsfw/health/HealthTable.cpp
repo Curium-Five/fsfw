@@ -6,8 +6,6 @@
 
 HealthTable::HealthTable(object_id_t objectid) : SystemObject(objectid) {
   mutex = MutexFactory::instance()->createMutex();
-  ;
-
   mapIterator = healthMap.begin();
 }
 
