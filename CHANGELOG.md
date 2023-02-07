@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Fixes
 
+- `Service9TimeManagement`: Fix the time dump at the `SET_TIME` subservice: Include clock timeval
+  seconds instead of uptime.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/726
 - HAL MGM3100 Handler: Use axis specific gain/scaling factors. Previously,
   only the X scaling factor was used.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/724
@@ -35,6 +38,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Added
 
+- `Service9TimeManagement`: Add `DUMP_TIME` (129) subservice.
 - `TcpTmTcServer`: Allow setting the `SO_REUSEADDR` and `SO_REUSEPORT`
   option on the TCP server. CTOR prototype has changed and expects an explicit
   TCP configuration struct to be passed.
