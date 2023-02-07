@@ -169,7 +169,7 @@ ReturnValue_t MgmRM3100Handler::interpretDeviceReply(DeviceCommandId_t id, const
     case (RM3100::CONFIGURE_CYCLE_COUNT):
     case (RM3100::CONFIGURE_TMRC): {
       // We can only check whether write was successful with read operation
-      if (mode == _MODE_START_UP) {
+      if (getMode() == _MODE_START_UP) {
         commandExecuted = true;
       }
       break;
@@ -192,7 +192,7 @@ ReturnValue_t MgmRM3100Handler::interpretDeviceReply(DeviceCommandId_t id, const
       if (packet[1] == tmrcRegValue) {
         commandExecuted = true;
         // Reading TMRC was commanded. Trigger event to inform ground
-        if (mode != _MODE_START_UP) {
+        if (getMode() != _MODE_START_UP) {
           triggerEvent(tmrcSet, tmrcRegValue, 0);
         }
       } else {
@@ -211,7 +211,7 @@ ReturnValue_t MgmRM3100Handler::interpretDeviceReply(DeviceCommandId_t id, const
         return DeviceHandlerIF::DEVICE_REPLY_INVALID;
       }
       // Reading TMRC was commanded. Trigger event to inform ground
-      if (mode != _MODE_START_UP) {
+      if (getMode() != _MODE_START_UP) {
         uint32_t eventParam1 = (cycleCountX << 16) | cycleCountY;
         triggerEvent(cycleCountersSet, eventParam1, cycleCountZ);
       }
@@ -325,7 +325,7 @@ ReturnValue_t MgmRM3100Handler::handleDataReadout(const uint8_t *packet) {
   // trickery here to calculate the raw values first
   int32_t fieldStrengthRawX = ((packet[1] << 24) | (packet[2] << 16) | (packet[3] << 8)) >> 8;
   int32_t fieldStrengthRawY = ((packet[4] << 24) | (packet[5] << 16) | (packet[6] << 8)) >> 8;
-  int32_t fieldStrengthRawZ = ((packet[7] << 24) | (packet[8] << 16) | (packet[3] << 8)) >> 8;
+  int32_t fieldStrengthRawZ = ((packet[7] << 24) | (packet[8] << 16) | (packet[9] << 8)) >> 8;
 
   // Now scale to physical value in microtesla
   float fieldStrengthX = fieldStrengthRawX * scaleFactorX;
