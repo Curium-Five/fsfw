@@ -169,7 +169,7 @@ ReturnValue_t MgmRM3100Handler::interpretDeviceReply(DeviceCommandId_t id, const
     case (RM3100::CONFIGURE_CYCLE_COUNT):
     case (RM3100::CONFIGURE_TMRC): {
       // We can only check whether write was successful with read operation
-      if (getMode() == _MODE_START_UP) {
+      if (mode == _MODE_START_UP) {
         commandExecuted = true;
       }
       break;
@@ -192,7 +192,7 @@ ReturnValue_t MgmRM3100Handler::interpretDeviceReply(DeviceCommandId_t id, const
       if (packet[1] == tmrcRegValue) {
         commandExecuted = true;
         // Reading TMRC was commanded. Trigger event to inform ground
-        if (getMode() != _MODE_START_UP) {
+        if (mode != _MODE_START_UP) {
           triggerEvent(tmrcSet, tmrcRegValue, 0);
         }
       } else {
@@ -211,7 +211,7 @@ ReturnValue_t MgmRM3100Handler::interpretDeviceReply(DeviceCommandId_t id, const
         return DeviceHandlerIF::DEVICE_REPLY_INVALID;
       }
       // Reading TMRC was commanded. Trigger event to inform ground
-      if (getMode() != _MODE_START_UP) {
+      if (mode != _MODE_START_UP) {
         uint32_t eventParam1 = (cycleCountX << 16) | cycleCountY;
         triggerEvent(cycleCountersSet, eventParam1, cycleCountZ);
       }
