@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Fixes
 
+- Memory leak fixes for the TCP/IP TMTC bridge.
 - `Service9TimeManagement`: Fix the time dump at the `SET_TIME` subservice: Include clock timeval
   seconds instead of uptime.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/726
