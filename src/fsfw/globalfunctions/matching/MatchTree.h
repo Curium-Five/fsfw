@@ -24,7 +24,7 @@ class MatchTree : public SerializeableMatcherIF<T>, public BinaryTree<Serializea
   MatchTree(iterator root, uint8_t maxDepth = -1)
       : BinaryTree<SerializeableMatcherIF<T>>(root.element), maxDepth(maxDepth) {}
   MatchTree() : BinaryTree<SerializeableMatcherIF<T>>(), maxDepth(-1) {}
-  virtual ~MatchTree() {}
+  virtual ~MatchTree() { clear(); }
   virtual bool match(T number) override { return matchesTree(number); }
   bool matchesTree(T number) {
     iterator iter = this->begin();
@@ -174,6 +174,45 @@ class MatchTree : public SerializeableMatcherIF<T>, public BinaryTree<Serializea
     }
     // Delete element itself.
     return cleanUpElement(position);
+  }
+
+  void clear() {
+    Node* localRoot = BinaryTree<SerializeableMatcherIF<T>>::rootNode;
+
+    if (localRoot == nullptr) {
+      return;
+    }
+
+    Node* node = localRoot->left;
+
+    while (true) {
+      if (node->left != nullptr) {
+        node = node->left;
+        continue;
+      }
+      if (node->right != nullptr) {
+        node = node->right;
+        continue;
+      }
+      if (node->parent == nullptr) {
+        // this is the root node with no children
+        if (node->value != nullptr) {
+          cleanUpElement(iterator(node));
+        }
+        return;
+      }
+      // leaf
+      {
+        Node* parent = node->parent;
+        if (parent->left == node) {
+          parent->left = nullptr;
+        } else {
+          parent->right = nullptr;
+        }
+        cleanUpElement(iterator(node));
+        node = parent;
+      }
+    }
   }
 
   virtual ReturnValue_t cleanUpElement(iterator position) { return returnvalue::OK; }

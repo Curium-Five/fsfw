@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `CService200ModeManagement`: Various bugfixes which lead to now execution complete being generated
   on mode announcements, duplicate mode reply generated on announce commands, and the mode read
   subservice not working properly.
+- `Service9TimeManagement`: Fix the time dump at the `SET_TIME` subservice: Include clock timeval
+  seconds instead of uptime.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/726
+- HAL MGM3100 Handler: Use axis specific gain/scaling factors. Previously,
+  only the X scaling factor was used.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/724
 - DHB `setNormalDatapoolEntriesInvalid`: The default implementation did not set the validity
   to false correctly because the `read` and `write` calls were missing.
 - PUS TMTC creator module: Sequence flags were set to continuation segment (0b00) instead
@@ -35,6 +41,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Added
 
+- `Service9TimeManagement`: Add `DUMP_TIME` (129) subservice.
+- `TcpTmTcServer`: Allow setting the `SO_REUSEADDR` and `SO_REUSEPORT`
+  option on the TCP server. CTOR prototype has changed and expects an explicit
+  TCP configuration struct to be passed.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/722
 - `DleParser` helper class to parse DLE encoded packets from a byte stream.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/711
 - `UioMapper` is able to resolve symlinks now.

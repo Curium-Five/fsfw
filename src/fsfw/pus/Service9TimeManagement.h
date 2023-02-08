@@ -6,10 +6,13 @@
 class Service9TimeManagement : public PusServiceBase {
  public:
   static constexpr uint8_t SUBSYSTEM_ID = SUBSYSTEM_ID::PUS_SERVICE_9;
-  static constexpr Event CLOCK_SET =
-      MAKE_EVENT(0, severity::INFO);  //!< Clock has been set. P1: New Uptime. P2: Old Uptime
-  static constexpr Event CLOCK_SET_FAILURE =
-      MAKE_EVENT(1, severity::LOW);  //!< Clock could not be set. P1: Returncode.
+
+  //!< Clock has been set. P1: old timeval seconds. P2: new timeval seconds.
+  static constexpr Event CLOCK_SET = MAKE_EVENT(0, severity::INFO);
+  //!< Clock dump event. P1: timeval seconds P2: timeval milliseconds.
+  static constexpr Event CLOCK_DUMP = MAKE_EVENT(1, severity::INFO);
+  //!< Clock could not be set. P1: Returncode.
+  static constexpr Event CLOCK_SET_FAILURE = MAKE_EVENT(2, severity::LOW);
 
   static constexpr uint8_t CLASS_ID = CLASS_ID::PUS_SERVICE_9;
 
@@ -30,8 +33,9 @@ class Service9TimeManagement : public PusServiceBase {
   virtual ReturnValue_t setTime();
 
  private:
-  enum SUBSERVICE {
-    SET_TIME = 128  //!< [EXPORT] : [COMMAND] Time command in ASCII, CUC or CDS format
+  enum Subservice {
+    SET_TIME = 128,  //!< [EXPORT] : [COMMAND] Time command in ASCII, CUC or CDS format
+    DUMP_TIME = 129,
   };
 };
 

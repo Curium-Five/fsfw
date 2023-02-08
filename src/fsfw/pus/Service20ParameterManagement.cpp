@@ -69,14 +69,14 @@ ReturnValue_t Service20ParameterManagement::checkInterfaceAndAcquireMessageQueue
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::error << "Service20ParameterManagement::checkInterfaceAndAcquire"
                << "MessageQueue: Can't access object" << std::endl;
-    sif::error << "Object ID: " << std::hex << objectId << std::dec << std::endl;
-    sif::error << "Make sure it implements ReceivesParameterMessagesIF!" << std::endl;
+    sif::error << "Object ID: 0x" << std::hex << *objectId << std::dec << std::endl;
+    sif::error << "Make sure it implements ReceivesParameterMessagesIF" << std::endl;
 #else
     sif::printError(
         "Service20ParameterManagement::checkInterfaceAndAcquire"
         "MessageQueue: Can't access object\n");
     sif::printError("Object ID: 0x%08x\n", *objectId);
-    sif::printError("Make sure it implements ReceivesParameterMessagesIF!\n");
+    sif::printError("Make sure it implements ReceivesParameterMessagesIF\n");
 #endif
 
     return CommandingServiceBase::INVALID_OBJECT;

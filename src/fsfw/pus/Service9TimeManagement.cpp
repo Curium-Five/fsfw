@@ -1,5 +1,7 @@
 #include "fsfw/pus/Service9TimeManagement.h"
 
+#include <cmath>
+
 #include "fsfw/events/EventManagerIF.h"
 #include "fsfw/pus/servicepackets/Service9Packets.h"
 #include "fsfw/serviceinterface/ServiceInterface.h"
@@ -15,8 +17,16 @@ ReturnValue_t Service9TimeManagement::performService() { return returnvalue::OK;
 
 ReturnValue_t Service9TimeManagement::handleRequest(uint8_t subservice) {
   switch (subservice) {
-    case SUBSERVICE::SET_TIME: {
+    case Subservice::SET_TIME: {
       return setTime();
+    }
+    case Subservice::DUMP_TIME: {
+      timeval newTime;
+      Clock::getClock_timeval(&newTime);
+      uint32_t subsecondMs =
+          static_cast<uint32_t>(std::floor(static_cast<double>(newTime.tv_usec) / 1000.0));
+      triggerEvent(CLOCK_DUMP, newTime.tv_sec, subsecondMs);
+      return returnvalue::OK;
     }
     default:
       return AcceptsTelecommandsIF::INVALID_SUBSERVICE;
@@ -33,14 +43,14 @@ ReturnValue_t Service9TimeManagement::setTime() {
     return result;
   }
 
-  uint32_t formerUptime;
-  Clock::getUptime(&formerUptime);
+  timeval time;
+  Clock::getClock_timeval(&time);
   result = Clock::setClock(&timeToSet);
 
   if (result == returnvalue::OK) {
-    uint32_t newUptime;
-    Clock::getUptime(&newUptime);
-    triggerEvent(CLOCK_SET, newUptime, formerUptime);
+    timeval newTime;
+    Clock::getClock_timeval(&newTime);
+    triggerEvent(CLOCK_SET, time.tv_sec, newTime.tv_sec);
     return returnvalue::OK;
   } else {
     triggerEvent(CLOCK_SET_FAILURE, result, 0);

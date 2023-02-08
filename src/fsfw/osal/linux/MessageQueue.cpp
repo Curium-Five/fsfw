@@ -21,7 +21,7 @@ MessageQueue::MessageQueue(uint32_t messageDepth, size_t maxMessageSize, MqArgs*
   attributes.mq_msgsize = maxMessageSize;
   attributes.mq_flags = 0;  // Flags are ignored on Linux during mq_open
   // Set the name of the queue. The slash is mandatory!
-  sprintf(name, "/FSFW_MQ%u\n", queueCounter++);
+  sprintf(name, "/FSFW_MQ%u", queueCounter++);
 
   // Create a nonblocking queue if the name is available (the queue is read
   // and writable for the owner as well as the group)
