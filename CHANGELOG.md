@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Fixes
 
+- `CService200ModeManagement`: Various bugfixes which lead to now execution complete being generated
+  on mode announcements, duplicate mode reply generated on announce commands, and the mode read
+  subservice not working properly.
 - DHB `setNormalDatapoolEntriesInvalid`: The default implementation did not set the validity
   to false correctly because the `read` and `write` calls were missing.
 - PUS TMTC creator module: Sequence flags were set to continuation segment (0b00) instead
