@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - HAL MGM3100 Handler: Use axis specific gain/scaling factors. Previously,
   only the X scaling factor was used.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/724
+- Bugfix for RM3100 MGM sensors. Z value was previously calculated
+  with bytes of the X value.
 - DHB `setNormalDatapoolEntriesInvalid`: The default implementation did not set the validity
   to false correctly because the `read` and `write` calls were missing.
 - PUS TMTC creator module: Sequence flags were set to continuation segment (0b00) instead
