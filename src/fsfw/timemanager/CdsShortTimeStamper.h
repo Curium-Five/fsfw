@@ -18,6 +18,7 @@
 class CdsShortTimeStamper : public TimeWriterIF, public TimeReaderIF, public SystemObject {
  public:
   static constexpr size_t TIMESTAMP_LEN = 7;
+  CdsShortTimeStamper();
   /**
    * @brief   Default constructor which also registers the time stamper as a
    *          system object so it can be found with the #objectManager.

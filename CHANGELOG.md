@@ -40,6 +40,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Added
 
+- Empty constructor for `CdsShortTimeStamper` which does not do an object manager registration.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/730
 - `Service9TimeManagement`: Add `DUMP_TIME` (129) subservice.
 - `TcpTmTcServer`: Allow setting the `SO_REUSEADDR` and `SO_REUSEPORT`
   option on the TCP server. CTOR prototype has changed and expects an explicit

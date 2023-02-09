@@ -4,6 +4,8 @@
 
 #include "fsfw/timemanager/Clock.h"
 
+CdsShortTimeStamper::CdsShortTimeStamper() : SystemObject(0, false) {}
+
 CdsShortTimeStamper::CdsShortTimeStamper(object_id_t objectId) : SystemObject(objectId) {}
 
 ReturnValue_t CdsShortTimeStamper::serialize(uint8_t **buffer, size_t *size, size_t maxSize,
