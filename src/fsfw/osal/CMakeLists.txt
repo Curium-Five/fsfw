@@ -18,7 +18,10 @@ elseif(FSFW_OSAL MATCHES "host")
   endif()
   set(FSFW_OSAL_HOST 1)
 else()
-  message(WARNING "The OS_FSFW variable was not set. Assuming host OS..")
+  message(
+    WARNING
+      "${MSG_PREFIX} The FSFW_OSAL variable was not set. Assuming host OS..")
+
   # Not set. Assumuing this is a host build, try to determine host OS
   if(WIN32)
     add_subdirectory(host)
