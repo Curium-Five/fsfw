@@ -20,6 +20,7 @@ ReturnValue_t CService200ModeCommanding::isValidSubservice(uint8_t subservice) {
     case (Subservice::COMMAND_MODE_COMMAND):
     case (Subservice::COMMAND_MODE_READ):
     case (Subservice::COMMAND_MODE_ANNOUNCE):
+    case (Subservice::COMMAND_MODE_ANNOUNCE_RECURSIVELY):
       return returnvalue::OK;
     default:
       return AcceptsTelecommandsIF::INVALID_SUBSERVICE;
