@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Fixes
 
+- `CService200ModeManagement`: Various bugfixes which lead to now execution complete being generated
+  on mode announcements, duplicate mode reply generated on announce commands, and the mode read
+  subservice not working properly.
 - Memory leak fixes for the TCP/IP TMTC bridge.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/737
 - `Service9TimeManagement`: Fix the time dump at the `SET_TIME` subservice: Include clock timeval

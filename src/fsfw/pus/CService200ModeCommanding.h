@@ -52,7 +52,7 @@ class CService200ModeCommanding : public CommandingServiceBase {
     COMMAND_MODE_READ = 3,
     //!< [EXPORT] : [COMMAND] Trigger an ModeInfo Event.
     //! This command does NOT have a reply
-    COMMAND_MODE_ANNCOUNCE = 4,
+    COMMAND_MODE_ANNOUNCE = 4,
     //!< [EXPORT] : [COMMAND] Trigger a ModeInfo Event and to send this
     //! command to every child. This command does NOT have a reply.
     COMMAND_MODE_ANNOUNCE_RECURSIVELY = 5,
