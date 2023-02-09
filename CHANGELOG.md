@@ -8,13 +8,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # [unreleased]
 
-# [v6.0.0]
+# [v6.0.0] 2023-02-10
 
 ## Fixes
 
 - `CService200ModeManagement`: Various bugfixes which lead to now execution complete being generated
   on mode announcements, duplicate mode reply generated on announce commands, and the mode read
   subservice not working properly.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/736
 - Memory leak fixes for the TCP/IP TMTC bridge.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/737
 - `Service9TimeManagement`: Fix the time dump at the `SET_TIME` subservice: Include clock timeval
@@ -23,16 +24,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - HAL MGM3100 Handler: Use axis specific gain/scaling factors. Previously,
   only the X scaling factor was used.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/724
-- Bugfix for RM3100 MGM sensors. Z value was previously calculated
-  with bytes of the X value.
+- HAL MGM3100 Handler: Z value was previously calculated with bytes of the X value.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/733
 - DHB `setNormalDatapoolEntriesInvalid`: The default implementation did not set the validity
   to false correctly because the `read` and `write` calls were missing.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/728
 - PUS TMTC creator module: Sequence flags were set to continuation segment (0b00) instead
   of the correct unsegmented flags (0b11) as specified in the standard.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/727
 - TC Scheduler Service 11: Add size and CRC check for contained TC.
+  Bug: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/issues/719
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/720
 - Only delete health table entry in `HealthHelper` destructor if
   health table was set.
-  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/710/files
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/710
 - I2C Bugfixes: Do not keep iterator as member and fix some incorrect handling with the iterator.
   Also properly reset the reply size for successfull transfers and erroneous transfers.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/700
@@ -64,7 +69,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `AcceptsTelemetryIF`: `getReportReceptionQueue` is const now
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/712
 - Moved some container returnvalues to dedicated header and namespace
-  to they can be used without template specification.
+  so they can be used without template specification.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/707
 - Remove default secondary header argument for
   `uint16_t getTcSpacePacketIdFromApid(uint16_t apid, bool secondaryHeaderFlag)` and
@@ -125,7 +130,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
      implementation without an extra component
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/682
 
-# [v5.0.0] 25.07.2022
+# [v5.0.0] 2022-07-25
 
 ## Changes
 
