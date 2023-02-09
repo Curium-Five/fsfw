@@ -1,5 +1,5 @@
 #include "fsfw/osal/rtems/BinarySemaphore.h"
-//#include "fsfw/osal/rtems/CountingSemaphore.h"
+// #include "fsfw/osal/rtems/CountingSemaphore.h"
 
 #include "fsfw/serviceinterface/ServiceInterface.h"
 #include "fsfw/tasks/SemaphoreFactory.h"
