@@ -19,7 +19,7 @@ ReturnValue_t CService200ModeCommanding::isValidSubservice(uint8_t subservice) {
   switch (subservice) {
     case (Subservice::COMMAND_MODE_COMMAND):
     case (Subservice::COMMAND_MODE_READ):
-    case (Subservice::COMMAND_MODE_ANNCOUNCE):
+    case (Subservice::COMMAND_MODE_ANNOUNCE):
       return returnvalue::OK;
     default:
       return AcceptsTelecommandsIF::INVALID_SUBSERVICE;
@@ -53,6 +53,7 @@ ReturnValue_t CService200ModeCommanding::checkInterfaceAndAcquireMessageQueue(
 ReturnValue_t CService200ModeCommanding::prepareCommand(CommandMessage *message, uint8_t subservice,
                                                         const uint8_t *tcData, size_t tcDataLen,
                                                         uint32_t *state, object_id_t objectId) {
+  bool recursive = false;
   switch (subservice) {
     case (Subservice::COMMAND_MODE_COMMAND): {
       ModePacket modeCommandPacket;
@@ -66,22 +67,17 @@ ReturnValue_t CService200ModeCommanding::prepareCommand(CommandMessage *message,
                                   modeCommandPacket.getMode(), modeCommandPacket.getSubmode());
       return returnvalue::OK;
     }
-    case (Subservice::COMMAND_MODE_ANNCOUNCE):
-    case (Subservice::COMMAND_MODE_ANNOUNCE_RECURSIVELY): {
-      bool recursive = true;
-      if (subservice == Subservice::COMMAND_MODE_ANNCOUNCE) {
-        recursive = false;
-      }
+    case (Subservice::COMMAND_MODE_ANNOUNCE_RECURSIVELY):
+      recursive = true;
+      [[fallthrough]];
+    case (Subservice::COMMAND_MODE_ANNOUNCE):
       ModeMessage::setModeAnnounceMessage(*message, recursive);
       return EXECUTION_COMPLETE;
-    }
-    case (Subservice::COMMAND_MODE_READ): {
+    case (Subservice::COMMAND_MODE_READ):
       ModeMessage::setModeReadMessage(*message);
       return returnvalue::OK;
-    }
-    default: {
+    default:
       return CommandingServiceBase::INVALID_SUBSERVICE;
-    }
   }
 }
 
