@@ -153,12 +153,12 @@ if(FSFW_BUILD_TESTS)
       "${MSG_PREFIX} Building the FSFW unittests in addition to the static library"
   )
   # Check whether the user has already installed Catch2 first
-  find_package(Catch2 ${FSFW_CATCH2_LIB_MAJOR_VERSION})
+  find_package(Catch2 ${FSFW_CATCH2_LIB_MAJOR_VERSION} QUIET)
   # Not installed, so use FetchContent to download and provide Catch2
   if(NOT Catch2_FOUND)
     message(
       STATUS
-        "${MSG_PREFIX} Catch2 installation not found. Downloading Catch2 library with FetchContent"
+        "${MSG_PREFIX} Catch2 installation not found. Downloading Catch2 library with FetchContent."
     )
     include(FetchContent)
 
@@ -201,8 +201,8 @@ find_package(${FSFW_ETL_LIB_NAME} ${FSFW_ETL_LIB_MAJOR_VERSION} CONFIG QUIET)
 if(NOT ${FSFW_ETL_LIB_NAME}_FOUND)
   message(
     STATUS
-      "${MSG_PREFIX} No ETL installation was found with find_package. Installing and providing "
-      "etl with FindPackage")
+      "${MSG_PREFIX} ETL installation not found. Downloading ETL with FetchContent."
+  )
   include(FetchContent)
 
   FetchContent_Declare(
