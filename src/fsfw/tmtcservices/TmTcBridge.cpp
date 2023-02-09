@@ -143,13 +143,17 @@ ReturnValue_t TmTcBridge::handleTmQueue() {
 #endif /* FSFW_VERBOSE_LEVEL >= 3 */
 
     if (communicationLinkUp == false or packetSentCounter >= sentPacketsPerCycle) {
-      storeDownlinkData(&message);
+      ReturnValue_t result = storeDownlinkData(&message);
+      if (result != returnvalue::OK) {
+        tmStore->deleteData(message.getStorageId());
+      }
       continue;
     }
 
     result = tmStore->getData(message.getStorageId(), &data, &size);
     if (result != returnvalue::OK) {
       status = result;
+      tmStore->deleteData(message.getStorageId());
       continue;
     }
 
@@ -157,9 +161,9 @@ ReturnValue_t TmTcBridge::handleTmQueue() {
     if (result != returnvalue::OK) {
       status = result;
     } else {
-      tmStore->deleteData(message.getStorageId());
       packetSentCounter++;
     }
+    tmStore->deleteData(message.getStorageId());
   }
   return status;
 }
