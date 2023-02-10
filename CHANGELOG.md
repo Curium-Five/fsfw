@@ -10,6 +10,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # [v6.0.0] 2023-02-10
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Fixes
 
 - `CService200ModeManagement`: Various bugfixes which lead to now execution complete being generated
@@ -47,6 +67,34 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `TcpTmTcServer.cpp`: The server was actually not able to handle
   CCSDS packets which were clumped together. This has been fixed now.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/673
+- various fixes related to linux Unittests and memory leaks
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/715
+- small fix to allow teardown handling
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/713
+- fix compiler warning for fixed array list copy ctor
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/704
+- missing include
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/703
+- defaultconfig did not build anymore
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/702
+- hotfix
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/699
+- small fix for helper
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/698
+- missing retval conv
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/697
+- DHB Countdown Bug
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/693
+- doc corrections
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/687
+- better error printout
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/686
+- include correction
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/683
+- better warning for missing include paths
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/676
+- Service 11 regression
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/670
 
 ## Added
 
@@ -63,6 +111,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/709
 - Add new `UnsignedByteField` class
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/660
+- publish documentation for development and master branch
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/681
+- Add Linux HAL options
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/663
+- Expand SerializeIF
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/656
+- PUS Service 11: Additional Safety Check
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/666
+- improvements for auto-formatter script
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/665
+- provide a weak print char impl
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/674
+
+## Removed
+
+- now that doc server is up, remove markdown files
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/688
+- remove bsp specific code
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/679
 
 ## Changes
 
@@ -99,18 +166,41 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `DeviceHandlerBase`: New signature of `handleDeviceTm` which expects
   a `const SerializeIF&` and additional helper variant which expects `const uint8_t*`
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/671
-- Move some generic `StorageManagerIF` implementations from `LocalPool` to
-  interface itself so it can be re-used more easily. Also add new
-  abstract function `bool hasDataAtId(store_address_t storeId) const`.
-  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/685
 - Improvements for `AcceptsTelemetryIF` and `AcceptsTelecommandsIF`:
   - Make functions `const` where it makes sense
   - Add `const char* getName const` abstract function
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/684
-- Move some generic `StorageManagerIF` implementations from `LocalPool` to
-  interface itself so it can be re-used more easily. Also add new
-  abstract function `bool hasDataAtId(store_address_t storeId) const`.
-  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/685
+- Generic TMTC Bridge Update
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/734
+- comment tweak to event parser can read everything
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/732
+- CMakeLists file updates
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/731
+- improve srv20 error messages
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/723
+- I2C Linux: remove duplicate printout
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/718
+- printout handling improvements
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/717
+- vec getter, reset for content
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/716
+- updates for source sequence counter
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/714
+- SP reader getPacketData is const now
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/708
+- refactoring of serial drivers for linux
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/705
+- Local Pool Update Remove Add Data Ignore Fault Argument
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/701
+- Switch to new documentation server
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/694
+- Windows Tweaks
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/691
+- Refactor Local Pool API
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/667
+- group MGM data in local pool vectors
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/664
+
 
 ## CFDP
 
