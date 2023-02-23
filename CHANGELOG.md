@@ -8,21 +8,36 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # [unreleased]
 
-# [v6.0.0]
+# [v6.0.0] 2023-02-10
 
 ## Fixes
 
+- `CService200ModeManagement`: Various bugfixes which lead to now execution complete being generated
+  on mode announcements, duplicate mode reply generated on announce commands, and the mode read
+  subservice not working properly.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/736
+- Memory leak fixes for the TCP/IP TMTC bridge.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/737
+- `Service9TimeManagement`: Fix the time dump at the `SET_TIME` subservice: Include clock timeval
+  seconds instead of uptime.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/726
 - HAL MGM3100 Handler: Use axis specific gain/scaling factors. Previously,
   only the X scaling factor was used.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/724
+- HAL MGM3100 Handler: Z value was previously calculated with bytes of the X value.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/733
 - DHB `setNormalDatapoolEntriesInvalid`: The default implementation did not set the validity
   to false correctly because the `read` and `write` calls were missing.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/728
 - PUS TMTC creator module: Sequence flags were set to continuation segment (0b00) instead
   of the correct unsegmented flags (0b11) as specified in the standard.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/727
 - TC Scheduler Service 11: Add size and CRC check for contained TC.
+  Bug: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/issues/719
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/720
 - Only delete health table entry in `HealthHelper` destructor if
   health table was set.
-  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/710/files
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/710
 - I2C Bugfixes: Do not keep iterator as member and fix some incorrect handling with the iterator.
   Also properly reset the reply size for successfull transfers and erroneous transfers.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/700
@@ -34,9 +49,40 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/673
 - `CServiceHealthCommanding`: Add announce all health info implementation
   PR: https://egit.irs.uni-stuttgart.de/eive/fsfw/pulls/122
+- various fixes related to linux Unittests and memory leaks
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/715
+- small fix to allow teardown handling
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/713
+- fix compiler warning for fixed array list copy ctor
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/704
+- missing include
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/703
+- defaultconfig did not build anymore
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/702
+- hotfix
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/699
+- small fix for helper
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/698
+- missing retval conv
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/697
+- DHB Countdown Bug
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/693
+- doc corrections
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/687
+- better error printout
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/686
+- include correction
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/683
+- better warning for missing include paths
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/676
+- Service 11 regression
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/670
 
 ## Added
 
+- Empty constructor for `CdsShortTimeStamper` which does not do an object manager registration.
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/730
+- `Service9TimeManagement`: Add `DUMP_TIME` (129) subservice.
 - `TcpTmTcServer`: Allow setting the `SO_REUSEADDR` and `SO_REUSEPORT`
   option on the TCP server. CTOR prototype has changed and expects an explicit
   TCP configuration struct to be passed.
@@ -47,6 +93,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/709
 - Add new `UnsignedByteField` class
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/660
+- publish documentation for development and master branch
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/681
+- Add Linux HAL options
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/663
+- Expand SerializeIF
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/656
+- PUS Service 11: Additional Safety Check
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/666
+- improvements for auto-formatter script
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/665
+- provide a weak print char impl
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/674
+
+## Removed
+
+- now that doc server is up, remove markdown files
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/688
+- remove bsp specific code
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/679
 
 ## Changes
 
@@ -57,7 +122,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `AcceptsTelemetryIF`: `getReportReceptionQueue` is const now
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/712
 - Moved some container returnvalues to dedicated header and namespace
-  to they can be used without template specification.
+  so they can be used without template specification.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/707
 - Remove default secondary header argument for
   `uint16_t getTcSpacePacketIdFromApid(uint16_t apid, bool secondaryHeaderFlag)` and
@@ -87,18 +152,41 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `DeviceHandlerBase`: New signature of `handleDeviceTm` which expects
   a `const SerializeIF&` and additional helper variant which expects `const uint8_t*`
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/671
-- Move some generic `StorageManagerIF` implementations from `LocalPool` to
-  interface itself so it can be re-used more easily. Also add new
-  abstract function `bool hasDataAtId(store_address_t storeId) const`.
-  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/685
 - Improvements for `AcceptsTelemetryIF` and `AcceptsTelecommandsIF`:
   - Make functions `const` where it makes sense
   - Add `const char* getName const` abstract function
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/684
-- Move some generic `StorageManagerIF` implementations from `LocalPool` to
-  interface itself so it can be re-used more easily. Also add new
-  abstract function `bool hasDataAtId(store_address_t storeId) const`.
-  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/685
+- Generic TMTC Bridge Update
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/734
+- comment tweak to event parser can read everything
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/732
+- CMakeLists file updates
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/731
+- improve srv20 error messages
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/723
+- I2C Linux: remove duplicate printout
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/718
+- printout handling improvements
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/717
+- vec getter, reset for content
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/716
+- updates for source sequence counter
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/714
+- SP reader getPacketData is const now
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/708
+- refactoring of serial drivers for linux
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/705
+- Local Pool Update Remove Add Data Ignore Fault Argument
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/701
+- Switch to new documentation server
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/694
+- Windows Tweaks
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/691
+- Refactor Local Pool API
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/667
+- group MGM data in local pool vectors
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/664
+
 
 ## CFDP
 
@@ -118,7 +206,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
      implementation without an extra component
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/682
 
-# [v5.0.0] 25.07.2022
+# [v5.0.0] 2022-07-25
 
 ## Changes
 

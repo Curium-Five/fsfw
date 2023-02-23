@@ -19,7 +19,8 @@ ReturnValue_t CService200ModeCommanding::isValidSubservice(uint8_t subservice) {
   switch (subservice) {
     case (Subservice::COMMAND_MODE_COMMAND):
     case (Subservice::COMMAND_MODE_READ):
-    case (Subservice::COMMAND_MODE_ANNCOUNCE):
+    case (Subservice::COMMAND_MODE_ANNOUNCE):
+    case (Subservice::COMMAND_MODE_ANNOUNCE_RECURSIVELY):
       return returnvalue::OK;
     default:
       return AcceptsTelecommandsIF::INVALID_SUBSERVICE;
@@ -53,16 +54,32 @@ ReturnValue_t CService200ModeCommanding::checkInterfaceAndAcquireMessageQueue(
 ReturnValue_t CService200ModeCommanding::prepareCommand(CommandMessage *message, uint8_t subservice,
                                                         const uint8_t *tcData, size_t tcDataLen,
                                                         uint32_t *state, object_id_t objectId) {
-  ModePacket modeCommandPacket;
-  ReturnValue_t result =
-      modeCommandPacket.deSerialize(&tcData, &tcDataLen, SerializeIF::Endianness::BIG);
-  if (result != returnvalue::OK) {
-    return result;
-  }
+  bool recursive = false;
+  switch (subservice) {
+    case (Subservice::COMMAND_MODE_COMMAND): {
+      ModePacket modeCommandPacket;
+      ReturnValue_t result =
+          modeCommandPacket.deSerialize(&tcData, &tcDataLen, SerializeIF::Endianness::BIG);
+      if (result != returnvalue::OK) {
+        return result;
+      }
 
-  ModeMessage::setModeMessage(message, ModeMessage::CMD_MODE_COMMAND, modeCommandPacket.getMode(),
-                              modeCommandPacket.getSubmode());
-  return result;
+      ModeMessage::setModeMessage(message, ModeMessage::CMD_MODE_COMMAND,
+                                  modeCommandPacket.getMode(), modeCommandPacket.getSubmode());
+      return returnvalue::OK;
+    }
+    case (Subservice::COMMAND_MODE_ANNOUNCE_RECURSIVELY):
+      recursive = true;
+      [[fallthrough]];
+    case (Subservice::COMMAND_MODE_ANNOUNCE):
+      ModeMessage::setModeAnnounceMessage(*message, recursive);
+      return EXECUTION_COMPLETE;
+    case (Subservice::COMMAND_MODE_READ):
+      ModeMessage::setModeReadMessage(*message);
+      return returnvalue::OK;
+    default:
+      return CommandingServiceBase::INVALID_SUBSERVICE;
+  }
 }
 
 ReturnValue_t CService200ModeCommanding::handleReply(const CommandMessage *reply,
@@ -73,8 +90,10 @@ ReturnValue_t CService200ModeCommanding::handleReply(const CommandMessage *reply
   ReturnValue_t result = returnvalue::FAILED;
   switch (replyId) {
     case (ModeMessage::REPLY_MODE_REPLY): {
-      result = prepareModeReply(reply, objectId);
-      break;
+      if (previousCommand != ModeMessage::CMD_MODE_COMMAND) {
+        return prepareModeReply(reply, objectId);
+      }
+      return returnvalue::OK;
     }
     case (ModeMessage::REPLY_WRONG_MODE_REPLY): {
       result = prepareWrongModeReply(reply, objectId);

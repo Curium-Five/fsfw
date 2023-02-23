@@ -45,6 +45,9 @@ class ModeMessage {
 
   static void setModeMessage(CommandMessage* message, Command_t command, Mode_t mode,
                              Submode_t submode);
+  static void setCmdModeMessage(CommandMessage& message, Mode_t mode, Submode_t submode);
+  static void setModeAnnounceMessage(CommandMessage& message, bool recursive);
+  static void setModeReadMessage(CommandMessage& message);
   static void setCantReachMode(CommandMessage* message, ReturnValue_t reason);
   static void clear(CommandMessage* message);
 };

@@ -17,7 +17,7 @@ class TmTcBridge : public AcceptsTelemetryIF,
  public:
   static constexpr uint8_t TMTC_RECEPTION_QUEUE_DEPTH = 20;
   static constexpr uint8_t LIMIT_STORED_DATA_SENT_PER_CYCLE = 15;
-  static constexpr uint8_t LIMIT_DOWNLINK_PACKETS_STORED = 200;
+  static constexpr unsigned int LIMIT_DOWNLINK_PACKETS_STORED = 500;
 
   static constexpr uint8_t DEFAULT_STORED_DATA_SENT_PER_CYCLE = 5;
   static constexpr uint8_t DEFAULT_DOWNLINK_PACKETS_STORED = 10;
@@ -42,7 +42,7 @@ class TmTcBridge : public AcceptsTelemetryIF,
    * @return -@c returnvalue::OK if value was set successfully
    *         -@c returnvalue::FAILED otherwise, stored value stays the same
    */
-  ReturnValue_t setMaxNumberOfPacketsStored(uint8_t maxNumberOfPacketsStored);
+  ReturnValue_t setMaxNumberOfPacketsStored(unsigned int maxNumberOfPacketsStored);
 
   /**
    * This will set up the bridge to overwrite old data in the FIFO.
@@ -91,6 +91,7 @@ class TmTcBridge : public AcceptsTelemetryIF,
   //! by default, so telemetry will be handled immediately.
   bool communicationLinkUp = true;
   bool tmStored = false;
+  bool warningSwitch = true;
   bool overwriteOld = true;
   uint8_t packetSentCounter = 0;
 
@@ -152,7 +153,7 @@ class TmTcBridge : public AcceptsTelemetryIF,
    */
   DynamicFIFO<store_address_t>* tmFifo = nullptr;
   uint8_t sentPacketsPerCycle = DEFAULT_STORED_DATA_SENT_PER_CYCLE;
-  uint8_t maxNumberOfPacketsStored = DEFAULT_DOWNLINK_PACKETS_STORED;
+  unsigned int maxNumberOfPacketsStored = DEFAULT_DOWNLINK_PACKETS_STORED;
 };
 
 #endif /* FSFW_TMTCSERVICES_TMTCBRIDGE_H_ */

@@ -78,7 +78,6 @@ class TcpTmTcServer : public SystemObject, public TcpIpBase, public ExecutableOb
      * https://man7.org/linux/man-pages/man7/socket.7.html for more details.
      */
     bool reusePort = false;
-
   };
   enum class ReceptionModes { SPACE_PACKETS };
 

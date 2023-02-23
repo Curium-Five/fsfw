@@ -16,7 +16,9 @@ TmTcBridge::TmTcBridge(const char* name, object_id_t objectId, object_id_t tcDes
       tcDestination(tcDestination)
 
 {
-  tmTcReceptionQueue = QueueFactory::instance()->createMessageQueue(TMTC_RECEPTION_QUEUE_DEPTH);
+  auto mqArgs = MqArgs(objectId, static_cast<void*>(this));
+  tmTcReceptionQueue = QueueFactory::instance()->createMessageQueue(
+      TMTC_RECEPTION_QUEUE_DEPTH, MessageQueueMessage::MAX_MESSAGE_SIZE, &mqArgs);
 }
 
 TmTcBridge::~TmTcBridge() { QueueFactory::instance()->deleteMessageQueue(tmTcReceptionQueue); }
@@ -35,7 +37,7 @@ ReturnValue_t TmTcBridge::setNumberOfSentPacketsPerCycle(uint8_t sentPacketsPerC
   }
 }
 
-ReturnValue_t TmTcBridge::setMaxNumberOfPacketsStored(uint8_t maxNumberOfPacketsStored) {
+ReturnValue_t TmTcBridge::setMaxNumberOfPacketsStored(unsigned int maxNumberOfPacketsStored) {
   if (maxNumberOfPacketsStored <= LIMIT_DOWNLINK_PACKETS_STORED) {
     this->maxNumberOfPacketsStored = maxNumberOfPacketsStored;
     return returnvalue::OK;
@@ -143,13 +145,17 @@ ReturnValue_t TmTcBridge::handleTmQueue() {
 #endif /* FSFW_VERBOSE_LEVEL >= 3 */
 
     if (communicationLinkUp == false or packetSentCounter >= sentPacketsPerCycle) {
-      storeDownlinkData(&message);
+      ReturnValue_t result = storeDownlinkData(&message);
+      if (result != returnvalue::OK) {
+        tmStore->deleteData(message.getStorageId());
+      }
       continue;
     }
 
     result = tmStore->getData(message.getStorageId(), &data, &size);
     if (result != returnvalue::OK) {
       status = result;
+      tmStore->deleteData(message.getStorageId());
       continue;
     }
 
@@ -157,9 +163,9 @@ ReturnValue_t TmTcBridge::handleTmQueue() {
     if (result != returnvalue::OK) {
       status = result;
     } else {
-      tmStore->deleteData(message.getStorageId());
       packetSentCounter++;
     }
+    tmStore->deleteData(message.getStorageId());
   }
   return status;
 }
@@ -171,15 +177,18 @@ ReturnValue_t TmTcBridge::storeDownlinkData(TmTcMessage* message) {
   }
 
   if (tmFifo->full()) {
+    if (warningSwitch) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
-    sif::warning << "TmTcBridge::storeDownlinkData: TM downlink max. number "
-                    "of stored packet IDs reached!"
-                 << std::endl;
+      sif::warning << "TmTcBridge::storeDownlinkData: TM downlink max. number "
+                      "of stored packet IDs reached!"
+                   << std::endl;
 #else
-    sif::printWarning(
-        "TmTcBridge::storeDownlinkData: TM downlink max. number "
-        "of stored packet IDs reached!\n");
+      sif::printWarning(
+          "TmTcBridge::storeDownlinkData: TM downlink max. number "
+          "of stored packet IDs reached!\n");
 #endif
+      warningSwitch = false;
+    }
     if (overwriteOld) {
       tmFifo->retrieve(&storeId);
       tmStore->deleteData(storeId);
@@ -221,6 +230,7 @@ ReturnValue_t TmTcBridge::handleStoredTm() {
     packetSentCounter++;
 
     if (tmFifo->empty()) {
+      warningSwitch = true;
       tmStored = false;
     }
     tmStore->deleteData(storeId);
