@@ -8,6 +8,8 @@
 #include "HealthTableIF.h"
 
 class HealthTable : public HealthTableIF, public SystemObject {
+  friend class CServiceHealthCommanding;
+
  public:
   explicit HealthTable(object_id_t objectid);
   ~HealthTable() override;

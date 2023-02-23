@@ -10,26 +10,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # [v6.0.0] 2023-02-10
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Fixes
 
 - `CService200ModeManagement`: Various bugfixes which lead to now execution complete being generated
@@ -67,6 +47,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `TcpTmTcServer.cpp`: The server was actually not able to handle
   CCSDS packets which were clumped together. This has been fixed now.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/673
+- `CServiceHealthCommanding`: Add announce all health info implementation
+  PR: https://egit.irs.uni-stuttgart.de/eive/fsfw/pulls/122
 - various fixes related to linux Unittests and memory leaks
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/715
 - small fix to allow teardown handling
@@ -133,6 +115,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Changes
 
+- `CService201HealthCommanding` renamed to `CServiceHealthCommanding`,
+  service ID customizable now. `CServiceHealthCommanding` expects configuration struct
+  `HealthServiceCfg` now
+  PR: https://egit.irs.uni-stuttgart.de/eive/fsfw/pulls/122
 - `AcceptsTelemetryIF`: `getReportReceptionQueue` is const now
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/712
 - Moved some container returnvalues to dedicated header and namespace

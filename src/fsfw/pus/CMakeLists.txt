@@ -9,4 +9,4 @@ target_sources(
           Service17Test.cpp
           Service20ParameterManagement.cpp
           CService200ModeCommanding.cpp
-          CService201HealthCommanding.cpp)
+          CServiceHealthCommanding.cpp)
