@@ -6,7 +6,7 @@
 #include "fsfw/tmtcservices/CommandingServiceBase.h"
 
 struct HealthServiceCfg {
-  HealthServiceCfg(object_id_t objectId, uint16_t apid, HealthTable &healthTable,
+  HealthServiceCfg(object_id_t objectId, uint16_t apid, object_id_t healthTable,
                    uint16_t maxNumHealthInfoPerCycle)
       : objectId(objectId),
         apid(apid),
@@ -14,7 +14,7 @@ struct HealthServiceCfg {
         maxNumHealthInfoPerCycle(maxNumHealthInfoPerCycle) {}
   object_id_t objectId;
   uint16_t apid;
-  HealthTable &table;
+  object_id_t table;
   uint16_t maxNumHealthInfoPerCycle;
   uint8_t service = 201;
   uint8_t numParallelCommands = 4;
@@ -40,6 +40,8 @@ class CServiceHealthCommanding : public CommandingServiceBase {
   CServiceHealthCommanding(HealthServiceCfg args);
   ~CServiceHealthCommanding() override = default;
 
+  ReturnValue_t initialize() override;
+
  protected:
   /* CSB abstract function implementations */
   ReturnValue_t isValidSubservice(uint8_t subservice) override;
@@ -57,7 +59,8 @@ class CServiceHealthCommanding : public CommandingServiceBase {
   void doPeriodicOperation() override;
 
  private:
-  HealthTable &healthTable;
+  const object_id_t healthTableId;
+  HealthTable *healthTable;
   uint16_t maxNumHealthInfoPerCycle = 0;
   bool reportAllHealth = false;
   ReturnValue_t iterateHealthTable(bool reset);

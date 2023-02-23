@@ -10,8 +10,22 @@
 CServiceHealthCommanding::CServiceHealthCommanding(HealthServiceCfg args)
     : CommandingServiceBase(args.objectId, args.apid, "PUS 201 Health MGMT", args.service,
                             args.numParallelCommands, args.commandTimeoutSeconds),
-      healthTable(args.table),
+      healthTableId(args.table),
       maxNumHealthInfoPerCycle(args.maxNumHealthInfoPerCycle) {}
+
+ReturnValue_t CServiceHealthCommanding::initialize() {
+  ReturnValue_t result = CommandingServiceBase::initialize();
+  if (result != returnvalue::OK) {
+    return result;
+  }
+
+  healthTable = ObjectManager::instance()->get<HealthTable>(healthTableId);
+  if(healthTable == nullptr) {
+    return returnvalue::FAILED;
+  }
+
+  return returnvalue::OK;
+}
 
 ReturnValue_t CServiceHealthCommanding::isValidSubservice(uint8_t subservice) {
   switch (subservice) {
@@ -134,7 +148,7 @@ void CServiceHealthCommanding::doPeriodicOperation() {
 ReturnValue_t CServiceHealthCommanding::iterateHealthTable(bool reset) {
   std::pair<object_id_t, HasHealthIF::HealthState> pair;
 
-  ReturnValue_t result = healthTable.iterate(&pair, reset);
+  ReturnValue_t result = healthTable->iterate(&pair, reset);
   if (result != returnvalue::OK) {
     return result;
   } else {
