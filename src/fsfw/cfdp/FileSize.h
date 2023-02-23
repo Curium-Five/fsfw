@@ -1,5 +1,7 @@
-#ifndef FSFW_SRC_FSFW_CFDP_FILESIZE_H_
-#define FSFW_SRC_FSFW_CFDP_FILESIZE_H_
+#ifndef FSFW_CFDP_FILESIZE_H_
+#define FSFW_CFDP_FILESIZE_H_
+
+#include <optional>
 
 #include "fsfw/serialize/SerializeAdapter.h"
 #include "fsfw/serialize/SerializeIF.h"
@@ -8,9 +10,11 @@ namespace cfdp {
 
 struct FileSize : public SerializeIF {
  public:
-  FileSize() : largeFile(false){};
+  FileSize() = default;
 
-  FileSize(uint64_t fileSize, bool isLarge = false) { setFileSize(fileSize, isLarge); };
+  explicit FileSize(uint64_t fileSize, bool isLarge = false) { setFileSize(fileSize, isLarge); };
+
+  [[nodiscard]] uint64_t value() const { return fileSize; }
 
   ReturnValue_t serialize(bool isLarge, uint8_t **buffer, size_t *size, size_t maxSize,
                           Endianness streamEndianness) {
@@ -27,7 +31,7 @@ struct FileSize : public SerializeIF {
     return SerializeAdapter::serialize(&fileSize, buffer, size, maxSize, streamEndianness);
   }
 
-  size_t getSerializedSize() const override {
+  [[nodiscard]] size_t getSerializedSize() const override {
     if (largeFile) {
       return 8;
     } else {
@@ -43,27 +47,29 @@ struct FileSize : public SerializeIF {
       uint32_t sizeTmp = 0;
       ReturnValue_t result =
           SerializeAdapter::deSerialize(&sizeTmp, buffer, size, streamEndianness);
-      if (result == HasReturnvaluesIF::RETURN_OK) {
+      if (result == returnvalue::OK) {
         fileSize = sizeTmp;
       }
       return result;
     }
   }
 
-  ReturnValue_t setFileSize(uint64_t fileSize, bool largeFile) {
+  ReturnValue_t setFileSize(uint64_t fileSize_, std::optional<bool> largeFile_) {
+    if (largeFile_) {
+      largeFile = largeFile_.value();
+    }
     if (not largeFile and fileSize > UINT32_MAX) {
       // TODO: emit warning here
-      return HasReturnvaluesIF::RETURN_FAILED;
+      return returnvalue::FAILED;
     }
-    this->fileSize = fileSize;
-    this->largeFile = largeFile;
-    return HasReturnvaluesIF::RETURN_OK;
+    this->fileSize = fileSize_;
+    return returnvalue::OK;
   }
 
-  bool isLargeFile() const { return largeFile; }
-  uint64_t getSize(bool *largeFile = nullptr) const {
-    if (largeFile != nullptr) {
-      *largeFile = this->largeFile;
+  [[nodiscard]] bool isLargeFile() const { return largeFile; }
+  uint64_t getSize(bool *largeFile_ = nullptr) const {
+    if (largeFile_ != nullptr) {
+      *largeFile_ = this->largeFile;
     }
     return fileSize;
   }
@@ -75,4 +81,4 @@ struct FileSize : public SerializeIF {
 
 }  // namespace cfdp
 
-#endif /* FSFW_SRC_FSFW_CFDP_FILESIZE_H_ */
+#endif /* FSFW_CFDP_FILESIZE_H_ */

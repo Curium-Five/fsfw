@@ -1,6 +1,7 @@
 #include "fsfw/osal/common/TcpIpBase.h"
 
 #include "fsfw/platform.h"
+#include "fsfw/serviceinterface.h"
 
 #ifdef PLATFORM_UNIX
 #include <errno.h>
@@ -21,10 +22,10 @@ ReturnValue_t TcpIpBase::initialize() {
     sif::error << "TmTcWinUdpBridge::TmTcWinUdpBridge: WSAStartup failed with error: " << err
                << std::endl;
 #endif
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
   }
 #endif
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }
 
 TcpIpBase::~TcpIpBase() {

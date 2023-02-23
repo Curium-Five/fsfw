@@ -3,7 +3,7 @@
 
 #include "../events/Event.h"
 #include "../ipc/MessageQueueSenderIF.h"
-#include "../returnvalues/HasReturnvaluesIF.h"
+#include "../returnvalues/returnvalue.h"
 
 class HasHealthIF {
  public:
@@ -16,26 +16,24 @@ class HasHealthIF {
   };
 
   static const uint8_t INTERFACE_ID = CLASS_ID::HAS_HEALTH_IF;
-  static const ReturnValue_t OBJECT_NOT_HEALTHY = MAKE_RETURN_CODE(1);
-  static const ReturnValue_t INVALID_HEALTH_STATE = MAKE_RETURN_CODE(2);
+  static constexpr ReturnValue_t OBJECT_NOT_HEALTHY = returnvalue::makeCode(INTERFACE_ID, 1);
+  static constexpr ReturnValue_t INVALID_HEALTH_STATE = returnvalue::makeCode(INTERFACE_ID, 2);
+  static constexpr ReturnValue_t IS_EXTERNALLY_CONTROLLED = returnvalue::makeCode(INTERFACE_ID, 3);
 
   static const uint8_t SUBSYSTEM_ID = SUBSYSTEM_ID::SYSTEM_MANAGER_1;
+  //! P1: New Health, P2: Old Health
   static const Event HEALTH_INFO = MAKE_EVENT(6, severity::INFO);
   static const Event CHILD_CHANGED_HEALTH = MAKE_EVENT(7, severity::INFO);
   static const Event CHILD_PROBLEMS = MAKE_EVENT(8, severity::LOW);
-  static const Event OVERWRITING_HEALTH =
-      MAKE_EVENT(9, severity::LOW);  //!< Assembly overwrites health information of children to keep
-                                     //!< satellite alive.
-  static const Event TRYING_RECOVERY =
-      MAKE_EVENT(10, severity::MEDIUM);  //!< Someone starts a recovery of a component (typically
-                                         //!< power-cycle). No parameters.
-  static const Event RECOVERY_STEP =
-      MAKE_EVENT(11, severity::MEDIUM);  //!< Recovery is ongoing. Comes twice during recovery. P1:
-                                         //!< 0 for the first, 1 for the second event. P2: 0
-  static const Event RECOVERY_DONE = MAKE_EVENT(
-      12,
-      severity::MEDIUM);  //!< Recovery was completed. Not necessarily successful. No parameters.
-
+  //! Assembly overwrites health information of children to keep satellite alive.
+  static const Event OVERWRITING_HEALTH = MAKE_EVENT(9, severity::LOW);
+  //! Someone starts a recovery of a component (typically power-cycle). No parameters.
+  static const Event TRYING_RECOVERY = MAKE_EVENT(10, severity::MEDIUM);
+  //! Recovery is ongoing. Comes twice during recovery.
+  //! P1: 0 for the first, 1 for the second event. P2: 0
+  static const Event RECOVERY_STEP = MAKE_EVENT(11, severity::MEDIUM);
+  //! Recovery was completed. Not necessarily successful. No parameters.
+  static const Event RECOVERY_DONE = MAKE_EVENT(12, severity::MEDIUM);
   virtual ~HasHealthIF() {}
 
   virtual MessageQueueId_t getCommandQueue() const = 0;

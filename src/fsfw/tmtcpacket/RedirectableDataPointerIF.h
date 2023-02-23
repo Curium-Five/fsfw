@@ -3,7 +3,7 @@
 
 #include <cstddef>
 
-#include "fsfw/returnvalues/HasReturnvaluesIF.h"
+#include "fsfw/returnvalues/returnvalue.h"
 
 /**
  * @brief   This interface can be used for classes which store a reference to data. It allows
@@ -11,7 +11,7 @@
  */
 class RedirectableDataPointerIF {
  public:
-  virtual ~RedirectableDataPointerIF(){};
+  virtual ~RedirectableDataPointerIF() = default;
 
   /**
    * Redirect the data pointer, but allow an implementation to change the data.
@@ -22,12 +22,15 @@ class RedirectableDataPointerIF {
    *     large enough
    * @param args Any additional user arguments required to set the data pointer
    * @return
-   *  - RETURN_OK if the pointer was set successfully
-   *  - RETURN_FAILED on general error of if the maximum size is too small
+   *  - returnvalue::OK if the pointer was set successfully
+   *  - returnvalue::FAILED on general error of if the maximum size is too small
    */
-  virtual ReturnValue_t setData(uint8_t* dataPtr, size_t maxSize, void* args = nullptr) = 0;
+  virtual ReturnValue_t setData(uint8_t* dataPtr, size_t size, void* args) = 0;
+  virtual ReturnValue_t setData(uint8_t* dataPtr, size_t size) {
+    return setData(dataPtr, size, nullptr);
+  }
 
  private:
 };
 
-#endif /* FSFW_SRC_FSFW_TMTCPACKET_PUS_TC_SETTABLEDATAPOINTERIF_H_ */
+#endif /* TMTCPACKET_PUS_TC_SETTABLEDATAPOINTERIF_H_ */

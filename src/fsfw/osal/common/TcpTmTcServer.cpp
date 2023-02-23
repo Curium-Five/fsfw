@@ -26,12 +26,12 @@
 const std::string TcpTmTcServer::DEFAULT_SERVER_PORT = tcpip::DEFAULT_SERVER_PORT;
 
 TcpTmTcServer::TcpTmTcServer(object_id_t objectId, object_id_t tmtcTcpBridge,
-                             size_t receptionBufferSize, size_t ringBufferSize,
-                             std::string customTcpServerPort, ReceptionModes receptionMode)
+                             TcpTmTcServer::TcpConfig cfg, size_t receptionBufferSize,
+                             size_t ringBufferSize, ReceptionModes receptionMode)
     : SystemObject(objectId),
       tmtcBridgeId(tmtcTcpBridge),
       receptionMode(receptionMode),
-      tcpConfig(std::move(customTcpServerPort)),
+      tcpConfig(cfg),
       receptionBuffer(receptionBufferSize),
       ringBuffer(ringBufferSize, true) {}
 
@@ -39,7 +39,7 @@ ReturnValue_t TcpTmTcServer::initialize() {
   using namespace tcpip;
 
   ReturnValue_t result = TcpIpBase::initialize();
-  if (result != HasReturnvaluesIF::RETURN_OK) {
+  if (result != returnvalue::OK) {
     return result;
   }
 
@@ -47,7 +47,7 @@ ReturnValue_t TcpTmTcServer::initialize() {
     case (ReceptionModes::SPACE_PACKETS): {
       spacePacketParser = new SpacePacketParser(validPacketIds);
       if (spacePacketParser == nullptr) {
-        return HasReturnvaluesIF::RETURN_FAILED;
+        return returnvalue::FAILED;
       }
 #if defined PLATFORM_UNIX
       tcpConfig.tcpFlags |= MSG_DONTWAIT;
@@ -79,7 +79,7 @@ ReturnValue_t TcpTmTcServer::initialize() {
   retval = getaddrinfo(nullptr, tcpConfig.tcpPort.c_str(), &hints, &addrResult);
   if (retval != 0) {
     handleError(Protocol::TCP, ErrorSources::GETADDRINFO_CALL);
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
   }
 
   // Open TCP (stream) socket
@@ -88,7 +88,16 @@ ReturnValue_t TcpTmTcServer::initialize() {
   if (listenerTcpSocket == INVALID_SOCKET) {
     freeaddrinfo(addrResult);
     handleError(Protocol::TCP, ErrorSources::SOCKET_CALL);
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
+  }
+
+  if (tcpConfig.reuseAddr) {
+    unsigned int enable = 1;
+    setsockopt(listenerTcpSocket, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable));
+  }
+  if (tcpConfig.reusePort) {
+    unsigned int enable = 1;
+    setsockopt(listenerTcpSocket, SOL_SOCKET, SO_REUSEPORT, &enable, sizeof(enable));
   }
 
   // Bind to the address found by getaddrinfo
@@ -96,11 +105,11 @@ ReturnValue_t TcpTmTcServer::initialize() {
   if (retval == SOCKET_ERROR) {
     freeaddrinfo(addrResult);
     handleError(Protocol::TCP, ErrorSources::BIND_CALL);
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
   }
 
   freeaddrinfo(addrResult);
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }
 
 TcpTmTcServer::~TcpTmTcServer() { closeSocket(listenerTcpSocket); }
@@ -151,7 +160,7 @@ ReturnValue_t TcpTmTcServer::initializeAfterTaskCreation() {
   targetTcDestination = tmtcBridge->getRequestQueue();
   tcStore = tmtcBridge->tcStore;
   tmStore = tmtcBridge->tmStore;
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }
 
 void TcpTmTcServer::handleServerOperation(socket_t& connSocket) {
@@ -161,7 +170,7 @@ void TcpTmTcServer::handleServerOperation(socket_t& connSocket) {
 
   while (true) {
     ssize_t retval = recv(connSocket, reinterpret_cast<char*>(receptionBuffer.data()),
-                          receptionBuffer.capacity(), tcpConfig.tcpFlags);
+                          receptionBuffer.size(), tcpConfig.tcpFlags);
     if (retval == 0) {
       size_t availableReadData = ringBuffer.getAvailableReadData();
       if (availableReadData > lastRingBufferSize) {
@@ -214,11 +223,11 @@ ReturnValue_t TcpTmTcServer::handleTcReception(uint8_t* spacePacket, size_t pack
   }
 
   if (spacePacket == nullptr or packetSize == 0) {
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
   }
   store_address_t storeId;
   ReturnValue_t result = tcStore->addData(&storeId, spacePacket, packetSize);
-  if (result != HasReturnvaluesIF::RETURN_OK) {
+  if (result != returnvalue::OK) {
 #if FSFW_VERBOSE_LEVEL >= 1
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::warning << "TcpTmTcServer::handleServerOperation: Data storage with packet size"
@@ -236,7 +245,7 @@ ReturnValue_t TcpTmTcServer::handleTcReception(uint8_t* spacePacket, size_t pack
   TmTcMessage message(storeId);
 
   result = MessageQueueSenderIF::sendMessage(targetTcDestination, &message);
-  if (result != HasReturnvaluesIF::RETURN_OK) {
+  if (result != returnvalue::OK) {
 #if FSFW_VERBOSE_LEVEL >= 1
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::warning << "TcpTmTcServer::handleServerOperation: "
@@ -273,7 +282,7 @@ ReturnValue_t TcpTmTcServer::handleTmSending(socket_t connSocket, bool& tmSent) 
     // Using the store accessor will take care of deleting TM from the store automatically
     ConstStorageAccessor storeAccessor(storeId);
     ReturnValue_t result = tmStore->getData(storeId, storeAccessor);
-    if (result != HasReturnvaluesIF::RETURN_OK) {
+    if (result != returnvalue::OK) {
       return result;
     }
     if (wiretappingEnabled) {
@@ -297,12 +306,12 @@ ReturnValue_t TcpTmTcServer::handleTmSending(socket_t connSocket, bool& tmSent) 
       return CONN_BROKEN;
     }
   }
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }
 
 ReturnValue_t TcpTmTcServer::handleTcRingBufferData(size_t availableReadData) {
-  ReturnValue_t status = HasReturnvaluesIF::RETURN_OK;
-  ReturnValue_t result = HasReturnvaluesIF::RETURN_OK;
+  ReturnValue_t status = returnvalue::OK;
+  ReturnValue_t result = returnvalue::OK;
   size_t readAmount = availableReadData;
   lastRingBufferSize = availableReadData;
   if (readAmount >= ringBuffer.getMaxSize()) {
@@ -335,31 +344,27 @@ ReturnValue_t TcpTmTcServer::handleTcRingBufferData(size_t availableReadData) {
   }
   ringBuffer.readData(receptionBuffer.data(), readAmount, true);
   const uint8_t* bufPtr = receptionBuffer.data();
-  const uint8_t** bufPtrPtr = &bufPtr;
-  size_t startIdx = 0;
-  size_t foundSize = 0;
-  size_t readLen = 0;
-  while (readLen < readAmount) {
-    if (spacePacketParser == nullptr) {
-      return HasReturnvaluesIF::RETURN_FAILED;
-    }
-    result =
-        spacePacketParser->parseSpacePackets(bufPtrPtr, readAmount, startIdx, foundSize, readLen);
+  SpacePacketParser::FoundPacketInfo info;
+  if (spacePacketParser == nullptr) {
+    return returnvalue::FAILED;
+  }
+  spacePacketParser->reset();
+  while (spacePacketParser->getAmountRead() < readAmount) {
+    result = spacePacketParser->parseSpacePackets(&bufPtr, readAmount, info);
     switch (result) {
       case (SpacePacketParser::NO_PACKET_FOUND):
       case (SpacePacketParser::SPLIT_PACKET): {
         break;
       }
-      case (HasReturnvaluesIF::RETURN_OK): {
-        result = handleTcReception(receptionBuffer.data() + startIdx, foundSize);
-        if (result != HasReturnvaluesIF::RETURN_OK) {
+      case (returnvalue::OK): {
+        result = handleTcReception(receptionBuffer.data() + info.startIdx, info.sizeFound);
+        if (result != returnvalue::OK) {
           status = result;
         }
       }
     }
-    ringBuffer.deleteData(foundSize);
+    ringBuffer.deleteData(info.sizeFound);
     lastRingBufferSize = ringBuffer.getAvailableReadData();
-    std::memset(receptionBuffer.data() + startIdx, 0, foundSize);
   }
   return status;
 }

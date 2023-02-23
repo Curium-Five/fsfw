@@ -7,14 +7,17 @@
 
 InternalErrorReporter::InternalErrorReporter(object_id_t setObjectId, uint32_t messageQueueDepth)
     : SystemObject(setObjectId),
-      commandQueue(QueueFactory::instance()->createMessageQueue(messageQueueDepth)),
       poolManager(this, commandQueue),
       internalErrorSid(setObjectId, InternalErrorDataset::ERROR_SET_ID),
       internalErrorDataset(this) {
+  commandQueue = QueueFactory::instance()->createMessageQueue(messageQueueDepth);
   mutex = MutexFactory::instance()->createMutex();
 }
 
-InternalErrorReporter::~InternalErrorReporter() { MutexFactory::instance()->deleteMutex(mutex); }
+InternalErrorReporter::~InternalErrorReporter() {
+  MutexFactory::instance()->deleteMutex(mutex);
+  QueueFactory::instance()->deleteMessageQueue(commandQueue);
+}
 
 void InternalErrorReporter::setDiagnosticPrintout(bool enable) {
   this->diagnosticPrintout = enable;
@@ -52,7 +55,7 @@ ReturnValue_t InternalErrorReporter::performOperation(uint8_t opCode) {
 
   {
     PoolReadGuard readGuard(&internalErrorDataset);
-    if (readGuard.getReadResult() == HasReturnvaluesIF::RETURN_OK) {
+    if (readGuard.getReadResult() == returnvalue::OK) {
       internalErrorDataset.queueHits.value += newQueueHits;
       internalErrorDataset.storeHits.value += newStoreHits;
       internalErrorDataset.tmHits.value += newTmHits;
@@ -64,7 +67,7 @@ ReturnValue_t InternalErrorReporter::performOperation(uint8_t opCode) {
   }
 
   poolManager.performHkOperation();
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }
 
 void InternalErrorReporter::queueMessageNotSent() { incrementQueueHits(); }
@@ -126,13 +129,14 @@ MessageQueueId_t InternalErrorReporter::getCommandQueue() const {
 
 ReturnValue_t InternalErrorReporter::initializeLocalDataPool(localpool::DataPool &localDataPoolMap,
                                                              LocalDataPoolManager &poolManager) {
-  localDataPoolMap.emplace(errorPoolIds::TM_HITS, new PoolEntry<uint32_t>());
-  localDataPoolMap.emplace(errorPoolIds::QUEUE_HITS, new PoolEntry<uint32_t>());
-  localDataPoolMap.emplace(errorPoolIds::STORE_HITS, new PoolEntry<uint32_t>());
-  poolManager.subscribeForPeriodicPacket(internalErrorSid, false, getPeriodicOperationFrequency(),
-                                         true);
+  localDataPoolMap.emplace(errorPoolIds::TM_HITS, &tmHitsEntry);
+  localDataPoolMap.emplace(errorPoolIds::QUEUE_HITS, &queueHitsEntry);
+  localDataPoolMap.emplace(errorPoolIds::STORE_HITS, &storeHitsEntry);
+  poolManager.subscribeForDiagPeriodicPacket(subdp::DiagnosticsHkPeriodicParams(
+      internalErrorSid, false,
+      static_cast<float>(getPeriodicOperationFrequency()) / static_cast<float>(1000.0)));
   internalErrorDataset.setValidity(true, true);
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }
 
 dur_millis_t InternalErrorReporter::getPeriodicOperationFrequency() const {
@@ -147,7 +151,7 @@ void InternalErrorReporter::setTaskIF(PeriodicTaskIF *task) { this->executingTas
 
 ReturnValue_t InternalErrorReporter::initialize() {
   ReturnValue_t result = poolManager.initialize(commandQueue);
-  if (result != HasReturnvaluesIF::RETURN_OK) {
+  if (result != returnvalue::OK) {
     return result;
   }
   return SystemObject::initialize();

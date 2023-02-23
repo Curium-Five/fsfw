@@ -5,7 +5,7 @@
 
 #include <cstdint>
 
-#include "../returnvalues/HasReturnvaluesIF.h"
+#include "../returnvalues/returnvalue.h"
 #include "MessageQueueMessageIF.h"
 #include "messageQueueDefinitions.h"
 
@@ -30,7 +30,7 @@ class MessageQueueIF {
   //! [EXPORT] : [COMMENT] Returned if the target destination is invalid.
   static constexpr ReturnValue_t DESTINATION_INVALID = MAKE_RETURN_CODE(4);
 
-  virtual ~MessageQueueIF() {}
+  virtual ~MessageQueueIF() = default;
   /**
    * @brief	This operation sends a message to the last communication partner.
    * @details
@@ -40,7 +40,7 @@ class MessageQueueIF {
    * @param message
    * A pointer to a previously created message, which is sent.
    * @return
-   * -@c RETURN_OK if ok
+   * -@c returnvalue::OK if ok
    * -@c NO_REPLY_PARTNER Should return NO_REPLY_PARTNER if partner was found.
    */
   virtual ReturnValue_t reply(MessageQueueMessageIF* message) = 0;
@@ -69,24 +69,24 @@ class MessageQueueIF {
    * function returns immediately.
    * @param message
    * A pointer to a message in which the received data is stored.
-   * @return -@c RETURN_OK on success
+   * @return -@c returnvalue::OK on success
    *         -@c MessageQueueIF::EMPTY if queue is empty
    */
   virtual ReturnValue_t receiveMessage(MessageQueueMessageIF* message) = 0;
   /**
    * Deletes all pending messages in the queue.
    * @param count The number of flushed messages.
-   * @return RETURN_OK on success.
+   * @return returnvalue::OK on success.
    */
   virtual ReturnValue_t flush(uint32_t* count) = 0;
   /**
    * @brief	This method returns the message queue ID of the last communication partner.
    */
-  virtual MessageQueueId_t getLastPartner() const = 0;
+  [[nodiscard]] virtual MessageQueueId_t getLastPartner() const = 0;
   /**
    * @brief	This method returns the message queue ID  of this class's message queue.
    */
-  virtual MessageQueueId_t getId() const = 0;
+  [[nodiscard]] virtual MessageQueueId_t getId() const = 0;
 
   /**
    * @brief	With the sendMessage call, a queue message is sent to a receiving queue.
@@ -104,7 +104,7 @@ class MessageQueueIF {
    * @param ignoreFault
    * If set to true, the internal software fault counter is not incremented
    * if queue is full (if implemented).
-   * @return -@c RETURN_OK on success
+   * @return -@c returnvalue::OK on success
    *         -@c MessageQueueIF::FULL if queue is full
    */
   virtual ReturnValue_t sendMessageFrom(MessageQueueId_t sendTo, MessageQueueMessageIF* message,
@@ -136,7 +136,7 @@ class MessageQueueIF {
    * @param sentFrom
    * The sentFrom information can be set to inject the sender's queue id
    * into the message. This variable is set to zero by default.
-   * @return -@c RETURN_OK on success
+   * @return -@c returnvalue::OK on success
    *         -@c MessageQueueIF::FULL if queue is full
    */
   virtual ReturnValue_t sendToDefaultFrom(MessageQueueMessageIF* message, MessageQueueId_t sentFrom,
@@ -148,7 +148,7 @@ class MessageQueueIF {
    * call of the Implementation class and adds its queue id as
    * "sentFrom" information.
    * @param message	A pointer to a previously created message, which is sent.
-   * @return -@c RETURN_OK on success
+   * @return -@c returnvalue::OK on success
    *         -@c MessageQueueIF::FULL if queue is full
    */
   virtual ReturnValue_t sendToDefault(MessageQueueMessageIF* message) = 0;
@@ -159,9 +159,9 @@ class MessageQueueIF {
   /**
    * @brief	This method is a simple getter for the default destination.
    */
-  virtual MessageQueueId_t getDefaultDestination() const = 0;
+  [[nodiscard]] virtual MessageQueueId_t getDefaultDestination() const = 0;
 
-  virtual bool isDefaultDestinationSet() const = 0;
+  [[nodiscard]] virtual bool isDefaultDestinationSet() const = 0;
 
   virtual MqArgs& getMqArgs() = 0;
 };

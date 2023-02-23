@@ -4,7 +4,6 @@
 #include <fsfw/devicehandlers/DeviceHandlerBase.h>
 #include <fsfw/events/EventManager.h>
 #include <fsfw/health/HealthTable.h>
-#include <fsfw/tmtcpacket/pus/tm/TmPacketStored.h>
 #include <fsfw/tmtcservices/CommandingServiceBase.h>
 #include <fsfw/tmtcservices/PusServiceBase.h>
 #include <fsfw/internalerror/InternalErrorReporter.h>
@@ -35,19 +34,15 @@ void Factory::produceFsfwObjects(void) {
 }
 
 void Factory::setStaticFrameworkObjectIds() {
-	PusServiceBase::packetSource = objects::NO_OBJECT;
-	PusServiceBase::packetDestination = objects::NO_OBJECT;
+	PusServiceBase::PUS_DISTRIBUTOR = objects::NO_OBJECT;
+	PusServiceBase::PACKET_DESTINATION = objects::NO_OBJECT;
 
 	CommandingServiceBase::defaultPacketSource = objects::NO_OBJECT;
 	CommandingServiceBase::defaultPacketDestination = objects::NO_OBJECT;
-
-	VerificationReporter::messageReceiver = objects::PUS_SERVICE_1_VERIFICATION;
 
 	DeviceHandlerBase::powerSwitcherId = objects::NO_OBJECT;
 	DeviceHandlerBase::rawDataReceiverId = objects::PUS_SERVICE_2_DEVICE_ACCESS;
 
 	DeviceHandlerFailureIsolation::powerConfirmationId = objects::NO_OBJECT;
-
-	TmPacketBase::timeStamperId = objects::NO_OBJECT;
 }
 

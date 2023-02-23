@@ -3,11 +3,11 @@
 
 #include <map>
 
-#include "../datapool/PoolEntryIF.h"
-#include "../housekeeping/HousekeepingMessage.h"
-#include "../ipc/MessageQueueSenderIF.h"
-#include "../serviceinterface/ServiceInterface.h"
 #include "LocalDataPoolManager.h"
+#include "fsfw/datapool/PoolEntryIF.h"
+#include "fsfw/housekeeping/HousekeepingMessage.h"
+#include "fsfw/ipc/MessageQueueSenderIF.h"
+#include "fsfw/serviceinterface.h"
 #include "localPoolDefinitions.h"
 
 class AccessPoolManagerIF;
@@ -79,8 +79,7 @@ class HasLocalDataPoolIF {
    * @param clearMessage  If this is set to true, the pool manager will take care of
    *                      clearing the store automatically
    */
-  virtual void handleChangedDataset(sid_t sid,
-                                    store_address_t storeId = storeId::INVALID_STORE_ADDRESS,
+  virtual void handleChangedDataset(sid_t sid, store_address_t storeId = store_address_t::invalid(),
                                     bool* clearMessage = nullptr) {
     if (clearMessage != nullptr) {
       *clearMessage = true;
@@ -100,7 +99,7 @@ class HasLocalDataPoolIF {
    *                      after the callback.
    */
   virtual void handleChangedPoolVariable(gp_id_t gpid,
-                                         store_address_t storeId = storeId::INVALID_STORE_ADDRESS,
+                                         store_address_t storeId = store_address_t::invalid(),
                                          bool* clearMessage = nullptr) {
     if (clearMessage != nullptr) {
       *clearMessage = true;
@@ -111,10 +110,10 @@ class HasLocalDataPoolIF {
    * These function can be implemented by pool owner, if they are required
    * and used by the housekeeping message interface.
    * */
-  virtual ReturnValue_t addDataSet(sid_t sid) { return HasReturnvaluesIF::RETURN_FAILED; };
-  virtual ReturnValue_t removeDataSet(sid_t sid) { return HasReturnvaluesIF::RETURN_FAILED; };
+  virtual ReturnValue_t addDataSet(sid_t sid) { return returnvalue::FAILED; };
+  virtual ReturnValue_t removeDataSet(sid_t sid) { return returnvalue::FAILED; };
   virtual ReturnValue_t changeCollectionInterval(sid_t sid, float newIntervalSeconds) {
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
   };
 
   /**

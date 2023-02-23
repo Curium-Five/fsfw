@@ -1,10 +1,10 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include "ComIFMock.h"
-#include "DeviceFdirMock.h"
 #include "DeviceHandlerCommander.h"
-#include "DeviceHandlerMock.h"
-#include "devicehandler/CookieIFMock.h"
+#include "mocks/ComIFMock.h"
+#include "mocks/CookieIFMock.h"
+#include "mocks/DeviceFdirMock.h"
+#include "mocks/DeviceHandlerMock.h"
 #include "objects/systemObjectList.h"
 
 TEST_CASE("Device Handler Base", "[DeviceHandlerBase]") {
@@ -15,16 +15,16 @@ TEST_CASE("Device Handler Base", "[DeviceHandlerBase]") {
   DeviceHandlerMock deviceHandlerMock(objects::DEVICE_HANDLER_MOCK, objects::COM_IF_MOCK,
                                       cookieIFMock, &deviceFdirMock);
   ReturnValue_t result = deviceHandlerMock.initialize();
-  REQUIRE(result == HasReturnvaluesIF::RETURN_OK);
+  REQUIRE(result == returnvalue::OK);
   DeviceHandlerCommander deviceHandlerCommander(objects::DEVICE_HANDLER_COMMANDER);
   result = deviceHandlerCommander.initialize();
-  REQUIRE(result == HasReturnvaluesIF::RETURN_OK);
+  REQUIRE(result == returnvalue::OK);
 
   SECTION("Commanding nominal") {
     comIF.setTestCase(ComIFMock::TestCase::SIMPLE_COMMAND_NOMINAL);
     result = deviceHandlerCommander.sendCommand(objects::DEVICE_HANDLER_MOCK,
                                                 DeviceHandlerMock::SIMPLE_COMMAND);
-    REQUIRE(result == HasReturnvaluesIF::RETURN_OK);
+    REQUIRE(result == returnvalue::OK);
     deviceHandlerMock.performOperation(DeviceHandlerIF::PERFORM_OPERATION);
     deviceHandlerMock.performOperation(DeviceHandlerIF::SEND_WRITE);
     deviceHandlerMock.performOperation(DeviceHandlerIF::GET_WRITE);
@@ -34,7 +34,7 @@ TEST_CASE("Device Handler Base", "[DeviceHandlerBase]") {
     result = deviceHandlerCommander.getReplyReturnCode();
     uint32_t missedReplies = deviceFdirMock.getMissedReplyCount();
     REQUIRE(missedReplies == 0);
-    REQUIRE(result == HasReturnvaluesIF::RETURN_OK);
+    REQUIRE(result == returnvalue::OK);
   }
 
   SECTION("Commanding missed reply") {
@@ -44,7 +44,7 @@ TEST_CASE("Device Handler Base", "[DeviceHandlerBase]") {
     deviceHandlerMock.changeSimpleCommandReplyCountdown(0);
     result = deviceHandlerCommander.sendCommand(objects::DEVICE_HANDLER_MOCK,
                                                 DeviceHandlerMock::SIMPLE_COMMAND);
-    REQUIRE(result == HasReturnvaluesIF::RETURN_OK);
+    REQUIRE(result == returnvalue::OK);
     deviceHandlerMock.performOperation(DeviceHandlerIF::PERFORM_OPERATION);
     deviceHandlerMock.performOperation(DeviceHandlerIF::SEND_WRITE);
     deviceHandlerMock.performOperation(DeviceHandlerIF::GET_WRITE);

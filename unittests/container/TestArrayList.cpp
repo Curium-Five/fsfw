@@ -1,5 +1,5 @@
 #include <fsfw/container/ArrayList.h>
-#include <fsfw/returnvalues/HasReturnvaluesIF.h>
+#include <fsfw/returnvalues/returnvalue.h>
 
 #include <catch2/catch_test_macros.hpp>
 
@@ -8,7 +8,7 @@
 /**
  * @brief 	Array List test
  */
-TEST_CASE("Array List", "[ArrayListTest]") {
+TEST_CASE("Array List", "[containers]") {
   // perform set-up here
   ArrayList<uint16_t> list(20);
   struct TestClass {
@@ -25,7 +25,7 @@ TEST_CASE("Array List", "[ArrayListTest]") {
   SECTION("SimpleTest") {
     REQUIRE(list.maxSize() == 20);
     REQUIRE(list.size == 0);
-    REQUIRE(list.insert(10) == static_cast<int>(HasReturnvaluesIF::RETURN_OK));
+    REQUIRE(list.insert(10) == static_cast<int>(returnvalue::OK));
     REQUIRE(list[0] == 10);
     REQUIRE(list.front() != nullptr);
     REQUIRE((*list.front()) == 10);
@@ -41,9 +41,9 @@ TEST_CASE("Array List", "[ArrayListTest]") {
     // This is an invalid element but its not a nullptr
     REQUIRE(list.back() != nullptr);
     for (auto i = 0; i < 20; i++) {
-      REQUIRE(list.insert(i) == static_cast<int>(HasReturnvaluesIF::RETURN_OK));
+      REQUIRE(list.insert(i) == static_cast<int>(returnvalue::OK));
     }
-    REQUIRE(list.insert(20) == static_cast<int>(ArrayList<uint16_t>::FULL));
+    REQUIRE(list.insert(20) == static_cast<int>(containers::LIST_FULL));
     ArrayList<uint16_t>::Iterator it = list.begin();
     REQUIRE((*it) == 0);
     it++;
@@ -64,7 +64,7 @@ TEST_CASE("Array List", "[ArrayListTest]") {
   SECTION("Const Iterator") {
     ArrayList<uint16_t>::Iterator it = list.begin();
     for (auto i = 0; i < 10; i++) {
-      REQUIRE(list.insert(i) == static_cast<int>(HasReturnvaluesIF::RETURN_OK));
+      REQUIRE(list.insert(i) == static_cast<int>(returnvalue::OK));
     }
     it++;
     const uint16_t* number = it.value;
@@ -74,8 +74,7 @@ TEST_CASE("Array List", "[ArrayListTest]") {
   SECTION("Const Iterator") {
     ArrayList<TestClass>::Iterator it = complexList.begin();
     for (auto i = 0; i < 10; i++) {
-      REQUIRE(complexList.insert(TestClass(i, i + 1)) ==
-              static_cast<int>(HasReturnvaluesIF::RETURN_OK));
+      REQUIRE(complexList.insert(TestClass(i, i + 1)) == static_cast<int>(returnvalue::OK));
     }
     it++;
     const TestClass* secondTest = it.value;

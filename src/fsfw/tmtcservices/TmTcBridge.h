@@ -13,26 +13,25 @@
 class TmTcBridge : public AcceptsTelemetryIF,
                    public AcceptsTelecommandsIF,
                    public ExecutableObjectIF,
-                   public HasReturnvaluesIF,
                    public SystemObject {
  public:
   static constexpr uint8_t TMTC_RECEPTION_QUEUE_DEPTH = 20;
   static constexpr uint8_t LIMIT_STORED_DATA_SENT_PER_CYCLE = 15;
-  static constexpr uint8_t LIMIT_DOWNLINK_PACKETS_STORED = 200;
+  static constexpr unsigned int LIMIT_DOWNLINK_PACKETS_STORED = 500;
 
   static constexpr uint8_t DEFAULT_STORED_DATA_SENT_PER_CYCLE = 5;
   static constexpr uint8_t DEFAULT_DOWNLINK_PACKETS_STORED = 10;
 
-  TmTcBridge(object_id_t objectId, object_id_t tcDestination, object_id_t tmStoreId,
-             object_id_t tcStoreId);
-  virtual ~TmTcBridge();
+  TmTcBridge(const char* name, object_id_t objectId, object_id_t tcDestination,
+             object_id_t tmStoreId, object_id_t tcStoreId);
+  ~TmTcBridge() override;
 
   /**
    * Set number of packets sent per performOperation().Please note that this
    * value must be smaller than MAX_STORED_DATA_SENT_PER_CYCLE
    * @param sentPacketsPerCycle
-   * @return -@c RETURN_OK if value was set successfully
-   * 		   -@c RETURN_FAILED otherwise, stored value stays the same
+   * @return -@c returnvalue::OK if value was set successfully
+   *         -@c returnvalue::FAILED otherwise, stored value stays the same
    */
   ReturnValue_t setNumberOfSentPacketsPerCycle(uint8_t sentPacketsPerCycle);
 
@@ -40,10 +39,10 @@ class TmTcBridge : public AcceptsTelemetryIF,
    * Set number of packets sent per performOperation().Please note that this
    * value must be smaller than MAX_DOWNLINK_PACKETS_STORED
    * @param sentPacketsPerCycle
-   * @return -@c RETURN_OK if value was set successfully
-   *         -@c RETURN_FAILED otherwise, stored value stays the same
+   * @return -@c returnvalue::OK if value was set successfully
+   *         -@c returnvalue::FAILED otherwise, stored value stays the same
    */
-  ReturnValue_t setMaxNumberOfPacketsStored(uint8_t maxNumberOfPacketsStored);
+  ReturnValue_t setMaxNumberOfPacketsStored(unsigned int maxNumberOfPacketsStored);
 
   /**
    * This will set up the bridge to overwrite old data in the FIFO.
@@ -58,21 +57,24 @@ class TmTcBridge : public AcceptsTelemetryIF,
    * Initializes necessary FSFW components for the TMTC Bridge
    * @return
    */
-  virtual ReturnValue_t initialize() override;
+  ReturnValue_t initialize() override;
 
   /**
    * @brief	Handles TMTC reception
    */
-  virtual ReturnValue_t performOperation(uint8_t operationCode = 0) override;
+  ReturnValue_t performOperation(uint8_t operationCode = 0) override;
 
   /** AcceptsTelemetryIF override */
-  virtual MessageQueueId_t getReportReceptionQueue(uint8_t virtualChannel = 0) override;
+  MessageQueueId_t getReportReceptionQueue(uint8_t virtualChannel) const override;
 
   /** AcceptsTelecommandsIF override */
-  virtual uint16_t getIdentifier() override;
-  virtual MessageQueueId_t getRequestQueue() override;
+  uint32_t getIdentifier() const override;
+  MessageQueueId_t getRequestQueue() const override;
+  const char* getName() const override;
 
  protected:
+  const char* name = "";
+
   //! Cached for initialize function.
   object_id_t tmStoreId = objects::NO_OBJECT;
   object_id_t tcStoreId = objects::NO_OBJECT;
@@ -89,6 +91,7 @@ class TmTcBridge : public AcceptsTelemetryIF,
   //! by default, so telemetry will be handled immediately.
   bool communicationLinkUp = true;
   bool tmStored = false;
+  bool warningSwitch = true;
   bool overwriteOld = true;
   uint8_t packetSentCounter = 0;
 
@@ -150,7 +153,7 @@ class TmTcBridge : public AcceptsTelemetryIF,
    */
   DynamicFIFO<store_address_t>* tmFifo = nullptr;
   uint8_t sentPacketsPerCycle = DEFAULT_STORED_DATA_SENT_PER_CYCLE;
-  uint8_t maxNumberOfPacketsStored = DEFAULT_DOWNLINK_PACKETS_STORED;
+  unsigned int maxNumberOfPacketsStored = DEFAULT_DOWNLINK_PACKETS_STORED;
 };
 
 #endif /* FSFW_TMTCSERVICES_TMTCBRIDGE_H_ */

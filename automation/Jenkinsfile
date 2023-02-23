@@ -1,41 +1,125 @@
 pipeline {
     environment {
-        BUILDDIR = 'build-tests'
+        BUILDDIR_HOST = 'cmake-build-tests-host'
+        BUILDDIR_LINUX = 'cmake-build-tests-linux'
+        DOCDDIR = 'cmake-build-documentation'
     }
     agent {
-        docker { image 'fsfw-ci:d3'}
+        docker { 
+            image 'fsfw-ci:d6'
+            args '--network host --sysctl fs.mqueue.msg_max=100'
+        }
     }
     stages {
-        stage('Clean') {
-            steps {
-                sh 'rm -rf $BUILDDIR'
-            }
-        }
-        stage('Configure') {
-            steps {
-                dir(BUILDDIR) {
-                    sh 'cmake -DFSFW_OSAL=host -DFSFW_BUILD_TESTS=ON -DFSFW_CICD_BUILD=ON ..'
+        stage('Host') {
+            stages{
+                stage('Clean') {
+                    steps {
+                        sh 'rm -rf $BUILDDIR_HOST'
+                    }
+                }
+                stage('Configure') {
+                    steps {
+                        dir(BUILDDIR_HOST) {
+                            sh 'cmake -DFSFW_OSAL=host -DFSFW_BUILD_TESTS=ON -DFSFW_CICD_BUILD=ON ..'
+                        }
+                    }
+                }
+                stage('Build') {
+                    steps {
+                        dir(BUILDDIR_HOST) {
+                            sh 'cmake --build . -j4'
+                        }
+                    }
+                }
+                stage('Unittests') {
+                    steps {
+                        dir(BUILDDIR_HOST) {
+                            sh 'cmake --build . -- fsfw-tests_coverage -j4'
+                        }
+                    }
+                }
+                stage('Valgrind') {
+                    steps {
+                        dir(BUILDDIR_HOST) {
+                            sh 'valgrind --leak-check=full --error-exitcode=1 ./fsfw-tests'
+                        }
+                    }
                 }
             }
         }
-        stage('Build') {
-            steps {
-                dir(BUILDDIR) {
-                    sh 'cmake --build . -j4'
+        stage('Linux') {
+            stages{
+                stage('Clean') {
+                    steps {
+                        sh 'rm -rf $BUILDDIR_LINUX'
+                    }
+                }
+                stage('Configure') {
+                    steps {
+                        dir(BUILDDIR_LINUX) {
+                            sh 'cmake -DFSFW_OSAL=linux -DFSFW_BUILD_TESTS=ON -DFSFW_CICD_BUILD=ON ..'
+                        }
+                    }
+                }
+                stage('Build') {
+                    steps {
+                        dir(BUILDDIR_LINUX) {
+                            sh 'cmake --build . -j4'
+                        }
+                    }
+                }
+                stage('Unittests') {
+                    steps {
+                        dir(BUILDDIR_LINUX) {
+                            sh 'cmake --build . -- fsfw-tests_coverage -j4'
+                        }
+                    }
+                }
+                stage('Valgrind') {
+                    steps {
+                        dir(BUILDDIR_LINUX) {
+                            sh 'valgrind --leak-check=full --error-exitcode=1 ./fsfw-tests'
+                        }
+                    }
                 }
             }
         }
-        stage('Unittests') {
+        stage('Documentation') {
+            when {
+                branch 'development'
+            }
             steps {
+                dir(DOCDDIR) {
+                    sh 'cmake -DFSFW_BUILD_DOCS=ON -DFSFW_OSAL=host ..'
+                    sh 'make Sphinx'
+                    sshagent(credentials: ['documentation-buildfix']) {
+                        sh 'rsync -r --delete docs/sphinx/* buildfix@documentation.irs.uni-stuttgart.de:/fsfw/development'
+                    }
+                }
                 dir(BUILDDIR) {
-                    sh 'cmake --build . -- fsfw-tests_coverage -j4'
+                    sshagent(credentials: ['documentation-buildfix']) {
+                        sh 'rsync -r --delete fsfw-tests_coverage/* buildfix@documentation.irs.uni-stuttgart.de:/fsfw/coverage/development'
+                    }
                 }
             }
         }
-        stage('Valgrind') {
+        stage('Master Documentation') {
+            when {
+                branch 'master'
+            }
             steps {
+                dir(DOCDDIR) {
+                    sh 'cmake -DFSFW_BUILD_DOCS=ON -DFSFW_OSAL=host ..'
+                    sh 'make Sphinx'
+                    sshagent(credentials: ['documentation-buildfix']) {
+                        sh 'rsync -r --delete docs/sphinx/* buildfix@documentation.irs.uni-stuttgart.de:/fsfw/master'
+                    }
+                }
                 dir(BUILDDIR) {
-                    sh 'valgrind --leak-check=full --error-exitcode=1 ./fsfw-tests'
+                    sshagent(credentials: ['documentation-buildfix']) {
+                        sh 'rsync -r --delete fsfw-tests_coverage/* buildfix@documentation.irs.uni-stuttgart.de:/fsfw/coverage/master'
+                    }
                 }
             }
         }

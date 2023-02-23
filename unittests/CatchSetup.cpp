@@ -1,5 +1,6 @@
 #include "CatchDefinitions.h"
 #include "CatchFactory.h"
+#include "fsfw/FSFW.h"
 
 #ifdef GCOV
 #include <gcov.h>
@@ -27,5 +28,10 @@ int customSetup() {
   ObjectManager* objMan = ObjectManager::instance();
   objMan->setObjectFactoryFunction(Factory::produceFrameworkObjects, nullptr);
   objMan->initialize();
+  return 0;
+}
+
+int customTeardown() {
+  ObjectManager::clear();
   return 0;
 }

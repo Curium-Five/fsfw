@@ -39,12 +39,12 @@ ReturnValue_t QueueMapManager::addMessageQueue(MessageQueueIF* queueToInsert,
         "QueueMapManager::addMessageQueue This ID is already "
         "inside the map!\n");
 #endif
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
   }
   if (id != nullptr) {
     *id = currentId;
   }
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }
 
 MessageQueueIF* QueueMapManager::getMessageQueue(MessageQueueId_t messageQueueId) const {
@@ -54,7 +54,7 @@ MessageQueueIF* QueueMapManager::getMessageQueue(MessageQueueId_t messageQueueId
   } else {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::warning << "QueueMapManager::getQueueHandle: The ID " << messageQueueId
-                 << " does not exists in the map!" << std::endl;
+                 << " does not exist in the map" << std::endl;
 #else
     sif::printWarning("QueueMapManager::getQueueHandle: The ID %d does not exist in the map!\n",
                       messageQueueId);

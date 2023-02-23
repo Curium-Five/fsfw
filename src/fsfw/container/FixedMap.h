@@ -4,8 +4,8 @@
 #include <type_traits>
 #include <utility>
 
-#include "../returnvalues/HasReturnvaluesIF.h"
 #include "ArrayList.h"
+#include "definitions.h"
 
 /**
  * @brief    Map implementation for maps with a pre-defined size.
@@ -24,11 +24,6 @@ class FixedMap : public SerializeIF {
                 "derived class from SerializeIF to be serialize-able");
 
  public:
-  static const uint8_t INTERFACE_ID = CLASS_ID::FIXED_MAP;
-  static const ReturnValue_t KEY_ALREADY_EXISTS = MAKE_RETURN_CODE(0x01);
-  static const ReturnValue_t MAP_FULL = MAKE_RETURN_CODE(0x02);
-  static const ReturnValue_t KEY_DOES_NOT_EXIST = MAKE_RETURN_CODE(0x03);
-
  private:
   static const key_t EMPTY_SLOT = -1;
   ArrayList<std::pair<key_t, T>, uint32_t> theMap;
@@ -75,11 +70,11 @@ class FixedMap : public SerializeIF {
   uint32_t size() const { return _size; }
 
   ReturnValue_t insert(key_t key, T value, Iterator* storedValue = nullptr) {
-    if (exists(key) == HasReturnvaluesIF::RETURN_OK) {
-      return KEY_ALREADY_EXISTS;
+    if (exists(key) == returnvalue::OK) {
+      return containers::KEY_ALREADY_EXISTS;
     }
     if (_size == theMap.maxSize()) {
-      return MAP_FULL;
+      return containers::MAP_FULL;
     }
     theMap[_size].first = key;
     theMap[_size].second = value;
@@ -87,15 +82,15 @@ class FixedMap : public SerializeIF {
       *storedValue = Iterator(&theMap[_size]);
     }
     ++_size;
-    return HasReturnvaluesIF::RETURN_OK;
+    return returnvalue::OK;
   }
 
   ReturnValue_t insert(std::pair<key_t, T> pair) { return insert(pair.first, pair.second); }
 
   ReturnValue_t exists(key_t key) const {
-    ReturnValue_t result = KEY_DOES_NOT_EXIST;
+    ReturnValue_t result = containers::KEY_DOES_NOT_EXIST;
     if (findIndex(key) < _size) {
-      result = HasReturnvaluesIF::RETURN_OK;
+      result = returnvalue::OK;
     }
     return result;
   }
@@ -103,29 +98,29 @@ class FixedMap : public SerializeIF {
   ReturnValue_t erase(Iterator* iter) {
     uint32_t i;
     if ((i = findIndex((*iter).value->first)) >= _size) {
-      return KEY_DOES_NOT_EXIST;
+      return containers::KEY_DOES_NOT_EXIST;
     }
     theMap[i] = theMap[_size - 1];
     --_size;
     --((*iter).value);
-    return HasReturnvaluesIF::RETURN_OK;
+    return returnvalue::OK;
   }
 
   ReturnValue_t erase(key_t key) {
     uint32_t i;
     if ((i = findIndex(key)) >= _size) {
-      return KEY_DOES_NOT_EXIST;
+      return containers::KEY_DOES_NOT_EXIST;
     }
     theMap[i] = theMap[_size - 1];
     --_size;
-    return HasReturnvaluesIF::RETURN_OK;
+    return returnvalue::OK;
   }
 
   T* findValue(key_t key) const { return &theMap[findIndex(key)].second; }
 
   Iterator find(key_t key) const {
     ReturnValue_t result = exists(key);
-    if (result != HasReturnvaluesIF::RETURN_OK) {
+    if (result != returnvalue::OK) {
       return end();
     }
     return Iterator(&theMap[findIndex(key)]);
@@ -133,11 +128,11 @@ class FixedMap : public SerializeIF {
 
   ReturnValue_t find(key_t key, T** value) const {
     ReturnValue_t result = exists(key);
-    if (result != HasReturnvaluesIF::RETURN_OK) {
+    if (result != returnvalue::OK) {
       return result;
     }
     *value = &theMap[findIndex(key)].second;
-    return HasReturnvaluesIF::RETURN_OK;
+    return returnvalue::OK;
   }
 
   bool empty() {
@@ -165,7 +160,7 @@ class FixedMap : public SerializeIF {
     ReturnValue_t result =
         SerializeAdapter::serialize(&this->_size, buffer, size, maxSize, streamEndianness);
     uint32_t i = 0;
-    while ((result == HasReturnvaluesIF::RETURN_OK) && (i < this->_size)) {
+    while ((result == returnvalue::OK) && (i < this->_size)) {
       result =
           SerializeAdapter::serialize(&theMap[i].first, buffer, size, maxSize, streamEndianness);
       result =
@@ -195,7 +190,7 @@ class FixedMap : public SerializeIF {
       return SerializeIF::TOO_MANY_ELEMENTS;
     }
     uint32_t i = 0;
-    while ((result == HasReturnvaluesIF::RETURN_OK) && (i < this->_size)) {
+    while ((result == returnvalue::OK) && (i < this->_size)) {
       result = SerializeAdapter::deSerialize(&theMap[i].first, buffer, size, streamEndianness);
       result = SerializeAdapter::deSerialize(&theMap[i].second, buffer, size, streamEndianness);
       ++i;

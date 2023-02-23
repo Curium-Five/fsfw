@@ -13,7 +13,7 @@ from shutil import which
 from typing import List
 
 
-UNITTEST_FOLDER_NAME = "build-tests"
+UNITTEST_FOLDER_NAME = "cmake-build-tests"
 DOCS_FOLDER_NAME = "build-docs"
 
 
@@ -51,7 +51,7 @@ def main():
     parser.add_argument(
         "-g",
         "--generators",
-        default = "Ninja",
+        default="Ninja",
         action="store",
         help="CMake generators",
     )
@@ -165,10 +165,18 @@ def create_tests_build_cfg(args):
     os.mkdir(UNITTEST_FOLDER_NAME)
     os.chdir(UNITTEST_FOLDER_NAME)
     if args.windows:
-        cmake_cmd = 'cmake -G "' + args.generators + '" -DFSFW_OSAL=host -DFSFW_BUILD_TESTS=ON \
+        cmake_cmd = (
+            'cmake -G "'
+            + args.generators
+            + '" -DFSFW_OSAL=host -DFSFW_BUILD_TESTS=ON \
         -DGCOVR_PATH="py -m gcovr" ..'
+        )
     else:
-        cmake_cmd = 'cmake -G "' + args.generators + '" -DFSFW_OSAL=host -DFSFW_BUILD_TESTS=ON ..'
+        cmake_cmd = (
+            'cmake -G "'
+            + args.generators
+            + '" -DFSFW_OSAL=host -DFSFW_BUILD_TESTS=ON ..'
+        )
     cmd_runner(cmake_cmd)
     os.chdir("..")
 
@@ -199,7 +207,7 @@ def check_for_cmake_build_dir(build_dir_list: list) -> list:
 def perform_lcov_operation(directory: str, chdir: bool):
     if chdir:
         os.chdir(directory)
-    cmd_runner("cmake --build . -- fsfw-tests_coverage -j")
+    cmd_runner("cmake --build . -j -- fsfw-tests_coverage")
 
 
 def determine_build_dir(build_dir_list: List[str]):

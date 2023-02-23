@@ -24,11 +24,16 @@ class ObjectManager : public ObjectManagerIF {
   using produce_function_t = void (*)(void* args);
 
   /**
-   * Returns the single instance of TaskFactory.
+   * Returns the single instance of ObjectManager.
    * The implementation of #instance is found in its subclasses.
    * Thus, we choose link-time variability of the  instance.
    */
   static ObjectManager* instance();
+
+  /**
+   * Deletes the single instance of ObjectManager
+   */
+  static void clear();
 
   void setObjectFactoryFunction(produce_function_t prodFunc, void* args);
 
@@ -38,7 +43,7 @@ class ObjectManager : public ObjectManagerIF {
   /**
    *  @brief  In the class's destructor, all objects in the list are deleted.
    */
-  virtual ~ObjectManager();
+  ~ObjectManager() override;
   ReturnValue_t insert(object_id_t id, SystemObjectIF* object) override;
   ReturnValue_t remove(object_id_t id) override;
   void initialize() override;
@@ -66,6 +71,9 @@ class ObjectManager : public ObjectManagerIF {
    */
   std::map<object_id_t, SystemObjectIF*> objectList;
   static ObjectManager* objManagerInstance;
+  // used when the OM itself is deleted to modify behaviour of remove()
+  // to avoid iterator invalidation and double free
+  bool teardown = false;
 };
 
 // Documentation can be found in the class method declaration above

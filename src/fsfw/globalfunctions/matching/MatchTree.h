@@ -24,7 +24,7 @@ class MatchTree : public SerializeableMatcherIF<T>, public BinaryTree<Serializea
   MatchTree(iterator root, uint8_t maxDepth = -1)
       : BinaryTree<SerializeableMatcherIF<T>>(root.element), maxDepth(maxDepth) {}
   MatchTree() : BinaryTree<SerializeableMatcherIF<T>>(), maxDepth(-1) {}
-  virtual ~MatchTree() {}
+  virtual ~MatchTree() { clear(); }
   virtual bool match(T number) override { return matchesTree(number); }
   bool matchesTree(T number) {
     iterator iter = this->begin();
@@ -40,34 +40,34 @@ class MatchTree : public SerializeableMatcherIF<T>, public BinaryTree<Serializea
     uint8_t count = this->countRight(iter);
     ReturnValue_t result =
         SerializeAdapter::serialize(&count, buffer, size, maxSize, streamEndianness);
-    if (result != HasReturnvaluesIF::RETURN_OK) {
+    if (result != returnvalue::OK) {
       return result;
     }
     if (iter == this->end()) {
-      return HasReturnvaluesIF::RETURN_OK;
+      return returnvalue::OK;
     }
     result = iter->serialize(buffer, size, maxSize, streamEndianness);
-    if (result != HasReturnvaluesIF::RETURN_OK) {
+    if (result != returnvalue::OK) {
       return result;
     }
     if (maxDepth > 0) {
       MatchTree<T> temp(iter.left(), maxDepth - 1);
       result = temp.serialize(buffer, size, maxSize, streamEndianness);
     }
-    if (result != HasReturnvaluesIF::RETURN_OK) {
+    if (result != returnvalue::OK) {
       return result;
     }
     iter = iter.right();
     while (iter != this->end()) {
       result = iter->serialize(buffer, size, maxSize, streamEndianness);
-      if (result != HasReturnvaluesIF::RETURN_OK) {
+      if (result != returnvalue::OK) {
         return result;
       }
       if (maxDepth > 0) {
         MatchTree<T> temp(iter.left(), maxDepth - 1);
         result = temp.serialize(buffer, size, maxSize, streamEndianness);
       }
-      if (result != HasReturnvaluesIF::RETURN_OK) {
+      if (result != returnvalue::OK) {
         return result;
       }
       iter = iter.right();
@@ -106,7 +106,7 @@ class MatchTree : public SerializeableMatcherIF<T>, public BinaryTree<Serializea
 
   ReturnValue_t deSerialize(const uint8_t** buffer, size_t* size,
                             SerializeIF::Endianness streamEndianness) override {
-    return HasReturnvaluesIF::RETURN_OK;
+    return returnvalue::OK;
   }
 
  protected:
@@ -124,17 +124,17 @@ class MatchTree : public SerializeableMatcherIF<T>, public BinaryTree<Serializea
   // SHOULDDO: What to do if insertion/deletion fails. Throw event?
   ReturnValue_t removeElementAndAllChildren(iterator position) {
     auto children = this->erase(position);
-    ReturnValue_t result = HasReturnvaluesIF::RETURN_OK;
+    ReturnValue_t result = returnvalue::OK;
     if (children.first != this->end()) {
       result = removeElementAndAllChildren(children.first);
     }
-    if (result != HasReturnvaluesIF::RETURN_OK) {
+    if (result != returnvalue::OK) {
       return result;
     }
     if (children.second != this->end()) {
       result = removeElementAndAllChildren(children.second);
     }
-    if (result != HasReturnvaluesIF::RETURN_OK) {
+    if (result != returnvalue::OK) {
       return result;
     }
     // Delete element itself.
@@ -143,13 +143,13 @@ class MatchTree : public SerializeableMatcherIF<T>, public BinaryTree<Serializea
 
   ReturnValue_t removeElementAndReconnectChildren(iterator position) {
     if (position == this->end()) {
-      return HasReturnvaluesIF::RETURN_OK;
+      return returnvalue::OK;
     }
     // Delete everything from the AND branch.
-    ReturnValue_t result = HasReturnvaluesIF::RETURN_OK;
+    ReturnValue_t result = returnvalue::OK;
     if (position.left() != this->end()) {
       result = removeElementAndAllChildren(position.left());
-      if (result != HasReturnvaluesIF::RETURN_OK) {
+      if (result != returnvalue::OK) {
         return result;
       }
     }
@@ -176,7 +176,46 @@ class MatchTree : public SerializeableMatcherIF<T>, public BinaryTree<Serializea
     return cleanUpElement(position);
   }
 
-  virtual ReturnValue_t cleanUpElement(iterator position) { return HasReturnvaluesIF::RETURN_OK; }
+  void clear() {
+    Node* localRoot = BinaryTree<SerializeableMatcherIF<T>>::rootNode;
+
+    if (localRoot == nullptr) {
+      return;
+    }
+
+    Node* node = localRoot->left;
+
+    while (true) {
+      if (node->left != nullptr) {
+        node = node->left;
+        continue;
+      }
+      if (node->right != nullptr) {
+        node = node->right;
+        continue;
+      }
+      if (node->parent == nullptr) {
+        // this is the root node with no children
+        if (node->value != nullptr) {
+          cleanUpElement(iterator(node));
+        }
+        return;
+      }
+      // leaf
+      {
+        Node* parent = node->parent;
+        if (parent->left == node) {
+          parent->left = nullptr;
+        } else {
+          parent->right = nullptr;
+        }
+        cleanUpElement(iterator(node));
+        node = parent;
+      }
+    }
+  }
+
+  virtual ReturnValue_t cleanUpElement(iterator position) { return returnvalue::OK; }
 
   bool matchSubtree(iterator iter, T number) {
     if (iter == nullptr) {

@@ -5,7 +5,7 @@
 #include <utility>
 
 #include "../events/Event.h"
-#include "../returnvalues/HasReturnvaluesIF.h"
+#include "../returnvalues/returnvalue.h"
 #include "StorageAccessor.h"
 #include "storeAddress.h"
 
@@ -25,7 +25,7 @@ using ConstAccessorPair = std::pair<ReturnValue_t, ConstStorageAccessor>;
  * @author	Bastian Baetz
  * @date	18.09.2012
  */
-class StorageManagerIF : public HasReturnvaluesIF {
+class StorageManagerIF {
  public:
   using size_type = size_t;
   using max_subpools_t = uint8_t;
@@ -55,7 +55,7 @@ class StorageManagerIF : public HasReturnvaluesIF {
   /**
    * @brief This is the empty virtual destructor as required for C++ interfaces.
    */
-  virtual ~StorageManagerIF(){};
+  virtual ~StorageManagerIF() = default;
   /**
    * @brief	With addData, a free storage position is allocated and data
    * 			stored there.
@@ -63,18 +63,17 @@ class StorageManagerIF : public HasReturnvaluesIF {
    * @param storageId A pointer to the storageId to retrieve.
    * @param data	The data to be stored in the StorageManager.
    * @param size	The amount of data to be stored.
-   * @return	Returns @li RETURN_OK if data was added.
-   * 					@li	RETURN_FAILED if data could not be added.
-   * 						storageId is unchanged then.
+   * @return	Returns @returnvalue::OK if data was added.
+   * 		@returnvalue::FAILED if data could not be added, storageId is unchanged then.
    */
-  virtual ReturnValue_t addData(store_address_t* storageId, const uint8_t* data, size_t size,
-                                bool ignoreFault = false) = 0;
+  virtual ReturnValue_t addData(store_address_t* storageId, const uint8_t* data, size_t size) = 0;
+
   /**
    * @brief	With deleteData, the storageManager frees the memory region
    * 			identified by packet_id.
    * @param packet_id	The identifier of the memory region to be freed.
-   * @return	@li RETURN_OK on success.
-   * 			@li	RETURN_FAILED if deletion did not work
+   * @return	@li returnvalue::OK on success.
+   * 			@li	returnvalue::FAILED if deletion did not work
    * 				(e.g. an illegal packet_id was passed).
    */
   virtual ReturnValue_t deleteData(store_address_t packet_id) = 0;
@@ -84,12 +83,13 @@ class StorageManagerIF : public HasReturnvaluesIF {
    * @param buffer	Pointer to the data.
    * @param size		Size of data to be stored.
    * @param storeId	Store id of the deleted element (optional)
-   * @return	@li RETURN_OK on success.
+   * @return	@li returnvalue::OK on success.
    * 			@li	failure code if deletion did not work
    */
-  virtual ReturnValue_t deleteData(uint8_t* buffer, size_t size,
-                                   store_address_t* storeId = nullptr) = 0;
-
+  virtual ReturnValue_t deleteData(uint8_t* buffer, size_t size, store_address_t* storeId) = 0;
+  virtual ReturnValue_t deleteData(uint8_t* buffer, size_t size) {
+    return deleteData(buffer, size, nullptr);
+  }
   /**
    * @brief 	Access the data by supplying a store ID.
    * @details
@@ -98,7 +98,13 @@ class StorageManagerIF : public HasReturnvaluesIF {
    * @param storeId
    * @return Pair of return value and a ConstStorageAccessor instance
    */
-  virtual ConstAccessorPair getData(store_address_t storeId) = 0;
+  virtual ConstAccessorPair getData(store_address_t storeId) {
+    uint8_t* tempData = nullptr;
+    ConstStorageAccessor constAccessor(storeId, this);
+    ReturnValue_t status = modifyData(storeId, &tempData, &constAccessor.size_);
+    constAccessor.constDataPointer = tempData;
+    return {status, std::move(constAccessor)};
+  }
 
   /**
    * @brief 	Access the data by supplying a store ID and a helper
@@ -107,7 +113,13 @@ class StorageManagerIF : public HasReturnvaluesIF {
    * @param constAccessor Wrapper function to access store data.
    * @return
    */
-  virtual ReturnValue_t getData(store_address_t storeId, ConstStorageAccessor& constAccessor) = 0;
+  virtual ReturnValue_t getData(store_address_t storeId, ConstStorageAccessor& accessor) {
+    uint8_t* tempData = nullptr;
+    ReturnValue_t status = modifyData(storeId, &tempData, &accessor.size_);
+    accessor.assignStore(this);
+    accessor.constDataPointer = tempData;
+    return status;
+  }
 
   /**
    * @brief	getData returns an address to data and the size of the data
@@ -116,8 +128,8 @@ class StorageManagerIF : public HasReturnvaluesIF {
    * @param packet_ptr	The passed pointer address is set to the the memory
    * 						position
    * @param size			The exact size of the stored data is returned here.
-   * @return	@li RETURN_OK on success.
-   * 			@li	RETURN_FAILED if fetching data did not work
+   * @return	@returnvalue::OK on success.
+   * 		@returnvalue::FAILED if fetching data did not work
    * 				(e.g. an illegal packet_id was passed).
    */
   virtual ReturnValue_t getData(store_address_t packet_id, const uint8_t** packet_ptr,
@@ -128,7 +140,12 @@ class StorageManagerIF : public HasReturnvaluesIF {
    * @param storeId
    * @return Pair of return value and StorageAccessor helper
    */
-  virtual AccessorPair modifyData(store_address_t storeId) = 0;
+  virtual AccessorPair modifyData(store_address_t storeId) {
+    StorageAccessor accessor(storeId, this);
+    ReturnValue_t status = modifyData(storeId, &accessor.dataPointer, &accessor.size_);
+    accessor.assignConstPointer();
+    return {status, std::move(accessor)};
+  }
 
   /**
    * Modify data by supplying a store ID and a StorageAccessor helper instance.
@@ -136,7 +153,12 @@ class StorageManagerIF : public HasReturnvaluesIF {
    * @param accessor Helper class to access the modifiable data.
    * @return
    */
-  virtual ReturnValue_t modifyData(store_address_t storeId, StorageAccessor& accessor) = 0;
+  virtual ReturnValue_t modifyData(store_address_t storeId, StorageAccessor& accessor) {
+    accessor.assignStore(this);
+    ReturnValue_t status = modifyData(storeId, &accessor.dataPointer, &accessor.size_);
+    accessor.assignConstPointer();
+    return status;
+  }
 
   /**
    * Get pointer and size of modifiable data by supplying the storeId
@@ -155,13 +177,14 @@ class StorageManagerIF : public HasReturnvaluesIF {
    * written to p_data!
    * @param storageId A pointer to the storageId to retrieve.
    * @param size		The size of the space to be reserved.
-   * @param p_data	A pointer to the element data is returned here.
-   * @return	Returns @li RETURN_OK if data was added.
-   * 					@li	RETURN_FAILED if data could not be added.
-   * 						storageId is unchanged then.
+   * @param dataPtr	A pointer to the element data is returned here.
+   * @return	Returns @returnvalue::OK if data was added.
+   * 		@returnvalue::FAILED if data could not be added, storageId is unchanged then.
    */
-  virtual ReturnValue_t getFreeElement(store_address_t* storageId, const size_t size,
-                                       uint8_t** p_data, bool ignoreFault = false) = 0;
+  virtual ReturnValue_t getFreeElement(store_address_t* storageId, size_t size,
+                                       uint8_t** dataPtr) = 0;
+
+  [[nodiscard]] virtual bool hasDataAtId(store_address_t storeId) const = 0;
 
   /**
    * Clears the whole store.
@@ -192,7 +215,7 @@ class StorageManagerIF : public HasReturnvaluesIF {
    * Get number of pools.
    * @return
    */
-  virtual max_subpools_t getNumberOfSubPools() const = 0;
+  [[nodiscard]] virtual max_subpools_t getNumberOfSubPools() const = 0;
 };
 
 #endif /* FSFW_STORAGEMANAGER_STORAGEMANAGERIF_H_ */

@@ -1,30 +1,29 @@
 target_sources(
   ${LIB_FSFW_NAME}
   PRIVATE PduConfig.cpp
-          VarLenField.cpp
-          HeaderSerializer.cpp
-          HeaderDeserializer.cpp
-          FileDirectiveDeserializer.cpp
-          FileDirectiveSerializer.cpp
+          HeaderCreator.cpp
+          HeaderReader.cpp
+          FileDirectiveReader.cpp
+          FileDirectiveCreator.cpp
           AckInfo.cpp
-          AckPduSerializer.cpp
-          AckPduDeserializer.cpp
+          AckPduCreator.cpp
+          AckPduReader.cpp
           EofInfo.cpp
-          EofPduSerializer.cpp
-          EofPduDeserializer.cpp
+          EofPduCreator.cpp
+          EofPduReader.cpp
           NakInfo.cpp
-          NakPduSerializer.cpp
-          NakPduDeserializer.cpp
+          NakPduCreator.cpp
+          NakPduReader.cpp
           FinishedInfo.cpp
-          FinishedPduSerializer.cpp
-          FinishedPduDeserializer.cpp
+          FinishedPduCreator.cpp
+          FinishedPduReader.cpp
           MetadataInfo.cpp
-          MetadataPduSerializer.cpp
-          MetadataPduDeserializer.cpp
-          KeepAlivePduSerializer.cpp
-          KeepAlivePduDeserializer.cpp
-          PromptPduSerializer.cpp
-          PromptPduDeserializer.cpp
-          FileDataSerializer.cpp
-          FileDataDeserializer.cpp
+          MetadataPduCreator.cpp
+          MetadataPduReader.cpp
+          KeepAlivePduCreator.cpp
+          KeepAlivePduReader.cpp
+          PromptPduCreator.cpp
+          PromptPduReader.cpp
+          FileDataCreator.cpp
+          FileDataReader.cpp
           FileDataInfo.cpp)

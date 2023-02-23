@@ -10,8 +10,8 @@
 CService200ModeCommanding::CService200ModeCommanding(object_id_t objectId, uint16_t apid,
                                                      uint8_t serviceId, uint8_t numParallelCommands,
                                                      uint16_t commandTimeoutSeconds)
-    : CommandingServiceBase(objectId, apid, serviceId, numParallelCommands, commandTimeoutSeconds) {
-}
+    : CommandingServiceBase(objectId, apid, "PUS 200 Mode MGMT", serviceId, numParallelCommands,
+                            commandTimeoutSeconds) {}
 
 CService200ModeCommanding::~CService200ModeCommanding() {}
 
@@ -19,8 +19,9 @@ ReturnValue_t CService200ModeCommanding::isValidSubservice(uint8_t subservice) {
   switch (subservice) {
     case (Subservice::COMMAND_MODE_COMMAND):
     case (Subservice::COMMAND_MODE_READ):
-    case (Subservice::COMMAND_MODE_ANNCOUNCE):
-      return RETURN_OK;
+    case (Subservice::COMMAND_MODE_ANNOUNCE):
+    case (Subservice::COMMAND_MODE_ANNOUNCE_RECURSIVELY):
+      return returnvalue::OK;
     default:
       return AcceptsTelecommandsIF::INVALID_SUBSERVICE;
   }
@@ -41,28 +42,44 @@ ReturnValue_t CService200ModeCommanding::getMessageQueueAndObject(uint8_t subser
 
 ReturnValue_t CService200ModeCommanding::checkInterfaceAndAcquireMessageQueue(
     MessageQueueId_t *messageQueueToSet, object_id_t *objectId) {
-  HasModesIF *destination = ObjectManager::instance()->get<HasModesIF>(*objectId);
+  auto *destination = ObjectManager::instance()->get<HasModesIF>(*objectId);
   if (destination == nullptr) {
     return CommandingServiceBase::INVALID_OBJECT;
   }
 
   *messageQueueToSet = destination->getCommandQueue();
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }
 
 ReturnValue_t CService200ModeCommanding::prepareCommand(CommandMessage *message, uint8_t subservice,
                                                         const uint8_t *tcData, size_t tcDataLen,
                                                         uint32_t *state, object_id_t objectId) {
-  ModePacket modeCommandPacket;
-  ReturnValue_t result =
-      modeCommandPacket.deSerialize(&tcData, &tcDataLen, SerializeIF::Endianness::BIG);
-  if (result != RETURN_OK) {
-    return result;
-  }
+  bool recursive = false;
+  switch (subservice) {
+    case (Subservice::COMMAND_MODE_COMMAND): {
+      ModePacket modeCommandPacket;
+      ReturnValue_t result =
+          modeCommandPacket.deSerialize(&tcData, &tcDataLen, SerializeIF::Endianness::BIG);
+      if (result != returnvalue::OK) {
+        return result;
+      }
 
-  ModeMessage::setModeMessage(message, ModeMessage::CMD_MODE_COMMAND, modeCommandPacket.getMode(),
-                              modeCommandPacket.getSubmode());
-  return result;
+      ModeMessage::setModeMessage(message, ModeMessage::CMD_MODE_COMMAND,
+                                  modeCommandPacket.getMode(), modeCommandPacket.getSubmode());
+      return returnvalue::OK;
+    }
+    case (Subservice::COMMAND_MODE_ANNOUNCE_RECURSIVELY):
+      recursive = true;
+      [[fallthrough]];
+    case (Subservice::COMMAND_MODE_ANNOUNCE):
+      ModeMessage::setModeAnnounceMessage(*message, recursive);
+      return EXECUTION_COMPLETE;
+    case (Subservice::COMMAND_MODE_READ):
+      ModeMessage::setModeReadMessage(*message);
+      return returnvalue::OK;
+    default:
+      return CommandingServiceBase::INVALID_SUBSERVICE;
+  }
 }
 
 ReturnValue_t CService200ModeCommanding::handleReply(const CommandMessage *reply,
@@ -70,11 +87,13 @@ ReturnValue_t CService200ModeCommanding::handleReply(const CommandMessage *reply
                                                      CommandMessage *optionalNextCommand,
                                                      object_id_t objectId, bool *isStep) {
   Command_t replyId = reply->getCommand();
-  ReturnValue_t result = HasReturnvaluesIF::RETURN_FAILED;
+  ReturnValue_t result = returnvalue::FAILED;
   switch (replyId) {
     case (ModeMessage::REPLY_MODE_REPLY): {
-      result = prepareModeReply(reply, objectId);
-      break;
+      if (previousCommand != ModeMessage::CMD_MODE_COMMAND) {
+        return prepareModeReply(reply, objectId);
+      }
+      return returnvalue::OK;
     }
     case (ModeMessage::REPLY_WRONG_MODE_REPLY): {
       result = prepareWrongModeReply(reply, objectId);
@@ -88,7 +107,7 @@ ReturnValue_t CService200ModeCommanding::handleReply(const CommandMessage *reply
       result = INVALID_REPLY;
       break;
     default:
-      result = RETURN_FAILED;
+      result = returnvalue::FAILED;
   }
   return result;
 }
@@ -96,16 +115,16 @@ ReturnValue_t CService200ModeCommanding::handleReply(const CommandMessage *reply
 ReturnValue_t CService200ModeCommanding::prepareModeReply(const CommandMessage *reply,
                                                           object_id_t objectId) {
   ModePacket modeReplyPacket(objectId, ModeMessage::getMode(reply), ModeMessage::getSubmode(reply));
-  return sendTmPacket(Subservice::REPLY_MODE_REPLY, &modeReplyPacket);
+  return sendTmPacket(Subservice::REPLY_MODE_REPLY, modeReplyPacket);
 }
 
 ReturnValue_t CService200ModeCommanding::prepareWrongModeReply(const CommandMessage *reply,
                                                                object_id_t objectId) {
   ModePacket wrongModeReply(objectId, ModeMessage::getMode(reply), ModeMessage::getSubmode(reply));
-  ReturnValue_t result = sendTmPacket(Subservice::REPLY_WRONG_MODE_REPLY, &wrongModeReply);
-  if (result == RETURN_OK) {
+  ReturnValue_t result = sendTmPacket(Subservice::REPLY_WRONG_MODE_REPLY, wrongModeReply);
+  if (result == returnvalue::OK) {
     // We want to produce an error here in any case because the mode was not correct
-    return RETURN_FAILED;
+    return returnvalue::FAILED;
   }
   return result;
 }
@@ -113,10 +132,10 @@ ReturnValue_t CService200ModeCommanding::prepareWrongModeReply(const CommandMess
 ReturnValue_t CService200ModeCommanding::prepareCantReachModeReply(const CommandMessage *reply,
                                                                    object_id_t objectId) {
   CantReachModePacket cantReachModePacket(objectId, ModeMessage::getCantReachModeReason(reply));
-  ReturnValue_t result = sendTmPacket(Subservice::REPLY_CANT_REACH_MODE, &cantReachModePacket);
-  if (result == RETURN_OK) {
+  ReturnValue_t result = sendTmPacket(Subservice::REPLY_CANT_REACH_MODE, cantReachModePacket);
+  if (result == returnvalue::OK) {
     // We want to produce an error here in any case because the mode was not reached
-    return RETURN_FAILED;
+    return returnvalue::FAILED;
   }
   return result;
 }

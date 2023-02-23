@@ -82,7 +82,7 @@ ReturnValue_t MgmLIS3MDLHandler::buildTransitionDeviceCommand(DeviceCommandId_t 
 #else
       sif::printWarning("GyroHandler::buildTransitionDeviceCommand: Unknown internal state!\n");
 #endif /* FSFW_CPP_OSTREAM_ENABLED == 1 */
-      return HasReturnvaluesIF::RETURN_OK;
+      return returnvalue::OK;
     }
   }
   return buildCommandFromCommand(*id, NULL, 0);
@@ -137,7 +137,7 @@ ReturnValue_t MgmLIS3MDLHandler::buildCommandFromCommand(DeviceCommandId_t devic
 
       rawPacket = commandBuffer;
       rawPacketLen = MGMLIS3MDL::NR_OF_DATA_AND_CFG_REGISTERS + 1;
-      return RETURN_OK;
+      return returnvalue::OK;
     }
     case (MGMLIS3MDL::READ_TEMPERATURE): {
       std::memset(commandBuffer, 0, 3);
@@ -145,7 +145,7 @@ ReturnValue_t MgmLIS3MDLHandler::buildCommandFromCommand(DeviceCommandId_t devic
 
       rawPacket = commandBuffer;
       rawPacketLen = 3;
-      return RETURN_OK;
+      return returnvalue::OK;
     }
     case (MGMLIS3MDL::IDENTIFY_DEVICE): {
       return identifyDevice();
@@ -155,7 +155,7 @@ ReturnValue_t MgmLIS3MDLHandler::buildCommandFromCommand(DeviceCommandId_t devic
     }
     case (MGMLIS3MDL::SETUP_MGM): {
       setupMgm();
-      return HasReturnvaluesIF::RETURN_OK;
+      return returnvalue::OK;
     }
     case (MGMLIS3MDL::ACCURACY_OP_MODE_SET): {
       return setOperatingMode(commandData, commandDataLen);
@@ -163,7 +163,7 @@ ReturnValue_t MgmLIS3MDLHandler::buildCommandFromCommand(DeviceCommandId_t devic
     default:
       return DeviceHandlerIF::COMMAND_NOT_IMPLEMENTED;
   }
-  return HasReturnvaluesIF::RETURN_FAILED;
+  return returnvalue::FAILED;
 }
 
 ReturnValue_t MgmLIS3MDLHandler::identifyDevice() {
@@ -174,7 +174,7 @@ ReturnValue_t MgmLIS3MDLHandler::identifyDevice() {
   rawPacket = commandBuffer;
   rawPacketLen = size;
 
-  return RETURN_OK;
+  return returnvalue::OK;
 }
 
 ReturnValue_t MgmLIS3MDLHandler::scanForReply(const uint8_t *start, size_t len,
@@ -234,7 +234,7 @@ ReturnValue_t MgmLIS3MDLHandler::scanForReply(const uint8_t *start, size_t len,
 
   /* Data with SPI Interface always has this answer */
   if (start[0] == 0b11111111) {
-    return RETURN_OK;
+    return returnvalue::OK;
   } else {
     return DeviceHandlerIF::INVALID_DATA;
   }
@@ -285,27 +285,23 @@ ReturnValue_t MgmLIS3MDLHandler::interpretDeviceReply(DeviceCommandId_t id, cons
       }
 
       PoolReadGuard readHelper(&dataset);
-      if (readHelper.getReadResult() == HasReturnvaluesIF::RETURN_OK) {
+      if (readHelper.getReadResult() == returnvalue::OK) {
+        if (std::abs(mgmX) > absLimitX or std::abs(mgmY) > absLimitY or
+            std::abs(mgmZ) > absLimitZ) {
+          dataset.fieldStrengths.setValid(false);
+        }
         if (std::abs(mgmX) < absLimitX) {
-          dataset.fieldStrengthX = mgmX;
-          dataset.fieldStrengthX.setValid(true);
-        } else {
-          dataset.fieldStrengthX.setValid(false);
+          dataset.fieldStrengths[0] = mgmX;
         }
 
         if (std::abs(mgmY) < absLimitY) {
-          dataset.fieldStrengthY = mgmY;
-          dataset.fieldStrengthY.setValid(true);
-        } else {
-          dataset.fieldStrengthY.setValid(false);
+          dataset.fieldStrengths[1] = mgmY;
         }
 
         if (std::abs(mgmZ) < absLimitZ) {
-          dataset.fieldStrengthZ = mgmZ;
-          dataset.fieldStrengthZ.setValid(true);
-        } else {
-          dataset.fieldStrengthZ.setValid(false);
+          dataset.fieldStrengths[2] = mgmZ;
         }
+        dataset.fieldStrengths.setValid(true);
       }
       break;
     }
@@ -324,7 +320,7 @@ ReturnValue_t MgmLIS3MDLHandler::interpretDeviceReply(DeviceCommandId_t id, cons
       }
 
       ReturnValue_t result = dataset.read();
-      if (result == HasReturnvaluesIF::RETURN_OK) {
+      if (result == returnvalue::OK) {
         dataset.temperature = tempValue;
         dataset.commit();
       }
@@ -335,7 +331,7 @@ ReturnValue_t MgmLIS3MDLHandler::interpretDeviceReply(DeviceCommandId_t id, cons
       return DeviceHandlerIF::UNKNOWN_DEVICE_REPLY;
     }
   }
-  return RETURN_OK;
+  return returnvalue::OK;
 }
 
 MGMLIS3MDL::Sensitivies MgmLIS3MDLHandler::getSensitivity(uint8_t ctrlRegister2) {
@@ -398,7 +394,7 @@ ReturnValue_t MgmLIS3MDLHandler::enableTemperatureSensor(const uint8_t *commandD
   rawPacket = commandBuffer;
   rawPacketLen = size;
 
-  return RETURN_OK;
+  return returnvalue::OK;
 }
 
 ReturnValue_t MgmLIS3MDLHandler::setOperatingMode(const uint8_t *commandData,
@@ -455,7 +451,7 @@ ReturnValue_t MgmLIS3MDLHandler::prepareCtrlRegisterWrite() {
   rawPacketLen = MGMLIS3MDL::NR_OF_CTRL_REGISTERS + 1;
 
   // We dont have to check if this is working because we just did i
-  return RETURN_OK;
+  return returnvalue::OK;
 }
 
 void MgmLIS3MDLHandler::doTransition(Mode_t modeFrom, Submode_t subModeFrom) {
@@ -468,11 +464,10 @@ void MgmLIS3MDLHandler::modeChanged(void) { internalState = InternalState::STATE
 
 ReturnValue_t MgmLIS3MDLHandler::initializeLocalDataPool(localpool::DataPool &localDataPoolMap,
                                                          LocalDataPoolManager &poolManager) {
-  localDataPoolMap.emplace(MGMLIS3MDL::FIELD_STRENGTH_X, new PoolEntry<float>({0.0}));
-  localDataPoolMap.emplace(MGMLIS3MDL::FIELD_STRENGTH_Y, new PoolEntry<float>({0.0}));
-  localDataPoolMap.emplace(MGMLIS3MDL::FIELD_STRENGTH_Z, new PoolEntry<float>({0.0}));
-  localDataPoolMap.emplace(MGMLIS3MDL::TEMPERATURE_CELCIUS, new PoolEntry<float>({0.0}));
-  return HasReturnvaluesIF::RETURN_OK;
+  localDataPoolMap.emplace(MGMLIS3MDL::FIELD_STRENGTHS, &mgmXYZ);
+  localDataPoolMap.emplace(MGMLIS3MDL::TEMPERATURE_CELCIUS, &temperature);
+  poolManager.subscribeForRegularPeriodicPacket({dataset.getSid(), false, 10.0});
+  return returnvalue::OK;
 }
 
 void MgmLIS3MDLHandler::setAbsoluteLimits(float xLimit, float yLimit, float zLimit) {

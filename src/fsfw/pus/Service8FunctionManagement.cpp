@@ -12,15 +12,15 @@ Service8FunctionManagement::Service8FunctionManagement(object_id_t objectId, uin
                                                        uint8_t serviceId,
                                                        uint8_t numParallelCommands,
                                                        uint16_t commandTimeoutSeconds)
-    : CommandingServiceBase(objectId, apid, serviceId, numParallelCommands, commandTimeoutSeconds) {
-}
+    : CommandingServiceBase(objectId, apid, "PUS 8 Functional Commanding", serviceId,
+                            numParallelCommands, commandTimeoutSeconds) {}
 
 Service8FunctionManagement::~Service8FunctionManagement() {}
 
 ReturnValue_t Service8FunctionManagement::isValidSubservice(uint8_t subservice) {
   switch (static_cast<Subservice>(subservice)) {
     case Subservice::COMMAND_DIRECT_COMMANDING:
-      return HasReturnvaluesIF::RETURN_OK;
+      return returnvalue::OK;
     default:
       return AcceptsTelecommandsIF::INVALID_SUBSERVICE;
   }
@@ -48,7 +48,7 @@ ReturnValue_t Service8FunctionManagement::checkInterfaceAndAcquireMessageQueue(
     return CommandingServiceBase::INVALID_OBJECT;
   }
   *messageQueueToSet = possibleTarget->getCommandQueue();
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }
 
 ReturnValue_t Service8FunctionManagement::prepareCommand(CommandMessage* message,
@@ -62,7 +62,7 @@ ReturnValue_t Service8FunctionManagement::prepareDirectCommand(CommandMessage* m
                                                                const uint8_t* tcData,
                                                                size_t tcDataLen) {
   if (message == nullptr) {
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
   }
   if (tcDataLen < sizeof(object_id_t) + sizeof(ActionId_t)) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
@@ -78,7 +78,7 @@ ReturnValue_t Service8FunctionManagement::prepareDirectCommand(CommandMessage* m
   // store additional parameters into the IPC Store
   store_address_t parameterAddress;
   ReturnValue_t result =
-      IPCStore->addData(&parameterAddress, command.getParameters(), command.getParametersSize());
+      ipcStore->addData(&parameterAddress, command.getParameters(), command.getParametersSize());
 
   // setCommand expects a Command Message, an Action ID and a store adress
   // pointing to additional parameters
@@ -91,7 +91,7 @@ ReturnValue_t Service8FunctionManagement::handleReply(const CommandMessage* repl
                                                       CommandMessage* optionalNextCommand,
                                                       object_id_t objectId, bool* isStep) {
   Command_t replyId = reply->getCommand();
-  ReturnValue_t result = HasReturnvaluesIF::RETURN_FAILED;
+  ReturnValue_t result = returnvalue::FAILED;
   ActionId_t actionId = ActionMessage::getActionId(reply);
   ReturnValue_t returnCode = ActionMessage::getReturnCode(reply);
 
@@ -103,7 +103,7 @@ ReturnValue_t Service8FunctionManagement::handleReply(const CommandMessage* repl
     }
     case ActionMessage::STEP_SUCCESS: {
       *isStep = true;
-      result = HasReturnvaluesIF::RETURN_OK;
+      result = returnvalue::OK;
       break;
     }
     case ActionMessage::DATA_REPLY: {
@@ -130,18 +130,18 @@ ReturnValue_t Service8FunctionManagement::handleDataReply(const CommandMessage* 
   store_address_t storeId = ActionMessage::getStoreId(reply);
   size_t size = 0;
   const uint8_t* buffer = nullptr;
-  ReturnValue_t result = IPCStore->getData(storeId, &buffer, &size);
-  if (result != RETURN_OK) {
+  ReturnValue_t result = ipcStore->getData(storeId, &buffer, &size);
+  if (result != returnvalue::OK) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::error << "Service 8: Could not retrieve data for data reply" << std::endl;
 #endif
     return result;
   }
   DataReply dataReply(objectId, actionId, buffer, size);
-  result = sendTmPacket(static_cast<uint8_t>(Subservice::REPLY_DIRECT_COMMANDING_DATA), &dataReply);
+  result = sendTmPacket(static_cast<uint8_t>(Subservice::REPLY_DIRECT_COMMANDING_DATA), dataReply);
 
-  auto deletionResult = IPCStore->deleteData(storeId);
-  if (deletionResult != HasReturnvaluesIF::RETURN_OK) {
+  auto deletionResult = ipcStore->deleteData(storeId);
+  if (deletionResult != returnvalue::OK) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::warning << "Service8FunctionManagement::handleReply: Deletion"
                  << " of data in pool failed." << std::endl;

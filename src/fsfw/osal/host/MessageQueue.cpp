@@ -14,7 +14,7 @@ MessageQueue::MessageQueue(size_t messageDepth, size_t maxMessageSize, MqArgs* a
       messageDepth(messageDepth) {
   queueLock = MutexFactory::instance()->createMutex();
   auto result = QueueMapManager::instance()->addMessageQueue(this, &id);
-  if (result != HasReturnvaluesIF::RETURN_OK) {
+  if (result != returnvalue::OK) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::error << "MessageQueue::MessageQueue: Could not be created" << std::endl;
 #else
@@ -40,14 +40,14 @@ ReturnValue_t MessageQueue::receiveMessage(MessageQueueMessageIF* message) {
   messageQueue.pop();
   // The last partner is the first uint32_t field in the message
   this->last = message->getSender();
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }
 
 ReturnValue_t MessageQueue::flush(uint32_t* count) {
   *count = messageQueue.size();
   // Clears the queue.
   messageQueue = std::queue<std::vector<uint8_t>>();
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }
 
 // static core function to send messages.
@@ -56,20 +56,20 @@ ReturnValue_t MessageQueue::sendMessageFromMessageQueue(MessageQueueId_t sendTo,
                                                         MessageQueueId_t sentFrom,
                                                         bool ignoreFault) {
   if (message == nullptr) {
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
   }
   message->setSender(sentFrom);
   if (message->getMessageSize() > message->getMaximumMessageSize()) {
     // Actually, this should never happen or an error will be emitted
     // in MessageQueueMessage.
     // But I will still return a failure here.
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
   }
-  MessageQueue* targetQueue =
+  auto* targetQueue =
       dynamic_cast<MessageQueue*>(QueueMapManager::instance()->getMessageQueue(sendTo));
   if (targetQueue == nullptr) {
     if (not ignoreFault) {
-      InternalErrorReporterIF* internalErrorReporter =
+      auto* internalErrorReporter =
           ObjectManager::instance()->get<InternalErrorReporterIF>(objects::INTERNAL_ERROR_REPORTER);
       if (internalErrorReporter != nullptr) {
         internalErrorReporter->queueMessageNotSent();
@@ -84,7 +84,7 @@ ReturnValue_t MessageQueue::sendMessageFromMessageQueue(MessageQueueId_t sendTo,
            message->getMaximumMessageSize());
   } else {
     if (not ignoreFault) {
-      InternalErrorReporterIF* internalErrorReporter =
+      auto* internalErrorReporter =
           ObjectManager::instance()->get<InternalErrorReporterIF>(objects::INTERNAL_ERROR_REPORTER);
       if (internalErrorReporter != nullptr) {
         internalErrorReporter->queueMessageNotSent();
@@ -92,7 +92,7 @@ ReturnValue_t MessageQueue::sendMessageFromMessageQueue(MessageQueueId_t sendTo,
     }
     return MessageQueueIF::FULL;
   }
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }
 
 ReturnValue_t MessageQueue::lockQueue(MutexIF::TimeoutType timeoutType, dur_millis_t lockTimeout) {

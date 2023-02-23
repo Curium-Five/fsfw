@@ -31,6 +31,7 @@ class EventManager : public EventManagerIF, public ExecutableObjectIF, public Sy
   MessageQueueId_t getEventReportQueue();
 
   ReturnValue_t registerListener(MessageQueueId_t listener, bool forwardAllButSelected = false);
+  ReturnValue_t unregisterListener(MessageQueueId_t listener) override;
   ReturnValue_t subscribeToEvent(MessageQueueId_t listener, EventId_t event);
   ReturnValue_t subscribeToAllEventsFrom(MessageQueueId_t listener, object_id_t object);
   ReturnValue_t subscribeToEventRange(MessageQueueId_t listener, EventId_t idFrom = 0,

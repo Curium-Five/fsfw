@@ -14,8 +14,8 @@
 Service2DeviceAccess::Service2DeviceAccess(object_id_t objectId, uint16_t apid, uint8_t serviceId,
                                            uint8_t numberOfParallelCommands,
                                            uint16_t commandTimeoutSeconds)
-    : CommandingServiceBase(objectId, apid, serviceId, numberOfParallelCommands,
-                            commandTimeoutSeconds) {}
+    : CommandingServiceBase(objectId, apid, "PUS 2 Raw Commanding", serviceId,
+                            numberOfParallelCommands, commandTimeoutSeconds) {}
 
 Service2DeviceAccess::~Service2DeviceAccess() {}
 
@@ -23,7 +23,7 @@ ReturnValue_t Service2DeviceAccess::isValidSubservice(uint8_t subservice) {
   switch (static_cast<Subservice>(subservice)) {
     case Subservice::COMMAND_RAW_COMMANDING:
     case Subservice::COMMAND_TOGGLE_WIRETAPPING:
-      return HasReturnvaluesIF::RETURN_OK;
+      return returnvalue::OK;
     default:
 #if FSFW_CPP_OSTREAM_ENABLED == 1
       sif::error << "Invalid Subservice" << std::endl;
@@ -51,7 +51,7 @@ ReturnValue_t Service2DeviceAccess::checkInterfaceAndAcquireMessageQueue(
     return CommandingServiceBase::INVALID_OBJECT;
   }
   *messageQueueToSet = possibleTarget->getCommandQueue();
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }
 
 ReturnValue_t Service2DeviceAccess::prepareCommand(CommandMessage* message, uint8_t subservice,
@@ -65,7 +65,7 @@ ReturnValue_t Service2DeviceAccess::prepareCommand(CommandMessage* message, uint
       return prepareWiretappingCommand(message, tcData, tcDataLen);
     } break;
     default:
-      return HasReturnvaluesIF::RETURN_FAILED;
+      return returnvalue::FAILED;
   }
 }
 
@@ -75,7 +75,7 @@ ReturnValue_t Service2DeviceAccess::prepareRawCommand(CommandMessage* messageToS
   // store command into the Inter Process Communication Store
   store_address_t storeAddress;
   ReturnValue_t result =
-      IPCStore->addData(&storeAddress, RawCommand.getCommand(), RawCommand.getCommandSize());
+      ipcStore->addData(&storeAddress, RawCommand.getCommand(), RawCommand.getCommandSize());
   DeviceHandlerMessage::setDeviceHandlerRawCommandMessage(messageToSet, storeAddress);
   return result;
 }
@@ -99,7 +99,7 @@ ReturnValue_t Service2DeviceAccess::handleReply(const CommandMessage* reply,
                                                 object_id_t objectId, bool* isStep) {
   switch (reply->getCommand()) {
     case CommandMessage::REPLY_COMMAND_OK:
-      return HasReturnvaluesIF::RETURN_OK;
+      return returnvalue::OK;
     case CommandMessage::REPLY_REJECTED:
       return reply->getReplyRejectedReason();
     default:
@@ -135,8 +135,8 @@ void Service2DeviceAccess::sendWiretappingTm(CommandMessage* reply, uint8_t subs
   store_address_t storeAddress = DeviceHandlerMessage::getStoreAddress(reply);
   const uint8_t* data = nullptr;
   size_t size = 0;
-  ReturnValue_t result = IPCStore->getData(storeAddress, &data, &size);
-  if (result != HasReturnvaluesIF::RETURN_OK) {
+  ReturnValue_t result = ipcStore->getData(storeAddress, &data, &size);
+  if (result != returnvalue::OK) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::error << "Service2DeviceAccess::sendWiretappingTm: Data Lost in "
                   "handleUnrequestedReply with failure ID "
@@ -147,10 +147,12 @@ void Service2DeviceAccess::sendWiretappingTm(CommandMessage* reply, uint8_t subs
 
   // Init our dummy packet and correct endianness of object ID before
   // sending it back.
-  WiretappingPacket TmPacket(DeviceHandlerMessage::getDeviceObjectId(reply), data);
-  TmPacket.objectId = EndianConverter::convertBigEndian(TmPacket.objectId);
-  sendTmPacket(subservice, TmPacket.data, size, reinterpret_cast<uint8_t*>(&TmPacket.objectId),
-               sizeof(TmPacket.objectId));
+  WiretappingPacket tmPacket(DeviceHandlerMessage::getDeviceObjectId(reply), data);
+  result = sendTmPacket(subservice, tmPacket.objectId, tmPacket.data, size);
+  if (result != returnvalue::OK) {
+    // TODO: Warning
+    return;
+  }
 }
 
 MessageQueueId_t Service2DeviceAccess::getDeviceQueue() { return commandQueue->getId(); }

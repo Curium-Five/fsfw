@@ -1,4 +1,4 @@
 target_sources(
   ${LIB_FSFW_NAME}
-  PRIVATE CCSDSDistributor.cpp PUSDistributor.cpp TcDistributor.cpp
-          TcPacketCheckPUS.cpp TcPacketCheckCFDP.cpp CFDPDistributor.cpp)
+  PRIVATE CcsdsDistributor.cpp PusDistributor.cpp TcDistributorBase.cpp
+          PusPacketChecker.cpp TcPacketCheckCFDP.cpp CcsdsPacketChecker.cpp)

@@ -6,6 +6,12 @@ cfdp::Lv::Lv(const uint8_t* value, size_t size) : value(value, size, true) {
   }
 }
 
+cfdp::Lv::Lv(const std::vector<uint8_t>& data) : value(data.data(), data.size(), true) {
+  if (!data.empty()) {
+    zeroLen = false;
+  }
+}
+
 cfdp::Lv::Lv() : value(static_cast<uint8_t*>(nullptr), 0, true) {}
 
 cfdp::Lv::Lv(const Lv& other)
@@ -17,11 +23,11 @@ cfdp::Lv::Lv(const Lv& other)
 
 cfdp::Lv& cfdp::Lv::operator=(const Lv& other) {
   size_t otherSize = 0;
-  uint8_t* value = const_cast<uint8_t*>(other.getValue(&otherSize));
-  if (value == nullptr or otherSize == 0) {
+  auto* otherVal = const_cast<uint8_t*>(other.getValue(&otherSize));
+  if (otherVal == nullptr or otherSize == 0) {
     this->zeroLen = true;
   }
-  this->value.setBuffer(value, otherSize);
+  this->value.setConstBuffer(otherVal, otherSize);
   return *this;
 }
 
@@ -31,13 +37,13 @@ ReturnValue_t cfdp::Lv::serialize(uint8_t** buffer, size_t* size, size_t maxSize
     return BUFFER_TOO_SHORT;
   }
   if (buffer == nullptr or size == nullptr) {
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
   }
   if (zeroLen) {
     **buffer = 0;
     *size += 1;
     *buffer += 1;
-    return HasReturnvaluesIF::RETURN_OK;
+    return returnvalue::OK;
   }
   return value.serialize(buffer, size, maxSize, streamEndianness);
 }
@@ -54,7 +60,7 @@ size_t cfdp::Lv::getSerializedSize() const {
 ReturnValue_t cfdp::Lv::deSerialize(const uint8_t** buffer, size_t* size,
                                     Endianness streamEndianness) {
   if (buffer == nullptr or size == nullptr) {
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
   }
   if (*size < 1) {
     return SerializeIF::STREAM_TOO_SHORT;
@@ -64,16 +70,16 @@ ReturnValue_t cfdp::Lv::deSerialize(const uint8_t** buffer, size_t* size,
     zeroLen = true;
     *buffer += 1;
     *size -= 1;
-    return HasReturnvaluesIF::RETURN_OK;
+    return returnvalue::OK;
   } else if (*size < lengthField + 1) {
     return SerializeIF::STREAM_TOO_SHORT;
   }
   zeroLen = false;
   // Zero-copy implementation
-  value.setBuffer(const_cast<uint8_t*>(*buffer + 1), lengthField);
+  value.setConstBuffer(*buffer + 1, lengthField);
   *buffer += 1 + lengthField;
   *size -= 1 + lengthField;
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }
 
 const uint8_t* cfdp::Lv::getValue(size_t* size) const {

@@ -1,6 +1,7 @@
 #include "UioMapper.h"
 
 #include <fcntl.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 #include <filesystem>
@@ -13,22 +14,38 @@ const char UioMapper::UIO_PATH_PREFIX[] = "/sys/class/uio/";
 const char UioMapper::MAP_SUBSTR[] = "/maps/map";
 const char UioMapper::SIZE_FILE_PATH[] = "/size";
 
-UioMapper::UioMapper(std::string uioFile, int mapNum) : uioFile(uioFile), mapNum(mapNum) {}
+UioMapper::UioMapper(std::string uioFile, int mapNum) : mapNum(mapNum) {
+  struct stat buf;
+  lstat(uioFile.c_str(), &buf);
+  if (S_ISLNK(buf.st_mode)) {
+    char* res = realpath(uioFile.c_str(), nullptr);
+    if (res) {
+      this->uioFile = res;
+      free(res);
+    } else {
+#if FSFW_CPP_OSTREAM_ENABLED == 1
+      sif::error << "Could not resolve real path of UIO file " << uioFile << std::endl;
+#endif
+    }
+  } else {
+    this->uioFile = std::move(uioFile);
+  }
+}
 
 UioMapper::~UioMapper() {}
 
 ReturnValue_t UioMapper::getMappedAdress(uint32_t** address, Permissions permissions) {
-  ReturnValue_t result = HasReturnvaluesIF::RETURN_OK;
+  ReturnValue_t result = returnvalue::OK;
   int fd = open(uioFile.c_str(), O_RDWR);
   if (fd < 1) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
-    sif::error << "PtmeAxiConfig::initialize: Invalid UIO device file" << std::endl;
+    sif::error << "UioMapper::getMappedAdress: Invalid UIO device file " << uioFile << std::endl;
 #endif
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
   }
   size_t size = 0;
   result = getMapSize(&size);
-  if (result != HasReturnvaluesIF::RETURN_OK) {
+  if (result != returnvalue::OK) {
     return result;
   }
   *address = static_cast<uint32_t*>(
@@ -39,9 +56,9 @@ ReturnValue_t UioMapper::getMappedAdress(uint32_t** address, Permissions permiss
     sif::error << "UioMapper::getMappedAdress: Failed to map physical address of uio device "
                << uioFile.c_str() << " and map" << static_cast<int>(mapNum) << std::endl;
 #endif
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
   }
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }
 
 ReturnValue_t UioMapper::getMapSize(size_t* size) {
@@ -54,7 +71,7 @@ ReturnValue_t UioMapper::getMapSize(size_t* size) {
 #if FSFW_CPP_OSTREAM_ENABLED == 1
     sif::error << "UioMapper::getMapSize: Failed to open file " << namestream.str() << std::endl;
 #endif
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
   }
   char hexstring[SIZE_HEX_STRING] = "";
   int items = fscanf(fp, "%s", hexstring);
@@ -66,7 +83,7 @@ ReturnValue_t UioMapper::getMapSize(size_t* size) {
                << namestream.str() << std::endl;
 #endif
     fclose(fp);
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
   }
   uint32_t sizeTmp = 0;
   items = sscanf(hexstring, "%x", &sizeTmp);
@@ -79,8 +96,8 @@ ReturnValue_t UioMapper::getMapSize(size_t* size) {
                << "size of map" << mapNum << " to integer" << std::endl;
 #endif
     fclose(fp);
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
   }
   fclose(fp);
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }

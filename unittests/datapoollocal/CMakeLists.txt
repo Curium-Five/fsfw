@@ -1,7 +1,3 @@
-target_sources(${FSFW_TEST_TGT} PRIVATE
-	LocalPoolVariableTest.cpp
-	LocalPoolVectorTest.cpp
-	DataSetTest.cpp
-	LocalPoolManagerTest.cpp
-	LocalPoolOwnerBase.cpp
-)
+target_sources(
+  ${FSFW_TEST_TGT} PRIVATE testLocalPoolVariable.cpp testLocalPoolVector.cpp
+                           testDataSet.cpp testLocalPoolManager.cpp)

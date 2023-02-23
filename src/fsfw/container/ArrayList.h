@@ -1,9 +1,10 @@
 #ifndef FSFW_CONTAINER_ARRAYLIST_H_
 #define FSFW_CONTAINER_ARRAYLIST_H_
 
-#include "../returnvalues/HasReturnvaluesIF.h"
+#include "../returnvalues/returnvalue.h"
 #include "../serialize/SerializeAdapter.h"
 #include "../serialize/SerializeIF.h"
+#include "definitions.h"
 
 /**
  * @brief     A List that stores its values in an array.
@@ -19,9 +20,6 @@ class ArrayList {
   friend class SerialArrayListAdapter;
 
  public:
-  static const uint8_t INTERFACE_ID = CLASS_ID::ARRAY_LIST;
-  static const ReturnValue_t FULL = MAKE_RETURN_CODE(0x01);
-
   /**
    * This is the allocating constructor.
    * It allocates an array of the specified size.
@@ -183,15 +181,15 @@ class ArrayList {
    * @param entry
    * @return
    *          -@c FULL if the List is full
-   *          -@c RETURN_OK else
+   *          -@c returnvalue::OK else
    */
   ReturnValue_t insert(T entry) {
     if (size >= maxSize_) {
-      return FULL;
+      return containers::LIST_FULL;
     }
     entries[size] = entry;
     ++size;
-    return HasReturnvaluesIF::RETURN_OK;
+    return returnvalue::OK;
   }
 
   /**

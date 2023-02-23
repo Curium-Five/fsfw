@@ -5,6 +5,14 @@
 #include <string>
 #include <unordered_map>
 
+#ifdef PLATFORM_WIN
+// Defined in Windows header for whatever reason, and leads to nameclash issues with
+// class enums which have entries of the same name.
+#undef IN
+#undef OUT
+#undef CALLBACK
+#endif
+
 using gpioId_t = uint16_t;
 
 namespace gpio {

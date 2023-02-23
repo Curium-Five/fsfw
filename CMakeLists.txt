@@ -13,7 +13,7 @@ list(APPEND CMAKE_MODULE_PATH
 # Version file handling  #
 # ##############################################################################
 
-set(FSFW_VERSION_IF_GIT_FAILS 5)
+set(FSFW_VERSION_IF_GIT_FAILS 6)
 set(FSFW_SUBVERSION_IF_GIT_FAILS 0)
 set(FSFW_REVISION_IF_GIT_FAILS 0)
 
@@ -80,7 +80,7 @@ set(FSFW_CATCH2_LIB_MAJOR_VERSION
     3
     CACHE STRING "Catch2 library major version requirement")
 set(FSFW_CATCH2_LIB_VERSION
-    v${FSFW_CATCH2_LIB_MAJOR_VERSION}.0.0-preview5
+    v${FSFW_CATCH2_LIB_MAJOR_VERSION}.1.0
     CACHE STRING "Catch2 library exact version requirement")
 
 # Keep this off by default for now. See PR:
@@ -104,7 +104,8 @@ if(FSFW_GENERATE_SECTIONS)
   option(FSFW_REMOVE_UNUSED_CODE "Remove unused code" ON)
 endif()
 
-option(FSFW_BUILD_TESTS "Build unittest binary in addition to static library"
+option(FSFW_BUILD_TESTS
+       "Build unittest binary in addition to static library. Requires Catch2"
        OFF)
 option(FSFW_CICD_BUILD "Build for CI/CD. This can disable problematic test" OFF)
 option(FSFW_BUILD_DOCS "Build documentation with Sphinx and Doxygen" OFF)
@@ -115,8 +116,14 @@ endif()
 option(FSFW_WARNING_SHADOW_LOCAL_GCC "Enable -Wshadow=local warning in GCC" ON)
 # Options to exclude parts of the FSFW from compilation.
 option(FSFW_ADD_INTERNAL_TESTS "Add internal unit tests" ON)
-option(FSFW_ADD_UNITTESTS "Add regular unittests. Requires Catch2" OFF)
 option(FSFW_ADD_HAL "Add Hardware Abstraction Layer" ON)
+
+if(UNIX)
+  option(FSFW_HAL_LINUX_ADD_PERIPHERAL_DRIVERS "Add Linux peripheral drivers"
+         OFF)
+  option(FSFW_HAL_LINUX_ADD_LIBGPIOD "Attempt to add Linux GPIOD drivers" OFF)
+  option(FSFW_HAL_LINUX_ADD_SERIAL_DRIVERS "Add serial drivers" ON)
+endif()
 
 # Optional sources
 option(FSFW_ADD_PUS "Compile with PUS sources" ON)
@@ -146,12 +153,12 @@ if(FSFW_BUILD_TESTS)
       "${MSG_PREFIX} Building the FSFW unittests in addition to the static library"
   )
   # Check whether the user has already installed Catch2 first
-  find_package(Catch2 ${FSFW_CATCH2_LIB_MAJOR_VERSION})
+  find_package(Catch2 ${FSFW_CATCH2_LIB_MAJOR_VERSION} QUIET)
   # Not installed, so use FetchContent to download and provide Catch2
   if(NOT Catch2_FOUND)
     message(
       STATUS
-        "${MSG_PREFIX} Catch2 installation not found. Downloading Catch2 library with FetchContent"
+        "${MSG_PREFIX} Catch2 installation not found. Downloading Catch2 library with FetchContent."
     )
     include(FetchContent)
 
@@ -183,7 +190,10 @@ if(FSFW_BUILD_TESTS)
   endif()
 endif()
 
-message(STATUS "${MSG_PREFIX} Finding and/or providing ETL library")
+message(
+  STATUS
+    "${MSG_PREFIX} Finding and/or providing etl library with version ${FSFW_ETL_LIB_MAJOR_VERSION}"
+)
 
 # Check whether the user has already installed ETL first
 find_package(${FSFW_ETL_LIB_NAME} ${FSFW_ETL_LIB_MAJOR_VERSION} QUIET)
@@ -191,8 +201,8 @@ find_package(${FSFW_ETL_LIB_NAME} ${FSFW_ETL_LIB_MAJOR_VERSION} QUIET)
 if(NOT ${FSFW_ETL_LIB_NAME}_FOUND)
   message(
     STATUS
-      "No ETL installation was found with find_package. Installing and providing "
-      "etl with FindPackage")
+      "${MSG_PREFIX} ETL installation not found. Downloading ETL with FetchContent."
+  )
   include(FetchContent)
 
   FetchContent_Declare(
@@ -317,7 +327,8 @@ if(FSFW_BUILD_TESTS)
             "/usr/local/include/*"
             "*/fsfw_tests/*"
             "*/catch2-src/*"
-            "*/fsfw_hal/*")
+            "*/fsfw_hal/*"
+            "unittests/*")
       endif()
 
       target_link_options(${FSFW_TEST_TGT} PRIVATE -fprofile-arcs
@@ -335,8 +346,15 @@ if(FSFW_BUILD_TESTS)
           DEPENDENCIES ${FSFW_TEST_TGT})
       else()
         setup_target_for_coverage_lcov(
-          NAME ${FSFW_TEST_TGT}_coverage EXECUTABLE ${FSFW_TEST_TGT}
-          DEPENDENCIES ${FSFW_TEST_TGT})
+          NAME
+          ${FSFW_TEST_TGT}_coverage
+          EXECUTABLE
+          ${FSFW_TEST_TGT}
+          DEPENDENCIES
+          ${FSFW_TEST_TGT}
+          GENHTML_ARGS
+          --html-epilog
+          ${CMAKE_SOURCE_DIR}/unittests/lcov_epilog.html)
       endif()
     endif()
   endif()
@@ -351,7 +369,8 @@ if(NOT FSFW_CONFIG_PATH)
   if(NOT FSFW_BUILD_DOCS)
     message(
       WARNING
-        "${MSG_PREFIX} Flight Software Framework configuration path not set")
+        "${MSG_PREFIX} Flight Software Framework configuration path FSFW_CONFIG_PATH not set"
+    )
     message(
       WARNING
         "${MSG_PREFIX} Setting default configuration from ${DEF_CONF_PATH} ..")

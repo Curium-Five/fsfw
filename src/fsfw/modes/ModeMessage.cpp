@@ -24,3 +24,19 @@ void ModeMessage::setCantReachMode(CommandMessage* message, ReturnValue_t reason
   message->setParameter(reason);
   message->setParameter2(0);
 }
+
+void ModeMessage::setModeAnnounceMessage(CommandMessage& message, bool recursive) {
+  Command_t cmd;
+  if (recursive) {
+    cmd = CMD_MODE_ANNOUNCE_RECURSIVELY;
+  } else {
+    cmd = CMD_MODE_ANNOUNCE;
+  }
+  message.setCommand(cmd);
+}
+
+void ModeMessage::setCmdModeMessage(CommandMessage& message, Mode_t mode, Submode_t submode) {
+  setModeMessage(&message, CMD_MODE_COMMAND, mode, submode);
+}
+
+void ModeMessage::setModeReadMessage(CommandMessage& message) { message.setCommand(CMD_MODE_READ); }

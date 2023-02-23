@@ -2,7 +2,6 @@
 #define MISSION_DEVICES_MGMLIS3MDLHANDLER_H_
 
 #include "devicedefinitions/MgmLIS3HandlerDefs.h"
-#include "events/subsystemIdRanges.h"
 #include "fsfw/devicehandlers/DeviceHandlerBase.h"
 #include "fsfw/globalfunctions/PeriodicOperationDivider.h"
 
@@ -103,6 +102,8 @@ class MgmLIS3MDLHandler : public DeviceHandlerBase {
   CommunicationStep communicationStep = CommunicationStep::DATA;
   bool commandExecuted = false;
 
+  PoolEntry<float> mgmXYZ = PoolEntry<float>(3);
+  PoolEntry<float> temperature = PoolEntry<float>();
   /*------------------------------------------------------------------------*/
   /* Device specific commands and variables */
   /*------------------------------------------------------------------------*/

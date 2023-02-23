@@ -4,7 +4,7 @@
 #include <cstddef>
 #include <cstring>
 
-#include "../returnvalues/HasReturnvaluesIF.h"
+#include "../returnvalues/returnvalue.h"
 
 template <typename T>
 class FIFOBase {
@@ -15,29 +15,29 @@ class FIFOBase {
 
   /** Default ctor, takes pointer to first entry of underlying container
    *  and maximum capacity */
-  FIFOBase(T* values, const size_t maxCapacity);
+  FIFOBase(T* values, size_t maxCapacity);
 
   /**
    * Insert value into FIFO
    * @param value
-   * @return RETURN_OK on success, FULL if full
+   * @return returnvalue::OK on success, FULL if full
    */
   ReturnValue_t insert(T value);
   /**
    * Retrieve item from FIFO. This removes the item from the FIFO.
    * @param value Must point to a valid T
-   * @return RETURN_OK on success, EMPTY if empty and FAILED if nullptr check failed
+   * @return returnvalue::OK on success, EMPTY if empty and FAILED if nullptr check failed
    */
   ReturnValue_t retrieve(T* value);
   /**
    * Retrieve item from FIFO without removing it from FIFO.
    * @param value Must point to a valid T
-   * @return RETURN_OK on success, EMPTY if empty and FAILED if nullptr check failed
+   * @return returnvalue::OK on success, EMPTY if empty and FAILED if nullptr check failed
    */
   ReturnValue_t peek(T* value);
   /**
    * Remove item from FIFO.
-   * @return RETURN_OK on success, EMPTY if empty
+   * @return returnvalue::OK on success, EMPTY if empty
    */
   ReturnValue_t pop();
 
@@ -60,7 +60,7 @@ class FIFOBase {
    * Get maximal capacity of fifo
    * @return size_t with max capacity of this fifo
    */
-  size_t getMaxCapacity() const;
+  [[nodiscard]] size_t getMaxCapacity() const;
 
  protected:
   void setContainer(T* data);

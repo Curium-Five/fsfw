@@ -1,54 +1,57 @@
 #include "MetadataInfo.h"
 
 MetadataInfo::MetadataInfo(bool closureRequested, cfdp::ChecksumType checksumType,
-                           cfdp::FileSize& fileSize, cfdp::Lv& sourceFileName,
-                           cfdp::Lv& destFileName)
-    : closureRequested(closureRequested),
-      checksumType(checksumType),
-      fileSize(fileSize),
-      sourceFileName(sourceFileName),
-      destFileName(destFileName) {}
+                           cfdp::FileSize& fileSize, cfdp::StringLv& sourceFileName,
+                           cfdp::StringLv& destFileName)
+    : MetadataInfo(fileSize, sourceFileName, destFileName) {
+  this->closureRequested = closureRequested;
+  this->checksumType = checksumType;
+}
 
-void MetadataInfo::setOptionsArray(cfdp::Tlv** optionsArray, size_t* optionsLen,
-                                   size_t* maxOptionsLen) {
-  this->optionsArray = optionsArray;
-  if (maxOptionsLen != nullptr) {
-    this->maxOptionsLen = *maxOptionsLen;
+MetadataInfo::MetadataInfo(cfdp::FileSize& fileSize, cfdp::StringLv& sourceFileName,
+                           cfdp::StringLv& destFileName)
+    : fileSize(fileSize), sourceFileName(sourceFileName), destFileName(destFileName) {}
+
+void MetadataInfo::setOptionsArray(cfdp::Tlv** optionsArray_, std::optional<size_t> optionsLen_,
+                                   std::optional<size_t> maxOptionsLen_) {
+  this->optionsArray = optionsArray_;
+  if (maxOptionsLen_) {
+    this->maxOptionsLen = maxOptionsLen_.value();
   }
-  if (optionsLen != nullptr) {
-    this->optionsLen = *optionsLen;
+  if (optionsLen_) {
+    this->optionsLen = optionsLen_.value();
   }
 }
 
 cfdp::ChecksumType MetadataInfo::getChecksumType() const { return checksumType; }
 
-void MetadataInfo::setChecksumType(cfdp::ChecksumType checksumType) {
-  this->checksumType = checksumType;
+void MetadataInfo::setChecksumType(cfdp::ChecksumType checksumType_) {
+  checksumType = checksumType_;
 }
 
 bool MetadataInfo::isClosureRequested() const { return closureRequested; }
 
-void MetadataInfo::setClosureRequested(bool closureRequested) {
-  this->closureRequested = closureRequested;
+void MetadataInfo::setClosureRequested(bool closureRequested_) {
+  closureRequested = closureRequested_;
 }
 
-cfdp::Lv& MetadataInfo::getDestFileName() { return destFileName; }
+cfdp::StringLv& MetadataInfo::getDestFileName() { return destFileName; }
 
 cfdp::FileSize& MetadataInfo::getFileSize() { return fileSize; }
 
-ReturnValue_t MetadataInfo::getOptions(cfdp::Tlv*** optionsArray, size_t* optionsLen,
+ReturnValue_t MetadataInfo::getOptions(cfdp::Tlv*** optionsArray_, size_t* optionsLen_,
                                        size_t* maxOptsLen) {
-  if (optionsArray == nullptr or this->optionsArray == nullptr) {
-    return HasReturnvaluesIF::RETURN_FAILED;
+  if (optionsArray_ == nullptr or optionsArray == nullptr) {
+    return returnvalue::FAILED;
   }
-  *optionsArray = this->optionsArray;
-  if (optionsLen != nullptr) {
-    *optionsLen = this->optionsLen;
+  *optionsArray_ = optionsArray;
+  if (optionsLen_ != nullptr) {
+    *optionsLen_ = this->optionsLen;
   }
   if (maxOptsLen != nullptr) {
     *maxOptsLen = this->maxOptionsLen;
   }
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }
 
 bool MetadataInfo::hasOptions() const {
@@ -81,18 +84,20 @@ size_t MetadataInfo::getSerializedSize(bool fssLarge) {
   return size;
 }
 
-void MetadataInfo::setDestFileName(cfdp::Lv& destFileName) { this->destFileName = destFileName; }
+void MetadataInfo::setDestFileName(cfdp::StringLv& destFileName_) {
+  this->destFileName = destFileName_;
+}
 
-void MetadataInfo::setSourceFileName(cfdp::Lv& sourceFileName) {
-  this->sourceFileName = sourceFileName;
+void MetadataInfo::setSourceFileName(cfdp::StringLv& sourceFileName_) {
+  this->sourceFileName = sourceFileName_;
 }
 
 size_t MetadataInfo::getMaxOptionsLen() const { return maxOptionsLen; }
 
-void MetadataInfo::setMaxOptionsLen(size_t maxOptionsLen) { this->maxOptionsLen = maxOptionsLen; }
+void MetadataInfo::setMaxOptionsLen(size_t maxOptionsLen_) { this->maxOptionsLen = maxOptionsLen_; }
 
 size_t MetadataInfo::getOptionsLen() const { return optionsLen; }
 
-void MetadataInfo::setOptionsLen(size_t optionsLen) { this->optionsLen = optionsLen; }
+void MetadataInfo::setOptionsLen(size_t optionsLen_) { this->optionsLen = optionsLen_; }
 
-cfdp::Lv& MetadataInfo::getSourceFileName() { return sourceFileName; }
+cfdp::StringLv& MetadataInfo::getSourceFileName() { return sourceFileName; }

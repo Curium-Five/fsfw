@@ -1,10 +1,10 @@
 #include "FilestoreResponseTlv.h"
 
 FilestoreResponseTlv::FilestoreResponseTlv(cfdp::FilestoreActionCode actionCode, uint8_t statusCode,
-                                           cfdp::Lv &firstFileName, cfdp::Lv *fsMsg)
+                                           cfdp::StringLv &firstFileName, cfdp::Lv *fsMsg)
     : FilestoreTlvBase(actionCode, firstFileName), statusCode(statusCode), filestoreMsg(fsMsg) {}
 
-FilestoreResponseTlv::FilestoreResponseTlv(cfdp::Lv &firstFileName, cfdp::Lv *fsMsg)
+FilestoreResponseTlv::FilestoreResponseTlv(cfdp::StringLv &firstFileName, cfdp::Lv *fsMsg)
     : FilestoreTlvBase(firstFileName), statusCode(0), filestoreMsg(fsMsg) {}
 
 uint8_t FilestoreResponseTlv::getLengthField() const {
@@ -20,23 +20,23 @@ uint8_t FilestoreResponseTlv::getLengthField() const {
   return 1 + firstFileName.getSerializedSize() + optFieldsLen;
 }
 
-void FilestoreResponseTlv::setSecondFileName(cfdp::Lv *secondFileName) {
-  this->secondFileName = secondFileName;
+void FilestoreResponseTlv::setSecondFileName(cfdp::StringLv *secondFileName_) {
+  this->secondFileName = secondFileName_;
 }
 
-void FilestoreResponseTlv::setFilestoreMessage(cfdp::Lv *filestoreMsg) {
-  this->filestoreMsg = filestoreMsg;
+void FilestoreResponseTlv::setFilestoreMessage(cfdp::Lv *filestoreMsg_) {
+  this->filestoreMsg = filestoreMsg_;
 }
 
 ReturnValue_t FilestoreResponseTlv::serialize(uint8_t **buffer, size_t *size, size_t maxSize,
                                               Endianness streamEndianness) const {
   ReturnValue_t result =
       commonSerialize(buffer, size, maxSize, streamEndianness, true, this->statusCode);
-  if (result != HasReturnvaluesIF::RETURN_OK) {
+  if (result != returnvalue::OK) {
     return result;
   }
   result = firstFileName.serialize(buffer, size, maxSize, streamEndianness);
-  if (result != HasReturnvaluesIF::RETURN_OK) {
+  if (result != returnvalue::OK) {
     return result;
   }
   if (requiresSecondFileName()) {
@@ -61,7 +61,7 @@ ReturnValue_t FilestoreResponseTlv::serialize(uint8_t **buffer, size_t *size, si
 ReturnValue_t FilestoreResponseTlv::deSerialize(const uint8_t **buffer, size_t *size,
                                                 Endianness streamEndianness) {
   ReturnValue_t result = commonDeserialize(buffer, size, streamEndianness);
-  if (result != HasReturnvaluesIF::RETURN_OK) {
+  if (result != returnvalue::OK) {
     return result;
   }
   return deSerializeFromValue(buffer, size, streamEndianness);
@@ -75,7 +75,7 @@ ReturnValue_t FilestoreResponseTlv::deSerializeFromValue(const uint8_t **buffer,
   *buffer += 1;
   *size -= 1;
   ReturnValue_t result = firstFileName.deSerialize(buffer, size, streamEndianness);
-  if (result != HasReturnvaluesIF::RETURN_OK) {
+  if (result != returnvalue::OK) {
     return result;
   }
   if (requiresSecondFileName()) {
@@ -83,7 +83,7 @@ ReturnValue_t FilestoreResponseTlv::deSerializeFromValue(const uint8_t **buffer,
       return cfdp::FILESTORE_REQUIRES_SECOND_FILE;
     }
     result = secondFileName->deSerialize(buffer, size, streamEndianness);
-    if (result != HasReturnvaluesIF::RETURN_OK) {
+    if (result != returnvalue::OK) {
       return result;
     }
   }
@@ -98,7 +98,7 @@ ReturnValue_t FilestoreResponseTlv::deSerializeFromValue(const uint8_t **buffer,
     *size -= 1;
     *buffer += 1;
     // Ignore empty filestore message
-    return HasReturnvaluesIF::RETURN_OK;
+    return returnvalue::OK;
   }
   return filestoreMsg->deSerialize(buffer, size, streamEndianness);
 }
@@ -112,4 +112,4 @@ ReturnValue_t FilestoreResponseTlv::deSerialize(const cfdp::Tlv &tlv, Endianness
 
 uint8_t FilestoreResponseTlv::getStatusCode() const { return statusCode; }
 
-cfdp::TlvTypes FilestoreResponseTlv::getType() const { return cfdp::TlvTypes::FILESTORE_RESPONSE; }
+cfdp::TlvType FilestoreResponseTlv::getType() const { return cfdp::TlvType::FILESTORE_RESPONSE; }

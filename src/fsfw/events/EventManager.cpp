@@ -23,6 +23,7 @@ EventManager::EventManager(object_id_t setObjectId)
 }
 
 EventManager::~EventManager() {
+  listenerList.clear();
   QueueFactory::instance()->deleteMessageQueue(eventReportQueue);
   MutexFactory::instance()->deleteMutex(mutex);
 }
@@ -30,18 +31,18 @@ EventManager::~EventManager() {
 MessageQueueId_t EventManager::getEventReportQueue() { return eventReportQueue->getId(); }
 
 ReturnValue_t EventManager::performOperation(uint8_t opCode) {
-  ReturnValue_t result = HasReturnvaluesIF::RETURN_OK;
-  while (result == HasReturnvaluesIF::RETURN_OK) {
+  ReturnValue_t result = returnvalue::OK;
+  while (result == returnvalue::OK) {
     EventMessage message;
     result = eventReportQueue->receiveMessage(&message);
-    if (result == HasReturnvaluesIF::RETURN_OK) {
+    if (result == returnvalue::OK) {
 #if FSFW_OBJ_EVENT_TRANSLATION == 1
       printEvent(&message);
 #endif
       notifyListeners(&message);
     }
   }
-  return HasReturnvaluesIF::RETURN_OK;
+  return returnvalue::OK;
 }
 
 void EventManager::notifyListeners(EventMessage* message) {
@@ -59,9 +60,14 @@ ReturnValue_t EventManager::registerListener(MessageQueueId_t listener,
   auto result = listenerList.insert(std::pair<MessageQueueId_t, EventMatchTree>(
       listener, EventMatchTree(&factoryBackend, forwardAllButSelected)));
   if (!result.second) {
-    return HasReturnvaluesIF::RETURN_FAILED;
+    return returnvalue::FAILED;
   }
-  return HasReturnvaluesIF::RETURN_OK;
+
+  return returnvalue::OK;
+}
+
+ReturnValue_t EventManager::unregisterListener(MessageQueueId_t listener) {
+  return listenerList.erase(listener) == 1 ? returnvalue::OK : returnvalue::FAILED;
 }
 
 ReturnValue_t EventManager::subscribeToEvent(MessageQueueId_t listener, EventId_t event) {
