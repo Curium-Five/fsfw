@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Fixes
 
+- Mode Service: Add allowed subservice
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/739
 - `CService200ModeManagement`: Various bugfixes which lead to now execution complete being generated
   on mode announcements, duplicate mode reply generated on announce commands, and the mode read
   subservice not working properly.
@@ -48,7 +50,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   CCSDS packets which were clumped together. This has been fixed now.
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/673
 - `CServiceHealthCommanding`: Add announce all health info implementation
-  PR: https://egit.irs.uni-stuttgart.de/eive/fsfw/pulls/122
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/725
 - various fixes related to linux Unittests and memory leaks
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/715
 - small fix to allow teardown handling
@@ -118,7 +120,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `CService201HealthCommanding` renamed to `CServiceHealthCommanding`,
   service ID customizable now. `CServiceHealthCommanding` expects configuration struct
   `HealthServiceCfg` now
-  PR: https://egit.irs.uni-stuttgart.de/eive/fsfw/pulls/122
+  PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/725
 - `AcceptsTelemetryIF`: `getReportReceptionQueue` is const now
   PR: https://egit.irs.uni-stuttgart.de/fsfw/fsfw/pulls/712
 - Moved some container returnvalues to dedicated header and namespace

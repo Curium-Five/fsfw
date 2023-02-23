@@ -20,7 +20,7 @@ ReturnValue_t CServiceHealthCommanding::initialize() {
   }
 
   healthTable = ObjectManager::instance()->get<HealthTable>(healthTableId);
-  if(healthTable == nullptr) {
+  if (healthTable == nullptr) {
     return returnvalue::FAILED;
   }
 
