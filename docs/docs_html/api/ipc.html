@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>IPC Module API &#8212; Flight Software Framework 5.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ec0e10ea"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Returnvalue API" href="returnvalue.html" />
+    <link rel="prev" title="Task API" href="task.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="ipc-module-api">
+<h1>IPC Module API<a class="headerlink" href="#ipc-module-api" title="Permalink to this heading">¶</a></h1>
+<section id="messagequeueif">
+<h2><code class="docutils literal notranslate"><span class="pre">MessageQueueIF</span></code><a class="headerlink" href="#messagequeueif" title="Permalink to this heading">¶</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv414MessageQueueIF">
+<span id="_CPPv314MessageQueueIF"></span><span id="_CPPv214MessageQueueIF"></span><span id="MessageQueueIF"></span><span class="target" id="class_message_queue_i_f"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MessageQueueIF</span></span></span><a class="headerlink" href="#_CPPv414MessageQueueIF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Subclassed by MessageQueueBase</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14MessageQueueIF5replyEP21MessageQueueMessageIF">
+<span id="_CPPv3N14MessageQueueIF5replyEP21MessageQueueMessageIF"></span><span id="_CPPv2N14MessageQueueIF5replyEP21MessageQueueMessageIF"></span><span id="MessageQueueIF::reply__MessageQueueMessageIFP"></span><span class="target" id="class_message_queue_i_f_1af0a9b1f40290b8eac08adb7c2855953d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reply</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">MessageQueueMessageIF</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">message</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N14MessageQueueIF5replyEP21MessageQueueMessageIF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This operation sends a message to the last communication partner. </p>
+<p>This operation simplifies answering an incoming message by using the stored lastParnter information as destination. If there was no message received yet (i.e. lastPartner is zero), an error code is returned. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> – A pointer to a previously created message, which is sent. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>-<code class="docutils literal notranslate"><span class="pre">returnvalue::OK</span></code> if ok -<code class="docutils literal notranslate"><span class="pre">NO_REPLY_PARTNER</span></code> Should return NO_REPLY_PARTNER if partner was found. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14MessageQueueIF14receiveMessageEP21MessageQueueMessageIFP16MessageQueueId_t">
+<span id="_CPPv3N14MessageQueueIF14receiveMessageEP21MessageQueueMessageIFP16MessageQueueId_t"></span><span id="_CPPv2N14MessageQueueIF14receiveMessageEP21MessageQueueMessageIFP16MessageQueueId_t"></span><span id="MessageQueueIF::receiveMessage__MessageQueueMessageIFP.MessageQueueId_tP"></span><span class="target" id="class_message_queue_i_f_1ae45a6169429454938f89ff513149a064"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">receiveMessage</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">MessageQueueMessageIF</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">message</span></span>, <span class="n"><span class="pre">MessageQueueId_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">receivedFrom</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N14MessageQueueIF14receiveMessageEP21MessageQueueMessageIFP16MessageQueueId_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This function reads available messages from the message queue and returns the sender. </p>
+<p>It works identically to the other receiveMessage call, but in addition returns the sender’s queue id. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> – A pointer to a message in which the received data is stored. </p></li>
+<li><p><strong>receivedFrom</strong> – A pointer to a queue id in which the sender’s id is stored. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14MessageQueueIF14receiveMessageEP21MessageQueueMessageIF">
+<span id="_CPPv3N14MessageQueueIF14receiveMessageEP21MessageQueueMessageIF"></span><span id="_CPPv2N14MessageQueueIF14receiveMessageEP21MessageQueueMessageIF"></span><span id="MessageQueueIF::receiveMessage__MessageQueueMessageIFP"></span><span class="target" id="class_message_queue_i_f_1a12536157d97df74bbf0ae9593280749b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">receiveMessage</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">MessageQueueMessageIF</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">message</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N14MessageQueueIF14receiveMessageEP21MessageQueueMessageIF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This function reads available messages from the message queue. </p>
+<p>If data is available it is stored in the passed message pointer. The message’s original content is overwritten and the sendFrom information is stored in theblastPartner attribute. Else, the lastPartner information remains untouched, the message’s content is cleared and the function returns immediately. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> – A pointer to a message in which the received data is stored. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>-<code class="docutils literal notranslate"><span class="pre">returnvalue::OK</span></code> on success -<code class="docutils literal notranslate"><a class="reference internal" href="#class_message_queue_i_f_1a4ba16f0a12e1e4d638da7d115701e613"><span class="std std-ref"><span class="pre">MessageQueueIF::EMPTY</span></span></a></code> if queue is empty </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14MessageQueueIF5flushEP8uint32_t">
+<span id="_CPPv3N14MessageQueueIF5flushEP8uint32_t"></span><span id="_CPPv2N14MessageQueueIF5flushEP8uint32_t"></span><span id="MessageQueueIF::flush__uint32_tP"></span><span class="target" id="class_message_queue_i_f_1ab25a1efcfa16883a3da412ef031b71bc"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">flush</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">count</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N14MessageQueueIF5flushEP8uint32_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Deletes all pending messages in the queue. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>count</strong> – The number of flushed messages. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>returnvalue::OK on success. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14MessageQueueIF14getLastPartnerEv">
+<span id="_CPPv3NK14MessageQueueIF14getLastPartnerEv"></span><span id="_CPPv2NK14MessageQueueIF14getLastPartnerEv"></span><span id="MessageQueueIF::getLastPartnerC"></span><span class="target" id="class_message_queue_i_f_1ac4789aa404ea1d357595e71764503626"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">MessageQueueId_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getLastPartner</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK14MessageQueueIF14getLastPartnerEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This method returns the message queue ID of the last communication partner. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14MessageQueueIF5getIdEv">
+<span id="_CPPv3NK14MessageQueueIF5getIdEv"></span><span id="_CPPv2NK14MessageQueueIF5getIdEv"></span><span id="MessageQueueIF::getIdC"></span><span class="target" id="class_message_queue_i_f_1a1fcde4c62e032d5edc5125d478e69a24"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">MessageQueueId_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getId</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK14MessageQueueIF5getIdEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This method returns the message queue ID of this class’s message queue. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14MessageQueueIF15sendMessageFromE16MessageQueueId_tP21MessageQueueMessageIF16MessageQueueId_tb">
+<span id="_CPPv3N14MessageQueueIF15sendMessageFromE16MessageQueueId_tP21MessageQueueMessageIF16MessageQueueId_tb"></span><span id="_CPPv2N14MessageQueueIF15sendMessageFromE16MessageQueueId_tP21MessageQueueMessageIF16MessageQueueId_tb"></span><span id="MessageQueueIF::sendMessageFrom__MessageQueueId_t.MessageQueueMessageIFP.MessageQueueId_t.b"></span><span class="target" id="class_message_queue_i_f_1a48f881f7c28241a72bebfea817028883"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sendMessageFrom</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">MessageQueueId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sendTo</span></span>, <span class="n"><span class="pre">MessageQueueMessageIF</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">message</span></span>, <span class="n"><span class="pre">MessageQueueId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sentFrom</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">ignoreFault</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N14MessageQueueIF15sendMessageFromE16MessageQueueId_tP21MessageQueueMessageIF16MessageQueueId_tb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>With the sendMessage call, a queue message is sent to a receiving queue. </p>
+<p>This method takes the message provided, adds the sentFrom information and passes it on to the destination provided with an operating system call. The OS’s returnvalue is returned. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sendTo</strong> – This parameter specifies the message queue id to send the message to. </p></li>
+<li><p><strong>message</strong> – This is a pointer to a previously created message, which is sent. </p></li>
+<li><p><strong>sentFrom</strong> – The sentFrom information can be set to inject the sender’s queue id into the message. This variable is set to zero by default. </p></li>
+<li><p><strong>ignoreFault</strong> – If set to true, the internal software fault counter is not incremented if queue is full (if implemented). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>-<code class="docutils literal notranslate"><span class="pre">returnvalue::OK</span></code> on success -<code class="docutils literal notranslate"><a class="reference internal" href="#class_message_queue_i_f_1a068c23863e566caea4429e7504eab16e"><span class="std std-ref"><span class="pre">MessageQueueIF::FULL</span></span></a></code> if queue is full </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14MessageQueueIF11sendMessageE16MessageQueueId_tP21MessageQueueMessageIFb">
+<span id="_CPPv3N14MessageQueueIF11sendMessageE16MessageQueueId_tP21MessageQueueMessageIFb"></span><span id="_CPPv2N14MessageQueueIF11sendMessageE16MessageQueueId_tP21MessageQueueMessageIFb"></span><span id="MessageQueueIF::sendMessage__MessageQueueId_t.MessageQueueMessageIFP.b"></span><span class="target" id="class_message_queue_i_f_1a617d141b8ec9dd806db008a206233625"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sendMessage</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">MessageQueueId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sendTo</span></span>, <span class="n"><span class="pre">MessageQueueMessageIF</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">message</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">ignoreFault</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N14MessageQueueIF11sendMessageE16MessageQueueId_tP21MessageQueueMessageIFb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This operation sends a message to the given destination. </p>
+<p>It directly uses the sendMessage call of the MessageQueueSender parent, but passes its queue id as “sentFrom” parameter. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sendTo</strong> – This parameter specifies the message queue id of the destination message queue. </p></li>
+<li><p><strong>message</strong> – A pointer to a previously created message, which is sent. </p></li>
+<li><p><strong>ignoreFault</strong> – If set to true, the internal software fault counter is not incremented if queue is full. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14MessageQueueIF17sendToDefaultFromEP21MessageQueueMessageIF16MessageQueueId_tb">
+<span id="_CPPv3N14MessageQueueIF17sendToDefaultFromEP21MessageQueueMessageIF16MessageQueueId_tb"></span><span id="_CPPv2N14MessageQueueIF17sendToDefaultFromEP21MessageQueueMessageIF16MessageQueueId_tb"></span><span id="MessageQueueIF::sendToDefaultFrom__MessageQueueMessageIFP.MessageQueueId_t.b"></span><span class="target" id="class_message_queue_i_f_1a2f6d2a038a9373d7fff90ee40433a70d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sendToDefaultFrom</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">MessageQueueMessageIF</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">message</span></span>, <span class="n"><span class="pre">MessageQueueId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sentFrom</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">ignoreFault</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N14MessageQueueIF17sendToDefaultFromEP21MessageQueueMessageIF16MessageQueueId_tb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The sendToDefaultFrom method sends a queue message to the default destination. </p>
+<p>In all other aspects, it works identical to the sendMessage method. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> – This is a pointer to a previously created message, which is sent. </p></li>
+<li><p><strong>sentFrom</strong> – The sentFrom information can be set to inject the sender’s queue id into the message. This variable is set to zero by default. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>-<code class="docutils literal notranslate"><span class="pre">returnvalue::OK</span></code> on success -<code class="docutils literal notranslate"><a class="reference internal" href="#class_message_queue_i_f_1a068c23863e566caea4429e7504eab16e"><span class="std std-ref"><span class="pre">MessageQueueIF::FULL</span></span></a></code> if queue is full </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14MessageQueueIF13sendToDefaultEP21MessageQueueMessageIF">
+<span id="_CPPv3N14MessageQueueIF13sendToDefaultEP21MessageQueueMessageIF"></span><span id="_CPPv2N14MessageQueueIF13sendToDefaultEP21MessageQueueMessageIF"></span><span id="MessageQueueIF::sendToDefault__MessageQueueMessageIFP"></span><span class="target" id="class_message_queue_i_f_1ab6b9aa23cc6e71e918316ac7e903ebc8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sendToDefault</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">MessageQueueMessageIF</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">message</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N14MessageQueueIF13sendToDefaultEP21MessageQueueMessageIF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This operation sends a message to the default destination. </p>
+<p>As in the sendMessage method, this function uses the sendToDefault call of the Implementation class and adds its queue id as “sentFrom” information. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> – A pointer to a previously created message, which is sent. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>-<code class="docutils literal notranslate"><span class="pre">returnvalue::OK</span></code> on success -<code class="docutils literal notranslate"><a class="reference internal" href="#class_message_queue_i_f_1a068c23863e566caea4429e7504eab16e"><span class="std std-ref"><span class="pre">MessageQueueIF::FULL</span></span></a></code> if queue is full </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14MessageQueueIF21setDefaultDestinationE16MessageQueueId_t">
+<span id="_CPPv3N14MessageQueueIF21setDefaultDestinationE16MessageQueueId_t"></span><span id="_CPPv2N14MessageQueueIF21setDefaultDestinationE16MessageQueueId_t"></span><span id="MessageQueueIF::setDefaultDestination__MessageQueueId_t"></span><span class="target" id="class_message_queue_i_f_1a6eee1d710d32ec33cd6cbf760b03f813"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDefaultDestination</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">MessageQueueId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">defaultDestination</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N14MessageQueueIF21setDefaultDestinationE16MessageQueueId_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This method is a simple setter for the default destination. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14MessageQueueIF21getDefaultDestinationEv">
+<span id="_CPPv3NK14MessageQueueIF21getDefaultDestinationEv"></span><span id="_CPPv2NK14MessageQueueIF21getDefaultDestinationEv"></span><span id="MessageQueueIF::getDefaultDestinationC"></span><span class="target" id="class_message_queue_i_f_1a7f9b0ad9d02c2e636559fa863390cccd"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">MessageQueueId_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDefaultDestination</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK14MessageQueueIF21getDefaultDestinationEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This method is a simple getter for the default destination. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14MessageQueueIF5EMPTYE">
+<span id="_CPPv3N14MessageQueueIF5EMPTYE"></span><span id="_CPPv2N14MessageQueueIF5EMPTYE"></span><span id="MessageQueueIF::EMPTY__ReturnValue_tC"></span><span class="target" id="class_message_queue_i_f_1a4ba16f0a12e1e4d638da7d115701e613"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMPTY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">MAKE_RETURN_CODE</span></span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N14MessageQueueIF5EMPTYE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>No new messages on the queue. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14MessageQueueIF4FULLE">
+<span id="_CPPv3N14MessageQueueIF4FULLE"></span><span id="_CPPv2N14MessageQueueIF4FULLE"></span><span id="MessageQueueIF::FULL__ReturnValue_tC"></span><span class="target" id="class_message_queue_i_f_1a068c23863e566caea4429e7504eab16e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FULL</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">MAKE_RETURN_CODE</span></span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N14MessageQueueIF4FULLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>[EXPORT] : [COMMENT] No space left for more messages </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14MessageQueueIF16NO_REPLY_PARTNERE">
+<span id="_CPPv3N14MessageQueueIF16NO_REPLY_PARTNERE"></span><span id="_CPPv2N14MessageQueueIF16NO_REPLY_PARTNERE"></span><span id="MessageQueueIF::NO_REPLY_PARTNER__ReturnValue_tC"></span><span class="target" id="class_message_queue_i_f_1aff93a1117b93ccb1b25cc7321074432e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NO_REPLY_PARTNER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">MAKE_RETURN_CODE</span></span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N14MessageQueueIF16NO_REPLY_PARTNERE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>[EXPORT] : [COMMENT] Returned if a reply method was called without partner </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14MessageQueueIF19DESTINATION_INVALIDE">
+<span id="_CPPv3N14MessageQueueIF19DESTINATION_INVALIDE"></span><span id="_CPPv2N14MessageQueueIF19DESTINATION_INVALIDE"></span><span id="MessageQueueIF::DESTINATION_INVALID__ReturnValue_t"></span><span class="target" id="class_message_queue_i_f_1a0ad0cbf8cb61b9b78e7b4661cc17c038"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DESTINATION_INVALID</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">MAKE_RETURN_CODE</span></span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N14MessageQueueIF19DESTINATION_INVALIDE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>[EXPORT] : [COMMENT] Returned if the target destination is invalid. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Flight Software Framework</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highlevel.html">High-level overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core.html">Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config.html">Configuring the FSFW</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../osal.html">Operating System Abstraction Layer (OSAL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pus.html">PUS Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devicehandlers.html">Device Handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../localpools.html">Local Data Pools</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cfdp.html">CFDP API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objectmanager.html">Object Manager API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="task.html">Task API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">IPC Module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="returnvalue.html">Returnvalue API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event.html">Event API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modes.html">Modes API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="health.html">Health API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="action.html">Action Module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devicehandler.html">Device Handler Base API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controller.html">Controller API</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.uni-stuttgart.de/impressum">Impressum</a></li>
+    
+    <li class="toctree-l1"><a href="https://info.irs.uni-stuttgart.de/datenschutz/datenschutzWebmit.html">Datenschutz</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api.html">API</a><ul>
+      <li>Previous: <a href="task.html" title="previous chapter">Task API</a></li>
+      <li>Next: <a href="returnvalue.html" title="next chapter">Returnvalue API</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Institute of Space Systems (IRS).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/api/ipc.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

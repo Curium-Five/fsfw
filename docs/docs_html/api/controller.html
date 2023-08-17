@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Controller API &#8212; Flight Software Framework 5.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ec0e10ea"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Device Handler Base API" href="devicehandler.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="controller-api">
+<h1>Controller API<a class="headerlink" href="#controller-api" title="Permalink to this heading">¶</a></h1>
+<section id="controllerbase">
+<h2><code class="docutils literal notranslate"><span class="pre">ControllerBase</span></code><a class="headerlink" href="#controllerbase" title="Permalink to this heading">¶</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv414ControllerBase">
+<span id="_CPPv314ControllerBase"></span><span id="_CPPv214ControllerBase"></span><span id="ControllerBase"></span><span class="target" id="class_controller_base"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ControllerBase</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="modes.html#_CPPv410HasModesIF" title="HasModesIF"><span class="n"><span class="pre">HasModesIF</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="health.html#_CPPv411HasHealthIF" title="HasHealthIF"><span class="n"><span class="pre">HasHealthIF</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="task.html#_CPPv418ExecutableObjectIF" title="ExecutableObjectIF"><span class="n"><span class="pre">ExecutableObjectIF</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="objectmanager.html#_CPPv412SystemObject" title="SystemObject"><span class="n"><span class="pre">SystemObject</span></span></a><a class="headerlink" href="#_CPPv414ControllerBase" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generic base class for controller classes. </p>
+<p>Implements common interfaces for controllers, which generally have a mode and a health state. This avoids boilerplate code. </p>
+<p>Subclassed by <a class="reference internal" href="#class_extended_controller_base"><span class="std std-ref">ExtendedControllerBase</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14ControllerBase10initializeEv">
+<span id="_CPPv3N14ControllerBase10initializeEv"></span><span id="_CPPv2N14ControllerBase10initializeEv"></span><span id="ControllerBase::initialize"></span><span class="target" id="class_controller_base_1aa0fd9241b4a76164e0daed88c8fd46bc"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initialize</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N14ControllerBase10initializeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="objectmanager.html#class_system_object"><span class="std std-ref">SystemObject</span></a> override </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14ControllerBase9setHealthE11HealthState">
+<span id="_CPPv3N14ControllerBase9setHealthE11HealthState"></span><span id="_CPPv2N14ControllerBase9setHealthE11HealthState"></span><span id="ControllerBase::setHealth__HealthState"></span><span class="target" id="class_controller_base_1a3d5e8b485781bf5b892f9b472a076c2b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setHealth</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">HealthState</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">health</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N14ControllerBase9setHealthE11HealthState" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="health.html#class_has_health_i_f"><span class="std std-ref">HasHealthIF</span></a> overrides </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14ControllerBase9getHealthEv">
+<span id="_CPPv3N14ControllerBase9getHealthEv"></span><span id="_CPPv2N14ControllerBase9getHealthEv"></span><span id="ControllerBase::getHealth"></span><span class="target" id="class_controller_base_1a3a88f3bd65b5b1ddfe6f62047bd9fe6d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="health.html#_CPPv411HasHealthIF" title="HasHealthIF"><span class="n"><span class="pre">HasHealthIF</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">HealthState</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getHealth</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N14ControllerBase9getHealthEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get Health State. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Health State of the object </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14ControllerBase16performOperationE7uint8_t">
+<span id="_CPPv3N14ControllerBase16performOperationE7uint8_t"></span><span id="_CPPv2N14ControllerBase16performOperationE7uint8_t"></span><span id="ControllerBase::performOperation__uint8_t"></span><span class="target" id="class_controller_base_1ad8a6636aabcba37b0846446b99c767c4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">performOperation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">opCode</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N14ControllerBase16performOperationE7uint8_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="task.html#class_executable_object_i_f"><span class="std std-ref">ExecutableObjectIF</span></a> overrides </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14ControllerBase9setTaskIFEP14PeriodicTaskIF">
+<span id="_CPPv3N14ControllerBase9setTaskIFEP14PeriodicTaskIF"></span><span id="_CPPv2N14ControllerBase9setTaskIFEP14PeriodicTaskIF"></span><span id="ControllerBase::setTaskIF__PeriodicTaskIFP"></span><span class="target" id="class_controller_base_1a953ad0ec19ab7c86e012207932dc5476"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setTaskIF</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">PeriodicTaskIF</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">task</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N14ControllerBase9setTaskIFEP14PeriodicTaskIF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Function called during setup assignment of object to task. </p>
+<p>Has to be called from the function that assigns the object to a task and enables the object implementation to overwrite this function and get a reference to the executing task </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>task_</strong> – Pointer to the taskIF of this task </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14ControllerBase27initializeAfterTaskCreationEv">
+<span id="_CPPv3N14ControllerBase27initializeAfterTaskCreationEv"></span><span id="_CPPv2N14ControllerBase27initializeAfterTaskCreationEv"></span><span id="ControllerBase::initializeAfterTaskCreation"></span><span class="target" id="class_controller_base_1a886c8aff85dcc440376b154b17a0df8c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeAfterTaskCreation</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N14ControllerBase27initializeAfterTaskCreationEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This function should be called after the object was assigned to a specific task.</p>
+<p>Example: Can be used to get task execution frequency. The task is created after <a class="reference internal" href="#class_controller_base_1aa0fd9241b4a76164e0daed88c8fd46bc"><span class="std std-ref">initialize()</span></a> and the object ctors have been called so the execution frequency can’t be cached in <a class="reference internal" href="#class_controller_base_1aa0fd9241b4a76164e0daed88c8fd46bc"><span class="std std-ref">initialize()</span></a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14ControllerBase20handleCommandMessageEP14CommandMessage">
+<span id="_CPPv3N14ControllerBase20handleCommandMessageEP14CommandMessage"></span><span id="_CPPv2N14ControllerBase20handleCommandMessageEP14CommandMessage"></span><span id="ControllerBase::handleCommandMessage__CommandMessageP"></span><span class="target" id="class_controller_base_1a29f0e424b1f57a5184447ea072ca1960"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">handleCommandMessage</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">CommandMessage</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">message</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N14ControllerBase20handleCommandMessageEP14CommandMessage" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Implemented by child class. Handle command messages which are not mode or health messages. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14ControllerBase23performControlOperationEv">
+<span id="_CPPv3N14ControllerBase23performControlOperationEv"></span><span id="_CPPv2N14ControllerBase23performControlOperationEv"></span><span id="ControllerBase::performControlOperation"></span><span class="target" id="class_controller_base_1aff920be2945311766263607d9635fb19"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">performControlOperation</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N14ControllerBase23performControlOperationEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Periodic helper, implemented by child class. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14ControllerBase11handleQueueEv">
+<span id="_CPPv3N14ControllerBase11handleQueueEv"></span><span id="_CPPv2N14ControllerBase11handleQueueEv"></span><span id="ControllerBase::handleQueue"></span><span class="target" id="class_controller_base_1a40e1c674a548f3e295e49637d4d7bacf"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">handleQueue</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14ControllerBase11handleQueueEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Handle mode and health messages </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14ControllerBase11modeChangedE6Mode_t9Submode_t">
+<span id="_CPPv3N14ControllerBase11modeChangedE6Mode_t9Submode_t"></span><span id="_CPPv2N14ControllerBase11modeChangedE6Mode_t9Submode_t"></span><span id="ControllerBase::modeChanged__Mode_t.Submode_t"></span><span class="target" id="class_controller_base_1a8ad1e056ce9043357f1fffc876c06c9e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">modeChanged</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Mode_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">mode</span></span>, <span class="n"><span class="pre">Submode_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">submode</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14ControllerBase11modeChangedE6Mode_t9Submode_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Mode helpers </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14ControllerBase8changeHKE6Mode_t9Submode_tb">
+<span id="_CPPv3N14ControllerBase8changeHKE6Mode_t9Submode_tb"></span><span id="_CPPv2N14ControllerBase8changeHKE6Mode_t9Submode_tb"></span><span id="ControllerBase::changeHK__Mode_t.Submode_t.b"></span><span class="target" id="class_controller_base_1a2dde6c379c7b02c662d9f9ca2ab16f6d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">changeHK</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Mode_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">mode</span></span>, <span class="n"><span class="pre">Submode_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">submode</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">enable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14ControllerBase8changeHKE6Mode_t9Submode_tb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HK helpers </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14ControllerBase13executingTaskE">
+<span id="_CPPv3N14ControllerBase13executingTaskE"></span><span id="_CPPv2N14ControllerBase13executingTaskE"></span><span id="ControllerBase::executingTask__PeriodicTaskIFP"></span><span class="target" id="class_controller_base_1ac7ff5c29c61e880adc0b452cf6bf05aa"></span><span class="n"><span class="pre">PeriodicTaskIF</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">executingTask</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><a class="headerlink" href="#_CPPv4N14ControllerBase13executingTaskE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Pointer to the task which executes this component, is invalid before setTaskIF was called. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="extendedcontrollerbase">
+<h2><code class="docutils literal notranslate"><span class="pre">ExtendedControllerBase</span></code><a class="headerlink" href="#extendedcontrollerbase" title="Permalink to this heading">¶</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv422ExtendedControllerBase">
+<span id="_CPPv322ExtendedControllerBase"></span><span id="_CPPv222ExtendedControllerBase"></span><span id="ExtendedControllerBase"></span><span class="target" id="class_extended_controller_base"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExtendedControllerBase</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv414ControllerBase" title="ControllerBase"><span class="n"><span class="pre">ControllerBase</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="action.html#_CPPv412HasActionsIF" title="HasActionsIF"><span class="n"><span class="pre">HasActionsIF</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">HasLocalDataPoolIF</span></span><a class="headerlink" href="#_CPPv422ExtendedControllerBase" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Extends the basic <a class="reference internal" href="#class_controller_base"><span class="std std-ref">ControllerBase</span></a> with commonly used components. </p>
+<p><a class="reference internal" href="action.html#class_has_actions_i_f"><span class="std std-ref">HasActionsIF</span></a> for commandability and HasLocalDataPoolIF to keep a pool of local data pool variables. Default implementations required for the interfaces will be empty and have to be implemented by child class. </p>
+<p>Subclassed by TestController</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N22ExtendedControllerBase10initializeEv">
+<span id="_CPPv3N22ExtendedControllerBase10initializeEv"></span><span id="_CPPv2N22ExtendedControllerBase10initializeEv"></span><span id="ExtendedControllerBase::initialize"></span><span class="target" id="class_extended_controller_base_1a951b0b3146c5e735dd6c42d483e6beed"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initialize</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N22ExtendedControllerBase10initializeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="objectmanager.html#class_system_object"><span class="std std-ref">SystemObject</span></a> override </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N22ExtendedControllerBase16performOperationE7uint8_t">
+<span id="_CPPv3N22ExtendedControllerBase16performOperationE7uint8_t"></span><span id="_CPPv2N22ExtendedControllerBase16performOperationE7uint8_t"></span><span id="ExtendedControllerBase::performOperation__uint8_t"></span><span class="target" id="class_extended_controller_base_1ad3c952383ad63fd44503fe21468f3cec"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">performOperation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">opCode</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N22ExtendedControllerBase16performOperationE7uint8_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="task.html#class_executable_object_i_f"><span class="std std-ref">ExecutableObjectIF</span></a> overrides </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N22ExtendedControllerBase27initializeAfterTaskCreationEv">
+<span id="_CPPv3N22ExtendedControllerBase27initializeAfterTaskCreationEv"></span><span id="_CPPv2N22ExtendedControllerBase27initializeAfterTaskCreationEv"></span><span id="ExtendedControllerBase::initializeAfterTaskCreation"></span><span class="target" id="class_extended_controller_base_1a8e56bdce91d8dcd35f325f1e8c37fa17"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeAfterTaskCreation</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N22ExtendedControllerBase27initializeAfterTaskCreationEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This function should be called after the object was assigned to a specific task.</p>
+<p>Example: Can be used to get task execution frequency. The task is created after <a class="reference internal" href="#class_extended_controller_base_1a951b0b3146c5e735dd6c42d483e6beed"><span class="std std-ref">initialize()</span></a> and the object ctors have been called so the execution frequency can’t be cached in <a class="reference internal" href="#class_extended_controller_base_1a951b0b3146c5e735dd6c42d483e6beed"><span class="std std-ref">initialize()</span></a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N22ExtendedControllerBase20handleCommandMessageEP14CommandMessage">
+<span id="_CPPv3N22ExtendedControllerBase20handleCommandMessageEP14CommandMessage"></span><span id="_CPPv2N22ExtendedControllerBase20handleCommandMessageEP14CommandMessage"></span><span id="ExtendedControllerBase::handleCommandMessage__CommandMessageP"></span><span class="target" id="class_extended_controller_base_1ad4d6089244e2495258a5b4f88f4f3ed8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">handleCommandMessage</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">CommandMessage</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">message</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N22ExtendedControllerBase20handleCommandMessageEP14CommandMessage" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Implemented by child class. Handle all command messages which are not health, mode, action or housekeeping messages. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N22ExtendedControllerBase23performControlOperationEv">
+<span id="_CPPv3N22ExtendedControllerBase23performControlOperationEv"></span><span id="_CPPv2N22ExtendedControllerBase23performControlOperationEv"></span><span id="ExtendedControllerBase::performControlOperation"></span><span class="target" id="class_extended_controller_base_1aef07d9e5d9fd1c89d3ddd64183fdfe60"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">performControlOperation</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N22ExtendedControllerBase23performControlOperationEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Periodic helper from <a class="reference internal" href="#class_controller_base"><span class="std std-ref">ControllerBase</span></a>, implemented by child class. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N22ExtendedControllerBase11handleQueueEv">
+<span id="_CPPv3N22ExtendedControllerBase11handleQueueEv"></span><span id="_CPPv2N22ExtendedControllerBase11handleQueueEv"></span><span id="ExtendedControllerBase::handleQueue"></span><span class="target" id="class_extended_controller_base_1a8d5f2c54982e0a7b692c917451d34195"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">handleQueue</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N22ExtendedControllerBase11handleQueueEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Handle mode and health messages </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N22ExtendedControllerBase13executeActionE10ActionId_t16MessageQueueId_tPK7uint8_t6size_t">
+<span id="_CPPv3N22ExtendedControllerBase13executeActionE10ActionId_t16MessageQueueId_tPK7uint8_t6size_t"></span><span id="_CPPv2N22ExtendedControllerBase13executeActionE10ActionId_t16MessageQueueId_tPK7uint8_t6size_t"></span><span id="ExtendedControllerBase::executeAction__ActionId_t.MessageQueueId_t.uint8_tCP.s"></span><span class="target" id="class_extended_controller_base_1a0be29d1f9c7f64d5344e0f5c98b80701"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">executeAction</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ActionId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">actionId</span></span>, <span class="n"><span class="pre">MessageQueueId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">commandedBy</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N22ExtendedControllerBase13executeActionE10ActionId_t16MessageQueueId_tPK7uint8_t6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Execute or initialize the execution of a certain function. The ActionHelpers will execute this function and behave differently depending on the returnvalue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>-<code class="docutils literal notranslate"><span class="pre">EXECUTION_FINISHED</span></code> Finish reply will be generated -<code class="docutils literal notranslate"><span class="pre">Not</span></code> returnvalue::OK Step failure reply will be generated </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N22ExtendedControllerBase18getHkManagerHandleEv">
+<span id="_CPPv3N22ExtendedControllerBase18getHkManagerHandleEv"></span><span id="_CPPv2N22ExtendedControllerBase18getHkManagerHandleEv"></span><span id="ExtendedControllerBase::getHkManagerHandle"></span><span class="target" id="class_extended_controller_base_1a2d533323f98921194672296d3e7bbe2e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">LocalDataPoolManager</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">getHkManagerHandle</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N22ExtendedControllerBase18getHkManagerHandleEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Every class implementing this interface should have a local data pool manager. This function will return a reference to the manager. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK22ExtendedControllerBase11getObjectIdEv">
+<span id="_CPPv3NK22ExtendedControllerBase11getObjectIdEv"></span><span id="_CPPv2NK22ExtendedControllerBase11getObjectIdEv"></span><span id="ExtendedControllerBase::getObjectIdC"></span><span class="target" id="class_extended_controller_base_1a3793e0abdbcecdfbd312a31b0797e8b0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">object_id_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getObjectId</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK22ExtendedControllerBase11getObjectIdEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This is a simple getter to return the object identifier. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the object id of this object. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK22ExtendedControllerBase29getPeriodicOperationFrequencyEv">
+<span id="_CPPv3NK22ExtendedControllerBase29getPeriodicOperationFrequencyEv"></span><span id="_CPPv2NK22ExtendedControllerBase29getPeriodicOperationFrequencyEv"></span><span id="ExtendedControllerBase::getPeriodicOperationFrequencyC"></span><span class="target" id="class_extended_controller_base_1a4413633d6f9a7d96c7058680ba5274ff"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPeriodicOperationFrequency</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK22ExtendedControllerBase29getPeriodicOperationFrequencyEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the minimum sampling frequency in milliseconds, which will usually be the period the pool owner performs its periodic operation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N22ExtendedControllerBase23initializeLocalDataPoolERN9localpool8DataPoolER20LocalDataPoolManager">
+<span id="_CPPv3N22ExtendedControllerBase23initializeLocalDataPoolERN9localpool8DataPoolER20LocalDataPoolManager"></span><span id="_CPPv2N22ExtendedControllerBase23initializeLocalDataPoolERN9localpool8DataPoolER20LocalDataPoolManager"></span><span id="ExtendedControllerBase::initializeLocalDataPool__localpool::DataPoolR.LocalDataPoolManagerR"></span><span class="target" id="class_extended_controller_base_1ad8a350edb2896a57bec46f0c6364f6d2"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeLocalDataPool</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">localpool</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DataPool</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">localDataPoolMap</span></span>, <span class="n"><span class="pre">LocalDataPoolManager</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">poolManager</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N22ExtendedControllerBase23initializeLocalDataPoolERN9localpool8DataPoolER20LocalDataPoolManager" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Is used by pool owner to initialize the pool map once The manager instance shall also be passed to this function. It can be used to subscribe for periodic packets for for updates. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N22ExtendedControllerBase16getDataSetHandleE5sid_t">
+<span id="_CPPv3N22ExtendedControllerBase16getDataSetHandleE5sid_t"></span><span id="_CPPv2N22ExtendedControllerBase16getDataSetHandleE5sid_t"></span><span id="ExtendedControllerBase::getDataSetHandle__sid_t"></span><span class="target" id="class_extended_controller_base_1aba1829eb39d8beb7e8ed4d5a42a41000"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">LocalPoolDataSetBase</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">getDataSetHandle</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sid_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sid</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N22ExtendedControllerBase16getDataSetHandleE5sid_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This function is used by the pool manager to get a valid dataset from a SID. This function is protected to prevent users from using raw data set pointers which could not be thread-safe. Users should use the ProvidesDataPoolSubscriptionIF. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sid</strong> – Corresponding structure ID </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Flight Software Framework</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highlevel.html">High-level overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core.html">Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config.html">Configuring the FSFW</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../osal.html">Operating System Abstraction Layer (OSAL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pus.html">PUS Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devicehandlers.html">Device Handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../localpools.html">Local Data Pools</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cfdp.html">CFDP API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objectmanager.html">Object Manager API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="task.html">Task API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipc.html">IPC Module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="returnvalue.html">Returnvalue API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event.html">Event API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modes.html">Modes API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="health.html">Health API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="action.html">Action Module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devicehandler.html">Device Handler Base API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Controller API</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.uni-stuttgart.de/impressum">Impressum</a></li>
+    
+    <li class="toctree-l1"><a href="https://info.irs.uni-stuttgart.de/datenschutz/datenschutzWebmit.html">Datenschutz</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api.html">API</a><ul>
+      <li>Previous: <a href="devicehandler.html" title="previous chapter">Device Handler Base API</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Institute of Space Systems (IRS).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/api/controller.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

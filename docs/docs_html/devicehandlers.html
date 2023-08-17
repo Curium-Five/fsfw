@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Device Handlers &#8212; Flight Software Framework 5.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=ec0e10ea"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Controllers" href="controllers.html" />
+    <link rel="prev" title="PUS Services" href="pus.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="device-handlers">
+<span id="dhb-prim-doc"></span><h1>Device Handlers<a class="headerlink" href="#device-handlers" title="Permalink to this heading">¶</a></h1>
+<p>Device handler components represent, control and monitor equipment, for example sensors or actuators
+of a spacecraft or the payload.</p>
+<p>Most device handlers have the same common functionality or
+requirements, which are fulfilled by implementing certain interfaces:</p>
+<ul class="simple">
+<li><p>The handler/device needs to be commandable: <a class="reference internal" href="api/action.html#_CPPv412HasActionsIF" title="HasActionsIF"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">HasActionsIF</span></code></a></p></li>
+<li><p>The handler needs to communicate with the physical device via a dedicated
+communication bus, for example SpaceWire, UART or SPI: <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DeviceCommunicationIF</span></code></p></li>
+<li><p>The handler has housekeeping data which has to be exposed to the operator and/or other software
+components: <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">HasLocalDataPoolIF</span></code></p></li>
+<li><p>The handler has configurable parameters: <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ReceivesParameterMessagesIF</span></code> which
+also implements <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">HasParametersIF</span></code></p></li>
+<li><p>The handler has health states, for example to indicate a broken device:
+<a class="reference internal" href="api/health.html#_CPPv411HasHealthIF" title="HasHealthIF"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">HasHealthIF</span></code></a></p></li>
+<li><p>The handler has modes. For example there are the core modes <cite>MODE_ON</cite>, <cite>MODE_OFF</cite>
+and <cite>MODE_NORMAL</cite> provided by the FSFW. <cite>MODE_ON</cite> means that a device is physically powered
+but that it is not periodically polling data from the
+physical device, <cite>MODE_NORMAL</cite> means that it is able to do that: <a class="reference internal" href="api/modes.html#_CPPv410HasModesIF" title="HasModesIF"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">HasModesIF</span></code></a></p></li>
+</ul>
+<p>The device handler base therefore provides abstractions for a lot of common
+functionality, which can potentially avoid high amounts or logic and code duplication.</p>
+<section id="template-device-handler-base-file">
+<h2>Template Device Handler Base File<a class="headerlink" href="#template-device-handler-base-file" title="Permalink to this heading">¶</a></h2>
+<p>This is an example template device handler header file with all necessary
+functions implemented:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef __TESTDEVICEHANDLER_H_</span>
+<span class="cp">#define __TESTDEVICEHANDLER_H_</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fsfw/devicehandlers/DeviceHandlerBase.h&gt;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TestDeviceHandler</span><span class="o">:</span><span class="w"> </span><span class="n">DeviceHandlerBase</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">  </span><span class="n">TestDeviceHandler</span><span class="p">(</span><span class="n">object_id_t</span><span class="w"> </span><span class="n">objectId</span><span class="p">,</span><span class="w"> </span><span class="n">object_id_t</span><span class="w"> </span><span class="n">comIF</span><span class="p">,</span><span class="w"> </span><span class="n">CookieIF</span><span class="o">*</span><span class="w"> </span><span class="n">cookie</span><span class="p">);</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">doStartUp</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">doShutDown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">  </span><span class="n">ReturnValue_t</span><span class="w"> </span><span class="nf">buildNormalDeviceCommand</span><span class="p">(</span><span class="n">DeviceCommandId_t</span><span class="o">*</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">  </span><span class="n">ReturnValue_t</span><span class="w"> </span><span class="nf">buildTransitionDeviceCommand</span><span class="p">(</span><span class="n">DeviceCommandId_t</span><span class="o">*</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">fillCommandAndReplyMap</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">  </span><span class="n">ReturnValue_t</span><span class="w"> </span><span class="nf">buildCommandFromCommand</span><span class="p">(</span><span class="n">DeviceCommandId_t</span><span class="w"> </span><span class="n">deviceCommand</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">commandData</span><span class="p">,</span>
+<span class="w">                                        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">commandDataLen</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">  </span><span class="n">ReturnValue_t</span><span class="w"> </span><span class="nf">scanForReply</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">remainingSize</span><span class="p">,</span><span class="w"> </span><span class="n">DeviceCommandId_t</span><span class="o">*</span><span class="w"> </span><span class="n">foundId</span><span class="p">,</span>
+<span class="w">                             </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="n">foundLen</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">  </span><span class="n">ReturnValue_t</span><span class="w"> </span><span class="nf">interpretDeviceReply</span><span class="p">(</span><span class="n">DeviceCommandId_t</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">packet</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">getTransitionDelayMs</span><span class="p">(</span><span class="n">Mode_t</span><span class="w"> </span><span class="n">modeFrom</span><span class="p">,</span><span class="w"> </span><span class="n">Mode_t</span><span class="w"> </span><span class="n">modeTo</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">  </span><span class="n">ReturnValue_t</span><span class="w"> </span><span class="nf">initializeLocalDataPool</span><span class="p">(</span><span class="n">localpool</span><span class="o">::</span><span class="n">DataPool</span><span class="o">&amp;</span><span class="w"> </span><span class="n">localDataPoolMap</span><span class="p">,</span>
+<span class="w">                                        </span><span class="n">LocalDataPoolManager</span><span class="o">&amp;</span><span class="w"> </span><span class="n">poolManager</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="p">};</span>
+
+<span class="cp">#endif </span><span class="cm">/* __TESTDEVICEHANDLER_H_ */</span>
+</pre></div>
+</div>
+<p>and the respective source file with sensible default return values:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;TestDeviceHandler.h&quot;</span>
+
+<span class="n">TestDeviceHandler</span><span class="o">::</span><span class="n">TestDeviceHandler</span><span class="p">(</span><span class="n">object_id_t</span><span class="w"> </span><span class="n">objectId</span><span class="p">,</span><span class="w"> </span><span class="n">object_id_t</span><span class="w"> </span><span class="n">comIF</span><span class="p">,</span><span class="w"> </span><span class="n">CookieIF</span><span class="o">*</span><span class="w"> </span><span class="n">cookie</span><span class="p">)</span>
+<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="n">DeviceHandlerBase</span><span class="p">(</span><span class="n">objectId</span><span class="p">,</span><span class="w"> </span><span class="n">comIF</span><span class="p">,</span><span class="w"> </span><span class="n">cookie</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">TestDeviceHandler</span><span class="o">::</span><span class="n">doStartUp</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">TestDeviceHandler</span><span class="o">::</span><span class="n">doShutDown</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+
+<span class="n">ReturnValue_t</span><span class="w"> </span><span class="n">TestDeviceHandler</span><span class="o">::</span><span class="n">buildNormalDeviceCommand</span><span class="p">(</span><span class="n">DeviceCommandId_t</span><span class="o">*</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">returnvalue</span><span class="o">::</span><span class="n">OK</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">ReturnValue_t</span><span class="w"> </span><span class="n">TestDeviceHandler</span><span class="o">::</span><span class="n">buildTransitionDeviceCommand</span><span class="p">(</span><span class="n">DeviceCommandId_t</span><span class="o">*</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">returnvalue</span><span class="o">::</span><span class="n">OK</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">TestDeviceHandler</span><span class="o">::</span><span class="n">fillCommandAndReplyMap</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+
+<span class="n">ReturnValue_t</span><span class="w"> </span><span class="n">TestDeviceHandler</span><span class="o">::</span><span class="n">buildCommandFromCommand</span><span class="p">(</span><span class="n">DeviceCommandId_t</span><span class="w"> </span><span class="n">deviceCommand</span><span class="p">,</span>
+<span class="w">                                                         </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">commandData</span><span class="p">,</span>
+<span class="w">                                                         </span><span class="kt">size_t</span><span class="w"> </span><span class="n">commandDataLen</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">returnvalue</span><span class="o">::</span><span class="n">OK</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">ReturnValue_t</span><span class="w"> </span><span class="n">TestDeviceHandler</span><span class="o">::</span><span class="n">scanForReply</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">remainingSize</span><span class="p">,</span>
+<span class="w">                                              </span><span class="n">DeviceCommandId_t</span><span class="o">*</span><span class="w"> </span><span class="n">foundId</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="n">foundLen</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">returnvalue</span><span class="o">::</span><span class="n">OK</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">ReturnValue_t</span><span class="w"> </span><span class="n">TestDeviceHandler</span><span class="o">::</span><span class="n">interpretDeviceReply</span><span class="p">(</span><span class="n">DeviceCommandId_t</span><span class="w"> </span><span class="n">id</span><span class="p">,</span>
+<span class="w">                                                      </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">packet</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">returnvalue</span><span class="o">::</span><span class="n">OK</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">TestDeviceHandler</span><span class="o">::</span><span class="n">getTransitionDelayMs</span><span class="p">(</span><span class="n">Mode_t</span><span class="w"> </span><span class="n">modeFrom</span><span class="p">,</span><span class="w"> </span><span class="n">Mode_t</span><span class="w"> </span><span class="n">modeTo</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">10000</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">ReturnValue_t</span><span class="w"> </span><span class="n">TestDeviceHandler</span><span class="o">::</span><span class="n">initializeLocalDataPool</span><span class="p">(</span><span class="n">localpool</span><span class="o">::</span><span class="n">DataPool</span><span class="o">&amp;</span><span class="w"> </span><span class="n">localDataPoolMap</span><span class="p">,</span>
+<span class="w">                                                         </span><span class="n">LocalDataPoolManager</span><span class="o">&amp;</span><span class="w"> </span><span class="n">poolManager</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">returnvalue</span><span class="o">::</span><span class="n">OK</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Flight Software Framework</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="highlevel.html">High-level overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuring the FSFW</a></li>
+<li class="toctree-l1"><a class="reference internal" href="osal.html">Operating System Abstraction Layer (OSAL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pus.html">PUS Services</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Device Handlers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#template-device-handler-base-file">Template Device Handler Base File</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="localpools.html">Local Data Pools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.uni-stuttgart.de/impressum">Impressum</a></li>
+    
+    <li class="toctree-l1"><a href="https://info.irs.uni-stuttgart.de/datenschutz/datenschutzWebmit.html">Datenschutz</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="pus.html" title="previous chapter">PUS Services</a></li>
+      <li>Next: <a href="controllers.html" title="next chapter">Controllers</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Institute of Space Systems (IRS).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/devicehandlers.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Configuring the FSFW &#8212; Flight Software Framework 5.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=ec0e10ea"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Operating System Abstraction Layer (OSAL)" href="osal.html" />
+    <link rel="prev" title="Core Modules" href="core.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="configuring-the-fsfw">
+<h1>Configuring the FSFW<a class="headerlink" href="#configuring-the-fsfw" title="Permalink to this heading">¶</a></h1>
+<p>The FSFW can be configured via the <code class="docutils literal notranslate"><span class="pre">fsfwconfig</span></code> folder. A template folder has been provided in
+<code class="docutils literal notranslate"><span class="pre">misc/defaultcfg</span></code> to have a starting point for this. The folder should be added
+to the include path. The primary configuration file is the <code class="docutils literal notranslate"><span class="pre">FSFWConfig.h</span></code> folder. Some
+of the available options will be explained in more detail here.</p>
+<section id="auto-translation-of-events">
+<h2>Auto-Translation of Events<a class="headerlink" href="#auto-translation-of-events" title="Permalink to this heading">¶</a></h2>
+<p>The FSFW allows the automatic translation of events, which allows developers to track triggered
+events directly via console output. Using this feature requires:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FSFW_OBJ_EVENT_TRANSLATION</span></code> set to 1 in the configuration file.</p></li>
+<li><p>Special auto-generated translation files which translate event IDs and object IDs into
+human readable strings. These files can be generated using the
+<a class="reference external" href="https://egit.irs.uni-stuttgart.de/fsfw/fsfw-gen">fsfwgen Python scripts</a>.</p></li>
+<li><p>The generated translation files for the object IDs should be named <code class="docutils literal notranslate"><span class="pre">translatesObjects.cpp</span></code>
+and <code class="docutils literal notranslate"><span class="pre">translateObjects.h</span></code> and should be copied to the <code class="docutils literal notranslate"><span class="pre">fsfwconfig/objects</span></code> folder</p></li>
+<li><p>The generated translation files for the event IDs should be named <code class="docutils literal notranslate"><span class="pre">translateEvents.cpp</span></code> and
+<code class="docutils literal notranslate"><span class="pre">translateEvents.h</span></code> and should be copied to the <code class="docutils literal notranslate"><span class="pre">fsfwconfig/events</span></code> folder</p></li>
+</ol>
+<p>An example implementations of these translation file generators can be found as part
+of the <a class="reference external" href="https://git.ksat-stuttgart.de/source/sourceobsw/-/tree/develop/generators">SOURCE project here</a>
+or the <a class="reference external" href="https://egit.irs.uni-stuttgart.de/fsfw/fsfw-example-hosted/src/branch/master/generators">FSFW example</a></p>
+</section>
+<section id="configuring-the-event-manager">
+<h2>Configuring the Event Manager<a class="headerlink" href="#configuring-the-event-manager" title="Permalink to this heading">¶</a></h2>
+<p>The number of allowed subscriptions can be modified with the following
+parameters:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">namespace</span><span class="w"> </span><span class="nn">fsfwconfig</span><span class="w"> </span><span class="p">{</span>
+<span class="c1">//! Configure the allocated pool sizes for the event manager.</span>
+<span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">FSFW_EVENTMGMR_MATCHTREE_NODES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">240</span><span class="p">;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">FSFW_EVENTMGMT_EVENTIDMATCHERS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">120</span><span class="p">;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">FSFW_EVENTMGMR_RANGEMATCHERS</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">120</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Flight Software Framework</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="highlevel.html">High-level overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core Modules</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuring the FSFW</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#auto-translation-of-events">Auto-Translation of Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuring-the-event-manager">Configuring the Event Manager</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="osal.html">Operating System Abstraction Layer (OSAL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pus.html">PUS Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devicehandlers.html">Device Handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="localpools.html">Local Data Pools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.uni-stuttgart.de/impressum">Impressum</a></li>
+    
+    <li class="toctree-l1"><a href="https://info.irs.uni-stuttgart.de/datenschutz/datenschutzWebmit.html">Datenschutz</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="core.html" title="previous chapter">Core Modules</a></li>
+      <li>Next: <a href="osal.html" title="next chapter">Operating System Abstraction Layer (OSAL)</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Institute of Space Systems (IRS).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/config.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CFDP API &#8212; Flight Software Framework 5.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ec0e10ea"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Object Manager API" href="objectmanager.html" />
+    <link rel="prev" title="API" href="../api.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="cfdp-api">
+<h1>CFDP API<a class="headerlink" href="#cfdp-api" title="Permalink to this heading">¶</a></h1>
+<section id="userbase">
+<h2><code class="docutils literal notranslate"><span class="pre">UserBase</span></code><a class="headerlink" href="#userbase" title="Permalink to this heading">¶</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4cfdp8UserBaseE">
+<span id="_CPPv3N4cfdp8UserBaseE"></span><span id="_CPPv2N4cfdp8UserBaseE"></span><span id="cfdp::UserBase"></span><span class="target" id="classcfdp_1_1_user_base"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UserBase</span></span></span><a class="headerlink" href="#_CPPv4N4cfdp8UserBaseE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Base class which provides a user interface to interact with CFDP handlers. </p>
+<p>This class is also used to pass the Virtual Filestore (VFS) Implementation to the CFDP handlers so the filestore operations can be mapped to the underlying filestore.</p>
+<p>It is used by implementing it in a child class and then passing it to the CFDP handler objects. The base class provides default implementation for the user indication primitives specified in the CFDP standard. The user can override these implementations to provide custom indication handlers.</p>
+<p>Please note that for all indication callbacks, the passed transaction ID reference will become invalid shortly after the function has been executed. If the transaction ID is to be cached or used, create an own copy of it. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Param vfs<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Virtual Filestore Object. Will be used for all file operations </p>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cfdp8UserBase23metadataRecvdIndicationERK19MetadataRecvdParams">
+<span id="_CPPv3N4cfdp8UserBase23metadataRecvdIndicationERK19MetadataRecvdParams"></span><span id="_CPPv2N4cfdp8UserBase23metadataRecvdIndicationERK19MetadataRecvdParams"></span><span id="cfdp::UserBase::metadataRecvdIndication__MetadataRecvdParamsCR"></span><span class="target" id="classcfdp_1_1_user_base_1a2cb2a51a089294e62d79790f930c367d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">metadataRecvdIndication</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">MetadataRecvdParams</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">params</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N4cfdp8UserBase23metadataRecvdIndicationERK19MetadataRecvdParams" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Will be called if metadata was received.</p>
+<p>IMPORTANT: The passed struct contains the messages to the user in form of a raw C array. The TLVs in these arrays are zero-copy types, which means that they point to the raw data inside the metadata packet directly. The metadata packet will be deleted from the TC store shortly after it was processed. If some of the data is to be cached and/or used after the function call, it needs to be copied into another user-provided buffer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>params</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Flight Software Framework</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highlevel.html">High-level overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core.html">Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config.html">Configuring the FSFW</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../osal.html">Operating System Abstraction Layer (OSAL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pus.html">PUS Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devicehandlers.html">Device Handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../localpools.html">Local Data Pools</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">CFDP API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objectmanager.html">Object Manager API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="task.html">Task API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipc.html">IPC Module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="returnvalue.html">Returnvalue API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event.html">Event API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modes.html">Modes API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="health.html">Health API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="action.html">Action Module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devicehandler.html">Device Handler Base API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controller.html">Controller API</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.uni-stuttgart.de/impressum">Impressum</a></li>
+    
+    <li class="toctree-l1"><a href="https://info.irs.uni-stuttgart.de/datenschutz/datenschutzWebmit.html">Datenschutz</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api.html">API</a><ul>
+      <li>Previous: <a href="../api.html" title="previous chapter">API</a></li>
+      <li>Next: <a href="objectmanager.html" title="next chapter">Object Manager API</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Institute of Space Systems (IRS).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/api/cfdp.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

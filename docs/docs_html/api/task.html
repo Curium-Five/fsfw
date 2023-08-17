@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Task API &#8212; Flight Software Framework 5.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ec0e10ea"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="IPC Module API" href="ipc.html" />
+    <link rel="prev" title="Object Manager API" href="objectmanager.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="task-api">
+<h1>Task API<a class="headerlink" href="#task-api" title="Permalink to this heading">¶</a></h1>
+<section id="executableobjectif">
+<h2><code class="docutils literal notranslate"><span class="pre">ExecutableObjectIF</span></code><a class="headerlink" href="#executableobjectif" title="Permalink to this heading">¶</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv418ExecutableObjectIF">
+<span id="_CPPv318ExecutableObjectIF"></span><span id="_CPPv218ExecutableObjectIF"></span><span id="ExecutableObjectIF"></span><span class="target" id="class_executable_object_i_f"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExecutableObjectIF</span></span></span><a class="headerlink" href="#_CPPv418ExecutableObjectIF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The interface provides a method to execute objects within a task. </p>
+<p>The performOperation method, that is required by the interface is executed cyclically within a task context. <dl class="simple">
+<dt><strong>Author</strong></dt><dd><p>Bastian Baetz </p>
+</dd>
+</dl>
+</p>
+<p>Subclassed by AbstractTemperatureSensor, CommandingServiceBase, <a class="reference internal" href="controller.html#class_controller_base"><span class="std std-ref">ControllerBase</span></a>, <a class="reference internal" href="devicehandler.html#class_device_handler_base"><span class="std std-ref">DeviceHandlerBase</span></a>, EventManager, HealthDevice, InternalErrorReporter, PowerSwitcherComponent, PusServiceBase, Service1TelecommandVerification, SubsystemBase, TcDistributorBase, TcpTmTcServer, TestTask, TmTcBridge, UdpTcPollingTask</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N18ExecutableObjectIFD0Ev">
+<span id="_CPPv3N18ExecutableObjectIFD0Ev"></span><span id="_CPPv2N18ExecutableObjectIFD0Ev"></span><span id="ExecutableObjectIF::~ExecutableObjectIF"></span><span class="target" id="class_executable_object_i_f_1a3c90001f00cc77922f6e43b68382134a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~ExecutableObjectIF</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N18ExecutableObjectIFD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This is the empty virtual destructor as required for C++ interfaces. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N18ExecutableObjectIF16performOperationE7uint8_t">
+<span id="_CPPv3N18ExecutableObjectIF16performOperationE7uint8_t"></span><span id="_CPPv2N18ExecutableObjectIF16performOperationE7uint8_t"></span><span id="ExecutableObjectIF::performOperation__uint8_t"></span><span class="target" id="class_executable_object_i_f_1a54bb3fab160f1ad775515c8d9583f54e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">performOperation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">operationCode</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N18ExecutableObjectIF16performOperationE7uint8_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The performOperation method is executed in a task. </p>
+<p>There are no restrictions for calls within this method, so any other member of the class can be used. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Currently, the return value is ignored. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N18ExecutableObjectIF9setTaskIFEP14PeriodicTaskIF">
+<span id="_CPPv3N18ExecutableObjectIF9setTaskIFEP14PeriodicTaskIF"></span><span id="_CPPv2N18ExecutableObjectIF9setTaskIFEP14PeriodicTaskIF"></span><span id="ExecutableObjectIF::setTaskIF__PeriodicTaskIFP"></span><span class="target" id="class_executable_object_i_f_1aca49d992c5ef5c154b5d226dc43ed27f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setTaskIF</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">PeriodicTaskIF</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">task_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N18ExecutableObjectIF9setTaskIFEP14PeriodicTaskIF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Function called during setup assignment of object to task. </p>
+<p>Has to be called from the function that assigns the object to a task and enables the object implementation to overwrite this function and get a reference to the executing task </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>task_</strong> – Pointer to the taskIF of this task </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N18ExecutableObjectIF27initializeAfterTaskCreationEv">
+<span id="_CPPv3N18ExecutableObjectIF27initializeAfterTaskCreationEv"></span><span id="_CPPv2N18ExecutableObjectIF27initializeAfterTaskCreationEv"></span><span id="ExecutableObjectIF::initializeAfterTaskCreation"></span><span class="target" id="class_executable_object_i_f_1a93605219d51eb845b3de7255e946de0e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeAfterTaskCreation</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N18ExecutableObjectIF27initializeAfterTaskCreationEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This function should be called after the object was assigned to a specific task.</p>
+<p>Example: Can be used to get task execution frequency. The task is created after initialize() and the object ctors have been called so the execution frequency can’t be cached in initialize() </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Flight Software Framework</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highlevel.html">High-level overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core.html">Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config.html">Configuring the FSFW</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../osal.html">Operating System Abstraction Layer (OSAL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pus.html">PUS Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devicehandlers.html">Device Handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../localpools.html">Local Data Pools</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cfdp.html">CFDP API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objectmanager.html">Object Manager API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Task API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipc.html">IPC Module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="returnvalue.html">Returnvalue API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event.html">Event API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modes.html">Modes API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="health.html">Health API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="action.html">Action Module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devicehandler.html">Device Handler Base API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controller.html">Controller API</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.uni-stuttgart.de/impressum">Impressum</a></li>
+    
+    <li class="toctree-l1"><a href="https://info.irs.uni-stuttgart.de/datenschutz/datenschutzWebmit.html">Datenschutz</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api.html">API</a><ul>
+      <li>Previous: <a href="objectmanager.html" title="previous chapter">Object Manager API</a></li>
+      <li>Next: <a href="ipc.html" title="next chapter">IPC Module API</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Institute of Space Systems (IRS).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/api/task.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

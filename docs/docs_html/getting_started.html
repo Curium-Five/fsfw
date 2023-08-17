@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Getting Started &#8212; Flight Software Framework 5.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=ec0e10ea"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="High-level overview" href="highlevel.html" />
+    <link rel="prev" title="Flight Software Framework (FSFW) documentation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">¶</a></h1>
+<section id="id1">
+<h2>Getting started<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<p>The <a class="reference external" href="https://egit.irs.uni-stuttgart.de/fsfw/fsfw-example-hosted">Hosted FSFW example</a> provides a good starting point and a demo to see the FSFW capabilities.
+It is recommended to get started by building and playing around with the demo application.
+There are also other examples provided for all OSALs using the popular embedded platforms
+Raspberry Pi, Beagle Bone Black and STM32H7.</p>
+<p>Generally, the FSFW is included in a project by providing
+a configuration folder, building the static library and linking against it.
+There are some functions like <code class="docutils literal notranslate"><span class="pre">printChar</span></code> which are different depending on the target architecture
+and need to be implemented by the mission developer.</p>
+<p>A template configuration folder was provided and can be copied into the project root to have
+a starting point. The [configuration section](docs/README-config.md#top) provides more specific
+information about the possible options.</p>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">¶</a></h2>
+<p>The Embedded Template Library (etl) is a dependency of the FSFW which is automatically
+installed and provided by the build system unless the correction version was installed.
+The current recommended version can be found inside the fsfw <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> file or by using
+<code class="docutils literal notranslate"><span class="pre">ccmake</span></code> and looking up the <code class="docutils literal notranslate"><span class="pre">FSFW_ETL_LIB_MAJOR_VERSION</span></code> variable.</p>
+<p>You can install the ETL library like this. On Linux, it might be necessary to add <code class="docutils literal notranslate"><span class="pre">sudo</span></code> before
+the install call:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/ETLCPP/etl</span>
+<span class="go">cd etl</span>
+<span class="go">git checkout &lt;currentRecommendedVersion&gt;</span>
+<span class="go">mkdir build &amp;&amp; cd build</span>
+<span class="go">cmake ..</span>
+<span class="go">cmake --install .</span>
+</pre></div>
+</div>
+<p>It is recommended to install <code class="docutils literal notranslate"><span class="pre">20.27.2</span></code> or newer for the package version handling of
+ETL to work.</p>
+</section>
+<section id="adding-the-library">
+<h2>Adding the library<a class="headerlink" href="#adding-the-library" title="Permalink to this heading">¶</a></h2>
+<p>The following steps show how to add and use FSFW components. It is still recommended to
+try out the example mentioned above to get started, but the following steps show how to
+add and link against the FSFW library in general.</p>
+<ol class="arabic">
+<li><p>Add this repository as a submodule</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git submodule add https://egit.irs.uni-stuttgart.de/fsfw/fsfw.git fsfw</span>
+</pre></div>
+</div>
+</li>
+<li><p>Add the following directive inside the uppermost <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> file of your project</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">fsfw</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Make sure to provide a configuration folder and supply the path to that folder with
+the <cite>FSFW_CONFIG_PATH</cite> CMake variable from the uppermost <cite>CMakeLists.txt</cite> file.
+It is also necessary to provide the <cite>printChar</cite> function. You can find an example
+implementation for a hosted build
+<a class="reference external" href="https://egit.irs.uni-stuttgart.de/fsfw/fsfw-example-hosted/src/branch/master/bsp_hosted/utility/printChar.c">here</a>.</p></li>
+<li><p>Link against the FSFW library</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">&lt;YourProjectName&gt;</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">fsfw</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>It should now be possible use the FSFW as a static library from the user code.</p></li>
+</ol>
+</section>
+<section id="building-the-unittests">
+<h2>Building the unittests<a class="headerlink" href="#building-the-unittests" title="Permalink to this heading">¶</a></h2>
+<p>The FSFW also has unittests which use the <a class="reference external" href="https://github.com/catchorg/Catch2">Catch2 library</a>.
+These are built by setting the CMake option <code class="docutils literal notranslate"><span class="pre">FSFW_BUILD_UNITTESTS</span></code> to <code class="docutils literal notranslate"><span class="pre">ON</span></code> or <cite>TRUE</cite>
+from your project <cite>CMakeLists.txt</cite> file or from the command line.</p>
+<p>You can install the Catch2 library, which prevents the build system to avoid re-downloading
+the dependency if the unit tests are completely rebuilt. The current recommended version
+can be found inside the fsfw <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> file or by using <code class="docutils literal notranslate"><span class="pre">ccmake</span></code> and looking up
+the <code class="docutils literal notranslate"><span class="pre">FSFW_CATCH2_LIB_VERSION</span></code> variable.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/catchorg/Catch2.git</span>
+<span class="go">cd Catch2</span>
+<span class="go">git checkout &lt;currentRecommendedVersion&gt;</span>
+<span class="go">cmake -Bbuild -H. -DBUILD_TESTING=OFF</span>
+<span class="go">sudo cmake --build build/ --target install</span>
+</pre></div>
+</div>
+<p>The fsfw-tests binary will be built as part of the static library and dropped alongside it.
+If the unittests are built, the library and the tests will be built with coverage information by
+default. This can be disabled by setting the <cite>FSFW_TESTS_COV_GEN</cite> option to <cite>OFF</cite> or <cite>FALSE</cite>.</p>
+<p>You can use the following commands inside the <code class="docutils literal notranslate"><span class="pre">fsfw</span></code> folder to set up the build system</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mkdir build-tests &amp;&amp; cd build-tests</span>
+<span class="go">cmake -DFSFW_BUILD_TESTS=ON -DFSFW_OSAL=host ..</span>
+</pre></div>
+</div>
+<p>You can also use <code class="docutils literal notranslate"><span class="pre">-DFSFW_OSAL=linux</span></code> on Linux systems.</p>
+<p>Coverage data in HTML format can be generated using the <a class="reference external" href="https://github.com/bilke/cmake-modules/tree/master">Code coverage</a> CMake module.
+To build the unittests, run them and then generare the coverage data in this format,
+the following command can be used inside the build directory after the build system was set up</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --build . -- fsfw-tests_coverage -j</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">helper.py</span></code> script located in the <code class="docutils literal notranslate"><span class="pre">script</span></code> folder can also be used to create, build
+and open the unittests conveniently. Try <code class="docutils literal notranslate"><span class="pre">helper.py</span> <span class="pre">-h</span></code> for more information.</p>
+</section>
+<section id="building-the-documentation">
+<h2>Building the documentation<a class="headerlink" href="#building-the-documentation" title="Permalink to this heading">¶</a></h2>
+<p>The FSFW documentation is built using the tools Sphinx, doxygen and breathe based on the
+instructions provided in <a class="reference external" href="https://devblogs.microsoft.com/cppblog/clear-functional-c-documentation-with-sphinx-breathe-doxygen-cmake/">this blogpost</a>. If you
+want to do this locally, set up the prerequisites first. This requires a <code class="docutils literal notranslate"><span class="pre">python3</span></code>
+installation as well. Example here is for Ubuntu.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo apt-get install doxygen graphviz</span>
+</pre></div>
+</div>
+<p>And the following Python packages</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python3 -m pip install sphinx breathe</span>
+</pre></div>
+</div>
+<p>You can set up a documentation build system using the following commands</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>build-docs<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>build-docs
+cmake<span class="w"> </span>-DFSFW_BUILD_DOCS<span class="o">=</span>ON<span class="w"> </span>-DFSFW_OSAL<span class="o">=</span>host<span class="w"> </span>..
+</pre></div>
+</div>
+<p>Then you can generate the documentation using</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>-j
+</pre></div>
+</div>
+<p>You can find the generated documentation inside the <code class="docutils literal notranslate"><span class="pre">docs/sphinx</span></code> folder inside the build
+folder. Simply open the <code class="docutils literal notranslate"><span class="pre">index.html</span></code> in the webbrowser of your choice.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">helper.py</span></code> script located in the <code class="docutils literal notranslate"><span class="pre">script</span></code> folder can also be used to create, build
+and open the documentation conveniently. Try <code class="docutils literal notranslate"><span class="pre">helper.py</span> <span class="pre">-h</span></code> for more information.</p>
+</section>
+<section id="formatting-the-source">
+<h2>Formatting the source<a class="headerlink" href="#formatting-the-source" title="Permalink to this heading">¶</a></h2>
+<p>The formatting is done by the <code class="docutils literal notranslate"><span class="pre">clang-format</span></code> tool. The configuration is contained within the
+<code class="docutils literal notranslate"><span class="pre">.clang-format</span></code> file in the repository root. As long as <code class="docutils literal notranslate"><span class="pre">clang-format</span></code> is installed, you
+can run the <code class="docutils literal notranslate"><span class="pre">apply-clang-format.sh</span></code> helper script to format all source files consistently.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Flight Software Framework</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-the-library">Adding the library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-the-unittests">Building the unittests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-the-documentation">Building the documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#formatting-the-source">Formatting the source</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="highlevel.html">High-level overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuring the FSFW</a></li>
+<li class="toctree-l1"><a class="reference internal" href="osal.html">Operating System Abstraction Layer (OSAL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pus.html">PUS Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devicehandlers.html">Device Handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="localpools.html">Local Data Pools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.uni-stuttgart.de/impressum">Impressum</a></li>
+    
+    <li class="toctree-l1"><a href="https://info.irs.uni-stuttgart.de/datenschutz/datenschutzWebmit.html">Datenschutz</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Flight Software Framework (FSFW) documentation</a></li>
+      <li>Next: <a href="highlevel.html" title="next chapter">High-level overview</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Institute of Space Systems (IRS).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/getting_started.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

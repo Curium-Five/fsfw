@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Local Data Pools &#8212; Flight Software Framework 5.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=ec0e10ea"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="api.html" />
+    <link rel="prev" title="Controllers" href="controllers.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="local-data-pools">
+<h1>Local Data Pools<a class="headerlink" href="#local-data-pools" title="Permalink to this heading">¶</a></h1>
+<p>The following text is targeted towards mission software developers which would like
+to use the local data pools provided by the FSFW to store data like sensor values so they can be
+used by other software objects like controllers as well. If a custom class should have a local
+pool which  can be used by other software objects as well, following steps have to be performed:</p>
+<ol class="arabic simple">
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">LocalDataPoolManager</span></code> member object in the custom class</p></li>
+<li><p>Implement the <code class="docutils literal notranslate"><span class="pre">HasLocalDataPoolIF</span></code> with specifies the interface between the local pool
+manager and the class owning the local pool.</p></li>
+</ol>
+<p>The local data pool manager is also able to process housekeeping service requests in form
+of messages, generate periodic housekeeping packet, generate notification and snapshots of changed
+variables and datasets and process notifications and snapshots coming from other objects.
+The two former tasks are related to the external interface using telemetry and telecommands (TMTC)
+while the later two are related to data consumers like controllers only acting on data change
+detected by the data creator instead of checking the data manually each cycle. Two important
+framework classes <code class="docutils literal notranslate"><span class="pre">DeviceHandlerBase</span></code> and <code class="docutils literal notranslate"><span class="pre">ExtendedControllerBase</span></code> already perform the two steps
+shown above so the steps required are altered slightly.</p>
+<section id="storing-and-accessing-pool-data">
+<h2>Storing and Accessing pool data<a class="headerlink" href="#storing-and-accessing-pool-data" title="Permalink to this heading">¶</a></h2>
+<p>The pool manager is responsible for thread-safe access of the pool data, but the actual
+access to the pool data from the point of view of a mission software developer happens via proxy
+classes like pool variable classes. These classes store a copy
+of the pool variable with the matching datatype and copy the actual data from the local pool
+on a <code class="docutils literal notranslate"><span class="pre">read</span></code> call. Changed variables can then be written to the local pool with a <code class="docutils literal notranslate"><span class="pre">commit</span></code> call.
+The <code class="docutils literal notranslate"><span class="pre">read</span></code> and <code class="docutils literal notranslate"><span class="pre">commit</span></code> calls are thread-safe and can be called concurrently from data creators
+and data consumers. Generally, a user will create a dataset class which in turn groups all
+cohesive pool variables. These sets simply iterator over the list of variables and call the
+<code class="docutils literal notranslate"><span class="pre">read</span></code> and <code class="docutils literal notranslate"><span class="pre">commit</span></code> functions of each variable. The following diagram shows the
+high-level architecture of the local data pools.</p>
+<img alt="Pool Architecture" src="_images/PoolArchitecture.png" />
+<p>An example is shown for using the local data pools with a Gyroscope.
+For example, the following code shows an implementation to access data from a Gyroscope taken
+from the SOURCE CubeSat project:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">GyroPrimaryDataset</span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">StaticLocalDataSet</span><span class="o">&lt;</span><span class="mi">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * Constructor for data users</span>
+<span class="cm">     * @param gyroId</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="n">GyroPrimaryDataset</span><span class="p">(</span><span class="n">object_id_t</span><span class="w"> </span><span class="n">gyroId</span><span class="p">)</span><span class="o">:</span>
+<span class="w">            </span><span class="n">StaticLocalDataSet</span><span class="p">(</span><span class="n">sid_t</span><span class="p">(</span><span class="n">gyroId</span><span class="p">,</span><span class="w"> </span><span class="n">gyrodefs</span><span class="o">::</span><span class="n">GYRO_DATA_SET_ID</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">setAllVariablesReadOnly</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">lp_var_t</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">angVelocityX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lp_var_t</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sid</span><span class="p">.</span><span class="n">objectId</span><span class="p">,</span>
+<span class="w">            </span><span class="n">gyrodefs</span><span class="o">::</span><span class="n">ANGULAR_VELOCITY_X</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<span class="w">    </span><span class="n">lp_var_t</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">angVelocityY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lp_var_t</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sid</span><span class="p">.</span><span class="n">objectId</span><span class="p">,</span>
+<span class="w">            </span><span class="n">gyrodefs</span><span class="o">::</span><span class="n">ANGULAR_VELOCITY_Y</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<span class="w">    </span><span class="n">lp_var_t</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">angVelocityZ</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lp_var_t</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sid</span><span class="p">.</span><span class="n">objectId</span><span class="p">,</span>
+<span class="w">            </span><span class="n">gyrodefs</span><span class="o">::</span><span class="n">ANGULAR_VELOCITY_Z</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<span class="k">private</span><span class="o">:</span>
+
+<span class="w">    </span><span class="k">friend</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">GyroHandler</span><span class="p">;</span>
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * Constructor for data creator</span>
+<span class="cm">     * @param hkOwner</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="n">GyroPrimaryDataset</span><span class="p">(</span><span class="n">HasLocalDataPoolIF</span><span class="o">*</span><span class="w"> </span><span class="n">hkOwner</span><span class="p">)</span><span class="o">:</span>
+<span class="w">            </span><span class="n">StaticLocalDataSet</span><span class="p">(</span><span class="n">hkOwner</span><span class="p">,</span><span class="w"> </span><span class="n">gyrodefs</span><span class="o">::</span><span class="n">GYRO_DATA_SET_ID</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>There is a public constructor for users which sets all variables to read-only and there is a
+constructor for the GyroHandler data creator by marking it private and declaring the <code class="docutils literal notranslate"><span class="pre">GyroHandler</span></code>
+as a friend class. Both the atittude controller and the <code class="docutils literal notranslate"><span class="pre">GyroHandler</span></code> can now
+use the same class definition to access the pool variables with <code class="docutils literal notranslate"><span class="pre">read</span></code> and <code class="docutils literal notranslate"><span class="pre">commit</span></code> semantics
+in a thread-safe way. Generally, each class requiring access will have the set class as a member
+class. The data creator will also be generally a <code class="docutils literal notranslate"><span class="pre">DeviceHandlerBase</span></code> subclass and some additional
+steps are necessary to expose the set for housekeeping purposes.</p>
+</section>
+<section id="using-the-local-data-pools-in-a-devicehandlerbase-subclass">
+<h2>Using the local data pools in a <code class="docutils literal notranslate"><span class="pre">DeviceHandlerBase</span></code> subclass<a class="headerlink" href="#using-the-local-data-pools-in-a-devicehandlerbase-subclass" title="Permalink to this heading">¶</a></h2>
+<p>It is very common to store data generated by devices like a sensor into a pool which can
+then be used by other objects. Therefore, the <code class="docutils literal notranslate"><span class="pre">DeviceHandlerBase</span></code> already has a
+local pool. Using the aforementioned example, the <code class="docutils literal notranslate"><span class="pre">GyroHandler</span></code> will now have the set class
+as a member:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">GyroHandler</span><span class="o">:</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">{</span>
+
+<span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="p">...</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">        </span><span class="p">...</span>
+<span class="w">        </span><span class="n">GyroPrimaryDataset</span><span class="w"> </span><span class="n">gyroData</span><span class="p">;</span>
+<span class="w">        </span><span class="p">...</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The constructor used for the creators expects the owner class as a parameter, so we initialize
+the object in the <cite>GyroHandler</cite> constructor like this:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">GyroHandler</span><span class="o">::</span><span class="n">GyroHandler</span><span class="p">(</span><span class="n">object_id_t</span><span class="w"> </span><span class="n">objectId</span><span class="p">,</span><span class="w"> </span><span class="n">object_id_t</span><span class="w"> </span><span class="n">comIF</span><span class="p">,</span>
+<span class="w">        </span><span class="n">CookieIF</span><span class="w"> </span><span class="o">*</span><span class="n">comCookie</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">switchId</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="n">DeviceHandlerBase</span><span class="p">(</span><span class="n">objectId</span><span class="p">,</span><span class="w"> </span><span class="n">comIF</span><span class="p">,</span><span class="w"> </span><span class="n">comCookie</span><span class="p">),</span><span class="w"> </span><span class="n">switchId</span><span class="p">(</span><span class="n">switchId</span><span class="p">),</span>
+<span class="w">                </span><span class="n">gyroData</span><span class="p">(</span><span class="k">this</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+</pre></div>
+</div>
+<p>We need to assign the set to a reply ID used in the <code class="docutils literal notranslate"><span class="pre">DeviceHandlerBase</span></code>.
+The combination of the <code class="docutils literal notranslate"><span class="pre">GyroHandler</span></code> object ID and the reply ID will be the 64-bit structure ID
+<code class="docutils literal notranslate"><span class="pre">sid_t</span></code> and is used to globally identify the set, for example when requesting housekeeping data or
+generating update messages. We need to assign our custom set class in some way so that the local
+pool manager can access the custom data sets as well.
+By default, the <code class="docutils literal notranslate"><span class="pre">getDataSetHandle</span></code> will take care of this tasks. The default implementation for a
+<code class="docutils literal notranslate"><span class="pre">DeviceHandlerBase</span></code> subclass will use the internal command map to retrieve
+a handle to a dataset from a given reply ID. Therefore,
+we assign the set in the <code class="docutils literal notranslate"><span class="pre">fillCommandAndReplyMap</span></code> function:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">GyroHandler::fillCommandAndReplyMap</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">...</span>
+<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">insertInCommandAndReplyMap</span><span class="p">(</span><span class="n">gyrodefs</span><span class="o">::</span><span class="n">GYRO_DATA</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">gyroData</span><span class="p">);</span>
+<span class="w">        </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now, we need to create the actual pool entries as well, using the <code class="docutils literal notranslate"><span class="pre">initializeLocalDataPool</span></code>
+function. Here, we also immediately subscribe for periodic housekeeping packets
+with an interval of 4 seconds. They are still disabled in this example and can be enabled
+with a housekeeping service command.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ReturnValue_t</span><span class="w"> </span><span class="nf">GyroHandler::initializeLocalDataPool</span><span class="p">(</span><span class="n">localpool</span><span class="o">::</span><span class="n">DataPool</span><span class="w"> </span><span class="o">&amp;</span><span class="n">localDataPoolMap</span><span class="p">,</span>
+<span class="w">                </span><span class="n">LocalDataPoolManager</span><span class="w"> </span><span class="o">&amp;</span><span class="n">poolManager</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">localDataPoolMap</span><span class="p">.</span><span class="n">emplace</span><span class="p">(</span><span class="n">gyrodefs</span><span class="o">::</span><span class="n">ANGULAR_VELOCITY_X</span><span class="p">,</span>
+<span class="w">                        </span><span class="k">new</span><span class="w"> </span><span class="n">PoolEntry</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">({</span><span class="mf">0.0</span><span class="p">}));</span>
+<span class="w">        </span><span class="n">localDataPoolMap</span><span class="p">.</span><span class="n">emplace</span><span class="p">(</span><span class="n">gyrodefs</span><span class="o">::</span><span class="n">ANGULAR_VELOCITY_Y</span><span class="p">,</span>
+<span class="w">                        </span><span class="k">new</span><span class="w"> </span><span class="n">PoolEntry</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">({</span><span class="mf">0.0</span><span class="p">}));</span>
+<span class="w">        </span><span class="n">localDataPoolMap</span><span class="p">.</span><span class="n">emplace</span><span class="p">(</span><span class="n">gyrodefs</span><span class="o">::</span><span class="n">ANGULAR_VELOCITY_Z</span><span class="p">,</span>
+<span class="w">                        </span><span class="k">new</span><span class="w"> </span><span class="n">PoolEntry</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">({</span><span class="mf">0.0</span><span class="p">}));</span>
+<span class="w">        </span><span class="n">localDataPoolMap</span><span class="p">.</span><span class="n">emplace</span><span class="p">(</span><span class="n">gyrodefs</span><span class="o">::</span><span class="n">GENERAL_CONFIG_REG42</span><span class="p">,</span>
+<span class="w">                        </span><span class="k">new</span><span class="w"> </span><span class="n">PoolEntry</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span><span class="p">({</span><span class="mi">0</span><span class="p">}));</span>
+<span class="w">        </span><span class="n">localDataPoolMap</span><span class="p">.</span><span class="n">emplace</span><span class="p">(</span><span class="n">gyrodefs</span><span class="o">::</span><span class="n">RANGE_CONFIG_REG43</span><span class="p">,</span>
+<span class="w">                        </span><span class="k">new</span><span class="w"> </span><span class="n">PoolEntry</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span><span class="p">({</span><span class="mi">0</span><span class="p">}));</span>
+
+<span class="w">        </span><span class="n">poolManager</span><span class="p">.</span><span class="n">subscribeForPeriodicPacket</span><span class="p">(</span><span class="n">gyroData</span><span class="p">.</span><span class="n">getSid</span><span class="p">(),</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="mf">4.0</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">returnvalue</span><span class="o">::</span><span class="n">OK</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now, if we receive some sensor data and converted them into the right format,
+we can write it into the pool like this, using a guard class to ensure the set is commited back
+in any case:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">PoolReadGuard</span><span class="w"> </span><span class="nf">readHelper</span><span class="p">(</span><span class="o">&amp;</span><span class="n">gyroData</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="n">readHelper</span><span class="p">.</span><span class="n">getReadResult</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">returnvalue</span><span class="o">::</span><span class="n">OK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="k">not</span><span class="w"> </span><span class="n">gyroData</span><span class="p">.</span><span class="n">isValid</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">gyroData</span><span class="p">.</span><span class="n">setValidity</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">gyroData</span><span class="p">.</span><span class="n">angVelocityX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">angularVelocityX</span><span class="p">;</span>
+<span class="w">        </span><span class="n">gyroData</span><span class="p">.</span><span class="n">angVelocityY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">angularVelocityY</span><span class="p">;</span>
+<span class="w">        </span><span class="n">gyroData</span><span class="p">.</span><span class="n">angVelocityZ</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">angularVelocityZ</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The guard class will commit the changed data on destruction automatically.</p>
+</section>
+<section id="using-the-local-data-pools-in-a-extendedcontrollerbase-subclass">
+<h2>Using the local data pools in a <code class="docutils literal notranslate"><span class="pre">ExtendedControllerBase</span></code> subclass<a class="headerlink" href="#using-the-local-data-pools-in-a-extendedcontrollerbase-subclass" title="Permalink to this heading">¶</a></h2>
+<p>Coming soon</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Flight Software Framework</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="highlevel.html">High-level overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuring the FSFW</a></li>
+<li class="toctree-l1"><a class="reference internal" href="osal.html">Operating System Abstraction Layer (OSAL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pus.html">PUS Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devicehandlers.html">Device Handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Local Data Pools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#storing-and-accessing-pool-data">Storing and Accessing pool data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-local-data-pools-in-a-devicehandlerbase-subclass">Using the local data pools in a <code class="docutils literal notranslate"><span class="pre">DeviceHandlerBase</span></code> subclass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-local-data-pools-in-a-extendedcontrollerbase-subclass">Using the local data pools in a <code class="docutils literal notranslate"><span class="pre">ExtendedControllerBase</span></code> subclass</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.uni-stuttgart.de/impressum">Impressum</a></li>
+    
+    <li class="toctree-l1"><a href="https://info.irs.uni-stuttgart.de/datenschutz/datenschutzWebmit.html">Datenschutz</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="controllers.html" title="previous chapter">Controllers</a></li>
+      <li>Next: <a href="api.html" title="next chapter">API</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Institute of Space Systems (IRS).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/localpools.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

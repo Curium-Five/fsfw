@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Returnvalue API &#8212; Flight Software Framework 5.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ec0e10ea"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Event API" href="event.html" />
+    <link rel="prev" title="IPC Module API" href="ipc.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="returnvalue-api">
+<span id="retvalapi"></span><h1>Returnvalue API<a class="headerlink" href="#returnvalue-api" title="Permalink to this heading">¶</a></h1>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.MAKE_RETURN_CODE">
+<span class="target" id="returnvalue_8h_1aa505262d9e2e32a1c11f2be25734de77"></span><span class="sig-name descname"><span class="n"><span class="pre">MAKE_RETURN_CODE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">number</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MAKE_RETURN_CODE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv413ReturnValue_t">
+<span id="_CPPv313ReturnValue_t"></span><span id="_CPPv213ReturnValue_t"></span><span id="ReturnValue_t"></span><span class="target" id="returnvalue_8h_1a3e8221c67b011bbb98594e61e0873da4"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReturnValue_t</span></span></span><a class="headerlink" href="#_CPPv413ReturnValue_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv411returnvalue">
+<span id="_CPPv311returnvalue"></span><span id="_CPPv211returnvalue"></span><span id="returnvalue"></span><span class="target" id="namespacereturnvalue"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">returnvalue</span></span></span><a class="headerlink" href="#_CPPv411returnvalue" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11returnvalue8makeCodeE7uint8_t7uint8_t">
+<span id="_CPPv3N11returnvalue8makeCodeE7uint8_t7uint8_t"></span><span id="_CPPv2N11returnvalue8makeCodeE7uint8_t7uint8_t"></span><span id="returnvalue::makeCode__uint8_t.uint8_tCE"></span><span class="target" id="returnvalue_8h_1a7af6065cc0ddb24189799f1ab28a11d9"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">makeCode</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">classId</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">number</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11returnvalue8makeCodeE7uint8_t7uint8_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>It is discouraged to use the input parameters 0,0 and 0,1 as this will generate the returnvalue::OK and returnvalue::FAILED returnvalues. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>interfaceId</strong> – </p></li>
+<li><p><strong>number</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-variables">Variables</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11returnvalue2OKE">
+<span id="_CPPv3N11returnvalue2OKE"></span><span id="_CPPv2N11returnvalue2OKE"></span><span id="returnvalue::OK__ReturnValue_tC"></span><span class="target" id="returnvalue_8h_1ac05c1fa8410eed25865b93ca77540306"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N11returnvalue2OKE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11returnvalue6FAILEDE">
+<span id="_CPPv3N11returnvalue6FAILEDE"></span><span id="_CPPv2N11returnvalue6FAILEDE"></span><span id="returnvalue::FAILED__ReturnValue_tC"></span><span class="target" id="returnvalue_8h_1a96bc564f37ec0325cdde6c02250c20c3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FAILED</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N11returnvalue6FAILEDE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<span class="target" id="fwclassids"></span><dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv48CLASS_ID">
+<span id="_CPPv38CLASS_ID"></span><span id="_CPPv28CLASS_ID"></span><span id="CLASS_ID"></span><span class="target" id="namespace_c_l_a_s_s___i_d"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CLASS_ID</span></span></span><a class="headerlink" href="#_CPPv48CLASS_ID" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp">
+<span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4"></span><span class="sig-name descname"></span></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError17FW_CLASS_ID_STARTE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError17FW_CLASS_ID_STARTE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError17FW_CLASS_ID_STARTE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a1efa27de682d7cf1cfbc6f4f946f65df"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FW_CLASS_ID_START</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError17FW_CLASS_ID_STARTE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError28OPERATING_SYSTEM_ABSTRACTIONE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError28OPERATING_SYSTEM_ABSTRACTIONE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError28OPERATING_SYSTEM_ABSTRACTIONE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4abab5aaf469ade12afe81f48252f0e502"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OPERATING_SYSTEM_ABSTRACTION</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError28OPERATING_SYSTEM_ABSTRACTIONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError17OBJECT_MANAGER_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError17OBJECT_MANAGER_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError17OBJECT_MANAGER_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a5703dff6e7e11c02faec49c8f05f4eeb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OBJECT_MANAGER_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError17OBJECT_MANAGER_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError19DEVICE_HANDLER_BASEE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError19DEVICE_HANDLER_BASEE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError19DEVICE_HANDLER_BASEE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a17657e9ea7fdac0314bad58086800d51"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_HANDLER_BASE</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError19DEVICE_HANDLER_BASEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError12RMAP_CHANNELE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError12RMAP_CHANNELE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError12RMAP_CHANNELE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a6cc9b128272ae13447073b0eb03abd4f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RMAP_CHANNEL</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError12RMAP_CHANNELE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError15POWER_SWITCH_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError15POWER_SWITCH_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError15POWER_SWITCH_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a008bf716a26498bad34112203782b0c4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">POWER_SWITCH_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError15POWER_SWITCH_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError13HAS_MEMORY_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError13HAS_MEMORY_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError13HAS_MEMORY_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4ae4b9264729aa58985d6999a0ed8e313a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HAS_MEMORY_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError13HAS_MEMORY_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError25DEVICE_STATE_MACHINE_BASEE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError25DEVICE_STATE_MACHINE_BASEE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError25DEVICE_STATE_MACHINE_BASEE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a18c45a0f3c380d9d42ff3c1074a09012"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_STATE_MACHINE_BASE</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError25DEVICE_STATE_MACHINE_BASEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError14DATA_SET_CLASSE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError14DATA_SET_CLASSE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError14DATA_SET_CLASSE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a5f025066c6f4840e882d6a130dce7c30"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DATA_SET_CLASS</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError14DATA_SET_CLASSE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError21POOL_RAW_ACCESS_CLASSE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError21POOL_RAW_ACCESS_CLASSE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError21POOL_RAW_ACCESS_CLASSE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a3d526bbc4c12f2360467b8ffd864cd6f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">POOL_RAW_ACCESS_CLASS</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError21POOL_RAW_ACCESS_CLASSE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError15CONTROLLER_BASEE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError15CONTROLLER_BASEE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError15CONTROLLER_BASEE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4ad58192e8d3a0fa8a9f21874074a5a676"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CONTROLLER_BASE</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError15CONTROLLER_BASEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError14SUBSYSTEM_BASEE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError14SUBSYSTEM_BASEE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError14SUBSYSTEM_BASEE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a21fab313d9c3d468985decbcdb6e2a07"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SUBSYSTEM_BASE</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError14SUBSYSTEM_BASEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError13MODE_STORE_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError13MODE_STORE_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError13MODE_STORE_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a49098ddeec2ee42dc20669e97446b143"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MODE_STORE_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError13MODE_STORE_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError9SUBSYSTEME">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError9SUBSYSTEME"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError9SUBSYSTEME"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a7edd097bc8217451c22026f9ba51a56d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SUBSYSTEM</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError9SUBSYSTEME" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError12HAS_MODES_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError12HAS_MODES_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError12HAS_MODES_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a78adad47c1cc878d1658760973d1d8dd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HAS_MODES_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError12HAS_MODES_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError15COMMAND_MESSAGEE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError15COMMAND_MESSAGEE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError15COMMAND_MESSAGEE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a948b857d474ff4170b127f70f8e44552"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">COMMAND_MESSAGE</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError15COMMAND_MESSAGEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError23CCSDS_TIME_HELPER_CLASSE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError23CCSDS_TIME_HELPER_CLASSE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError23CCSDS_TIME_HELPER_CLASSE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a0ee07cd4f077af41a54e3f459099e2ec"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CCSDS_TIME_HELPER_CLASS</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError23CCSDS_TIME_HELPER_CLASSE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError10ARRAY_LISTE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError10ARRAY_LISTE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError10ARRAY_LISTE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4af88a68c3b7a98b19c9e43a72c5a64cd9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ARRAY_LIST</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError10ARRAY_LISTE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError13ASSEMBLY_BASEE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError13ASSEMBLY_BASEE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError13ASSEMBLY_BASEE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a44e33b33027f513f911e60e35769d5cf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ASSEMBLY_BASE</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError13ASSEMBLY_BASEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError13MEMORY_HELPERE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError13MEMORY_HELPERE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError13MEMORY_HELPERE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4ad5e6bcf2eba2fd1e2337a36c8b3d325c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MEMORY_HELPER</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError13MEMORY_HELPERE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError12SERIALIZE_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError12SERIALIZE_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError12SERIALIZE_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4acdc30980dd72d2e5a4f512f48131ebe1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SERIALIZE_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError12SERIALIZE_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError9FIXED_MAPE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError9FIXED_MAPE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError9FIXED_MAPE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4ae5d17cadc0fe737977b5a1e25990cf32"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FIXED_MAP</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError9FIXED_MAPE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError14FIXED_MULTIMAPE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError14FIXED_MULTIMAPE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError14FIXED_MULTIMAPE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a71e58015701a41d7c496ebf4f2a97c16"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FIXED_MULTIMAP</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError14FIXED_MULTIMAPE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError13HAS_HEALTH_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError13HAS_HEALTH_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError13HAS_HEALTH_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4ae79f006e4dc043ca64a51bd9ec517392"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HAS_HEALTH_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError13HAS_HEALTH_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError10FIFO_CLASSE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError10FIFO_CLASSE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError10FIFO_CLASSE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a3c38f4f676e6c8c0d912496d1149f3bd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FIFO_CLASS</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError10FIFO_CLASSE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError13MESSAGE_PROXYE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError13MESSAGE_PROXYE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError13MESSAGE_PROXYE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4aa4bc5c3a83da4286646df8eb244056c5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MESSAGE_PROXY</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError13MESSAGE_PROXYE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError22TRIPLE_REDUNDACY_CHECKE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError22TRIPLE_REDUNDACY_CHECKE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError22TRIPLE_REDUNDACY_CHECKE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4ad7688b261f1c9a5157a05cd79a0b8dec"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TRIPLE_REDUNDACY_CHECK</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError22TRIPLE_REDUNDACY_CHECKE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError17TMTC_DISTRIBUTIONE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError17TMTC_DISTRIBUTIONE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError17TMTC_DISTRIBUTIONE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a47b0669c3294d8412e068d35013da341"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TMTC_DISTRIBUTION</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError17TMTC_DISTRIBUTIONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError19PACKET_DISTRIBUTIONE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError19PACKET_DISTRIBUTIONE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError19PACKET_DISTRIBUTIONE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a6d24d398e2c2cc91054eb345282aa0eb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PACKET_DISTRIBUTION</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError19PACKET_DISTRIBUTIONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError23ACCEPTS_TELECOMMANDS_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError23ACCEPTS_TELECOMMANDS_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError23ACCEPTS_TELECOMMANDS_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4af76da28096d930b7b7263fd6fdc5d1e8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ACCEPTS_TELECOMMANDS_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError23ACCEPTS_TELECOMMANDS_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError6PUS_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError6PUS_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError6PUS_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a2efc6a82b0bf5cc82d8aa7d7e6cfa9d5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PUS_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError6PUS_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError19DEVICE_SERVICE_BASEE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError19DEVICE_SERVICE_BASEE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError19DEVICE_SERVICE_BASEE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a81925efd624b46f301a7eedd44321363"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_SERVICE_BASE</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError19DEVICE_SERVICE_BASEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError20COMMAND_SERVICE_BASEE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError20COMMAND_SERVICE_BASEE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError20COMMAND_SERVICE_BASEE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a020aa15c64c5a07cde4f50e9e8a41550"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">COMMAND_SERVICE_BASE</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError20COMMAND_SERVICE_BASEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError19TM_STORE_BACKEND_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError19TM_STORE_BACKEND_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError19TM_STORE_BACKEND_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a9ab7b62253504973317f6d1cb61336d1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TM_STORE_BACKEND_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError19TM_STORE_BACKEND_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError20TM_STORE_FRONTEND_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError20TM_STORE_FRONTEND_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError20TM_STORE_FRONTEND_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4af931abdead831e6253bdfb0445f24499"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TM_STORE_FRONTEND_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError20TM_STORE_FRONTEND_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError29STORAGE_AND_RETRIEVAL_SERVICEE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError29STORAGE_AND_RETRIEVAL_SERVICEE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError29STORAGE_AND_RETRIEVAL_SERVICEE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a74d3a795107c31a1eeba278b4252e58e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">STORAGE_AND_RETRIEVAL_SERVICE</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError29STORAGE_AND_RETRIEVAL_SERVICEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError16MATCH_TREE_CLASSE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError16MATCH_TREE_CLASSE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError16MATCH_TREE_CLASSE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a3323afbf69cb18fa5e00554768447f9d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MATCH_TREE_CLASS</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError16MATCH_TREE_CLASSE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError16EVENT_MANAGER_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError16EVENT_MANAGER_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError16EVENT_MANAGER_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4ad63e449311aa3d016ca9100a3c17c521"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EVENT_MANAGER_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError16EVENT_MANAGER_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError19HANDLES_FAILURES_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError19HANDLES_FAILURES_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError19HANDLES_FAILURES_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4af45f68ef180e9f409fc771a0bcc09a93"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HANDLES_FAILURES_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError19HANDLES_FAILURES_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError17DEVICE_HANDLER_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError17DEVICE_HANDLER_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError17DEVICE_HANDLER_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a8c5eee19370abf676d86005c1001daf4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_HANDLER_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError17DEVICE_HANDLER_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError18STORAGE_MANAGER_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError18STORAGE_MANAGER_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError18STORAGE_MANAGER_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a4c1cc894e4289671b4ab6c20b6334d27"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">STORAGE_MANAGER_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError18STORAGE_MANAGER_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError20THERMAL_COMPONENT_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError20THERMAL_COMPONENT_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError20THERMAL_COMPONENT_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a53ef797658a9845d38f545dbec10e5d1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">THERMAL_COMPONENT_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError20THERMAL_COMPONENT_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError20INTERNAL_ERROR_CODESE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError20INTERNAL_ERROR_CODESE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError20INTERNAL_ERROR_CODESE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a18e74c0feb4ff011db1a35c9810e0df3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INTERNAL_ERROR_CODES</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError20INTERNAL_ERROR_CODESE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError4TRAPE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError4TRAPE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError4TRAPE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4aa15ba8e98cdbca927f443c378ef8c2d9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TRAP</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError4TRAPE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError16CCSDS_HANDLER_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError16CCSDS_HANDLER_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError16CCSDS_HANDLER_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a016fa6008396f37f90bd0e56af6adf3e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CCSDS_HANDLER_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError16CCSDS_HANDLER_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError17PARAMETER_WRAPPERE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError17PARAMETER_WRAPPERE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError17PARAMETER_WRAPPERE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4ad83aba2e37923cfd08a385579c013772"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PARAMETER_WRAPPER</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError17PARAMETER_WRAPPERE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError17HAS_PARAMETERS_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError17HAS_PARAMETERS_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError17HAS_PARAMETERS_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4adcf010be4eb2963a46664d217b8ecf18"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HAS_PARAMETERS_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError17HAS_PARAMETERS_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError15ASCII_CONVERTERE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError15ASCII_CONVERTERE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError15ASCII_CONVERTERE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4aa719d7efee19152f2fa41ca201a787be"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ASCII_CONVERTER</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError15ASCII_CONVERTERE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError14POWER_SWITCHERE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError14POWER_SWITCHERE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError14POWER_SWITCHERE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4aa2c298d7ab88da9b4f871e5155091d32"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">POWER_SWITCHER</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError14POWER_SWITCHERE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError9LIMITS_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError9LIMITS_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError9LIMITS_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4adf934d82e0032cf3f1d632d93e12ee5b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LIMITS_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError9LIMITS_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError19COMMANDS_ACTIONS_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError19COMMANDS_ACTIONS_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError19COMMANDS_ACTIONS_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a49d76b60a9b46fab2ca5dd402da2c4e9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">COMMANDS_ACTIONS_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError19COMMANDS_ACTIONS_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError14HAS_ACTIONS_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError14HAS_ACTIONS_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError14HAS_ACTIONS_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4acd2d325dc7470c8f0bd3b71d57cb5d6e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HAS_ACTIONS_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError14HAS_ACTIONS_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError23DEVICE_COMMUNICATION_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError23DEVICE_COMMUNICATION_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError23DEVICE_COMMUNICATION_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4aea00fdf52e895804fddb82638e468c78"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_COMMUNICATION_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError23DEVICE_COMMUNICATION_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError3BSPE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError3BSPE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError3BSPE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4ab83453f8baeba3c8fa6a7430216d09f7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BSP</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError3BSPE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError4CFDPE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError4CFDPE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError4CFDPE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4accb76b83d9828364e0715b0032551d28"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CFDP</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError4CFDPE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError15TIME_STAMPER_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError15TIME_STAMPER_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError15TIME_STAMPER_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a976a4466ea7b867c98321271939350f5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TIME_STAMPER_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError15TIME_STAMPER_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError20SGP4PROPAGATOR_CLASSE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError20SGP4PROPAGATOR_CLASSE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError20SGP4PROPAGATOR_CLASSE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4ad76aedc87414039d60201dabf0486a94"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SGP4PROPAGATOR_CLASS</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError20SGP4PROPAGATOR_CLASSE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError8MUTEX_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError8MUTEX_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError8MUTEX_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4aeba8e8a2b5c1aed14b5585d55296c552"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MUTEX_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError8MUTEX_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError16MESSAGE_QUEUE_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError16MESSAGE_QUEUE_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError16MESSAGE_QUEUE_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a9ba8709929374fa4308dfcf145e6a53a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MESSAGE_QUEUE_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError16MESSAGE_QUEUE_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError12SEMAPHORE_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError12SEMAPHORE_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError12SEMAPHORE_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a5e7d0768e14af959ffd87f56b2fd6790"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SEMAPHORE_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError12SEMAPHORE_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError19LOCAL_POOL_OWNER_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError19LOCAL_POOL_OWNER_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError19LOCAL_POOL_OWNER_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a020fe64f135003e4b8ebee90ef6f286c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LOCAL_POOL_OWNER_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError19LOCAL_POOL_OWNER_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError16POOL_VARIABLE_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError16POOL_VARIABLE_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError16POOL_VARIABLE_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4aecc8e1b7af385603a88de6e236159413"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">POOL_VARIABLE_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError16POOL_VARIABLE_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError20HOUSEKEEPING_MANAGERE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError20HOUSEKEEPING_MANAGERE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError20HOUSEKEEPING_MANAGERE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4ad36055cf9fe75f4af8acb2a5787efc56"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HOUSEKEEPING_MANAGER</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError20HOUSEKEEPING_MANAGERE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError11DLE_ENCODERE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError11DLE_ENCODERE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError11DLE_ENCODERE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4ab7989c240b47b80de0aa6effbf25c348"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DLE_ENCODER</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError11DLE_ENCODERE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError13PUS_SERVICE_3E">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError13PUS_SERVICE_3E"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError13PUS_SERVICE_3E"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a58d209c8ccd5e0583874403cd512981e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PUS_SERVICE_3</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError13PUS_SERVICE_3E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError13PUS_SERVICE_9E">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError13PUS_SERVICE_9E"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError13PUS_SERVICE_9E"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a47f80aec2e7dcd2cee8a2f266db9cf38"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PUS_SERVICE_9</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError13PUS_SERVICE_9E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError14PUS_SERVICE_11E">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError14PUS_SERVICE_11E"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError14PUS_SERVICE_11E"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a715aa6745cb449edd4fe75a3c90debf2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PUS_SERVICE_11</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError14PUS_SERVICE_11E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError11FILE_SYSTEME">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError11FILE_SYSTEME"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError11FILE_SYSTEME"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a56976cf7c0bf51b89b4c5998fc1d7f1a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FILE_SYSTEM</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError11FILE_SYSTEME" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError10LINUX_OSALE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError10LINUX_OSALE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError10LINUX_OSALE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a1f24598c4a8c5f5f79f3eda1e9c1088f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LINUX_OSAL</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError10LINUX_OSALE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError7HAL_SPIE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError7HAL_SPIE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError7HAL_SPIE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4a3e49715610a4fd6098689cd92e90e07a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HAL_SPI</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError7HAL_SPIE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError8HAL_UARTE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError8HAL_UARTE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError8HAL_UARTE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4ae76b6eb910d99aca98044d8f1c43a1e1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HAL_UART</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError8HAL_UARTE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError7HAL_I2CE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError7HAL_I2CE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError7HAL_I2CE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4adfd9231be2116c5568b047822ce4e12e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HAL_I2C</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError7HAL_I2CE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError8HAL_GPIOE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError8HAL_GPIOE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError8HAL_GPIOE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4ae096a0c918546d7ebbd6a92ae0ddf533"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HAL_GPIO</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError8HAL_GPIOE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError18FIXED_SLOT_TASK_IFE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError18FIXED_SLOT_TASK_IFE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError18FIXED_SLOT_TASK_IFE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4abaaddc379935dfc23ce64b4f1015fcd5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FIXED_SLOT_TASK_IF</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError18FIXED_SLOT_TASK_IFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError11MGM_LIS3MDLE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError11MGM_LIS3MDLE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError11MGM_LIS3MDLE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4ae020600a252b6177d74128de4fd08f31"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MGM_LIS3MDL</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError11MGM_LIS3MDLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError10MGM_RM3100E">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError10MGM_RM3100E"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError10MGM_RM3100E"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4aa3e961551fe55422d9230e9be918ca45"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MGM_RM3100</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError10MGM_RM3100E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError19SPACE_PACKET_PARSERE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError19SPACE_PACKET_PARSERE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError19SPACE_PACKET_PARSERE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4aa90b67110b616011610ae062fb365280"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPACE_PACKET_PARSER</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError19SPACE_PACKET_PARSERE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8CLASS_ID19PhonyNameDueToError17FW_CLASS_ID_COUNTE">
+<span id="_CPPv3N8CLASS_ID19PhonyNameDueToError17FW_CLASS_ID_COUNTE"></span><span id="_CPPv2N8CLASS_ID19PhonyNameDueToError17FW_CLASS_ID_COUNTE"></span><span class="target" id="_fw_class_ids_8h_1aad6fa1b50b85c3e9b823a480a39ab1f4abf16646da960925a74f3adaacc7dd063"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FW_CLASS_ID_COUNT</span></span></span><a class="headerlink" href="#_CPPv4N8CLASS_ID19PhonyNameDueToError17FW_CLASS_ID_COUNTE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Flight Software Framework</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highlevel.html">High-level overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core.html">Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config.html">Configuring the FSFW</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../osal.html">Operating System Abstraction Layer (OSAL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pus.html">PUS Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devicehandlers.html">Device Handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../localpools.html">Local Data Pools</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cfdp.html">CFDP API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objectmanager.html">Object Manager API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="task.html">Task API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipc.html">IPC Module API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Returnvalue API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event.html">Event API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modes.html">Modes API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="health.html">Health API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="action.html">Action Module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devicehandler.html">Device Handler Base API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controller.html">Controller API</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.uni-stuttgart.de/impressum">Impressum</a></li>
+    
+    <li class="toctree-l1"><a href="https://info.irs.uni-stuttgart.de/datenschutz/datenschutzWebmit.html">Datenschutz</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api.html">API</a><ul>
+      <li>Previous: <a href="ipc.html" title="previous chapter">IPC Module API</a></li>
+      <li>Next: <a href="event.html" title="next chapter">Event API</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Institute of Space Systems (IRS).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/api/returnvalue.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

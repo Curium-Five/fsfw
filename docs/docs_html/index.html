@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Flight Software Framework (FSFW) documentation &#8212; Flight Software Framework 5.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=ec0e10ea"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting Started" href="getting_started.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="flight-software-framework-fsfw-documentation">
+<h1>Flight Software Framework (FSFW) documentation<a class="headerlink" href="#flight-software-framework-fsfw-documentation" title="Permalink to this heading">¶</a></h1>
+<img alt="FSFW Logo" src="_images/FSFW_Logo_V3_bw.png" />
+<p>The Flight Software Framework is a C++ Object Oriented Framework for unmanned,
+automated systems like Satellites.</p>
+<p>The initial version of the Flight Software Framework was developed during
+the Flying Laptop Project by the University of Stuttgart in cooperation
+with Airbus Defence and Space GmbH.</p>
+<section id="quick-facts">
+<h2>Quick facts<a class="headerlink" href="#quick-facts" title="Permalink to this heading">¶</a></h2>
+<p>The framework is designed for systems, which communicate with external devices, perform control
+loops, receive telecommands and send telemetry, and need to maintain a high level of availability.
+Therefore, a mode and health system provides control over the states of the software and the
+controlled devices. In addition, a simple mechanism of event based fault detection, isolation and
+recovery is implemented as well.</p>
+<p>The FSFW provides abstraction layers for operating systems to provide a uniform operating system
+abstraction layer (OSAL). Some components of this OSAL are required internally by the FSFW but is
+also very useful for developers to implement the same application logic on different operating
+systems with a uniform interface.</p>
+<p>Currently, the FSFW provides the following OSALs:</p>
+<ul class="simple">
+<li><p>Linux</p></li>
+<li><p>Host</p></li>
+<li><p>FreeRTOS</p></li>
+<li><p>RTEMS</p></li>
+</ul>
+<p>The recommended hardware is a microprocessor with more than 1 MB of RAM and 1 MB of non-volatile
+memory. For reference, current applications use a Cobham Gaisler UT699 (LEON3FT), a
+ISISPACE IOBC or a Zynq-7020 SoC. The <code class="docutils literal notranslate"><span class="pre">fsfw</span></code> was also successfully run on the
+STM32H743ZI-Nucleo board and on a Raspberry Pi and is currently running on the active
+satellite mission Flying Laptop.</p>
+</section>
+<section id="index">
+<h2>Index<a class="headerlink" href="#index" title="Permalink to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#id1">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#adding-the-library">Adding the library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#building-the-unittests">Building the unittests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#building-the-documentation">Building the documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#formatting-the-source">Formatting the source</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="highlevel.html">High-level overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="highlevel.html#structure">Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlevel.html#failure-handling">Failure Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlevel.html#osal">OSAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlevel.html#core-components">Core Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlevel.html#static-ids-in-the-framework">Static IDs in the framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlevel.html#events">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlevel.html#internal-communication">Internal Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlevel.html#external-communication">External Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlevel.html#device-handlers">Device Handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlevel.html#modes-and-health">Modes and Health</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core.html#clock">Clock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#object-manager">Object Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#event-manager">Event Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#health-table">Health Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#stores">Stores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#tasks">Tasks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuring the FSFW</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config.html#auto-translation-of-events">Auto-Translation of Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#configuring-the-event-manager">Configuring the Event Manager</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="osal.html">Operating System Abstraction Layer (OSAL)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="osal.html#linux">Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="osal.html#hosted-osal">Hosted OSAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="osal.html#freertos-osal">FreeRTOS OSAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="osal.html#rtems-osal">RTEMS OSAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="osal.html#tcp-ip-socket-abstraction">TCP/IP socket abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="osal.html#example-applications">Example Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pus.html">PUS Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devicehandlers.html">Device Handlers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="devicehandlers.html#template-device-handler-base-file">Template Device Handler Base File</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="localpools.html">Local Data Pools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="localpools.html#storing-and-accessing-pool-data">Storing and Accessing pool data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="localpools.html#using-the-local-data-pools-in-a-devicehandlerbase-subclass">Using the local data pools in a <code class="docutils literal notranslate"><span class="pre">DeviceHandlerBase</span></code> subclass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="localpools.html#using-the-local-data-pools-in-a-extendedcontrollerbase-subclass">Using the local data pools in a <code class="docutils literal notranslate"><span class="pre">ExtendedControllerBase</span></code> subclass</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/cfdp.html">CFDP API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/objectmanager.html">Object Manager API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/task.html">Task API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/ipc.html">IPC Module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/returnvalue.html">Returnvalue API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/event.html">Event API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/modes.html">Modes API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/health.html">Health API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/action.html">Action Module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/devicehandler.html">Device Handler Base API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/controller.html">Controller API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Flight Software Framework</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="highlevel.html">High-level overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuring the FSFW</a></li>
+<li class="toctree-l1"><a class="reference internal" href="osal.html">Operating System Abstraction Layer (OSAL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pus.html">PUS Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devicehandlers.html">Device Handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="localpools.html">Local Data Pools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.uni-stuttgart.de/impressum">Impressum</a></li>
+    
+    <li class="toctree-l1"><a href="https://info.irs.uni-stuttgart.de/datenschutz/datenschutzWebmit.html">Datenschutz</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="getting_started.html" title="next chapter">Getting Started</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Institute of Space Systems (IRS).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

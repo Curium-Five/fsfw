@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Action Module API &#8212; Flight Software Framework 5.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ec0e10ea"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Device Handler Base API" href="devicehandler.html" />
+    <link rel="prev" title="Health API" href="health.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="action-module-api">
+<h1>Action Module API<a class="headerlink" href="#action-module-api" title="Permalink to this heading">¶</a></h1>
+<section id="actionhelper">
+<h2><code class="docutils literal notranslate"><span class="pre">ActionHelper</span></code><a class="headerlink" href="#actionhelper" title="Permalink to this heading">¶</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv412ActionHelper">
+<span id="_CPPv312ActionHelper"></span><span id="_CPPv212ActionHelper"></span><span id="ActionHelper"></span><span class="target" id="class_action_helper"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ActionHelper</span></span></span><a class="headerlink" href="#_CPPv412ActionHelper" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Subclassed by SimpleActionHelper</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12ActionHelper12ActionHelperEP12HasActionsIFP14MessageQueueIF">
+<span id="_CPPv3N12ActionHelper12ActionHelperEP12HasActionsIFP14MessageQueueIF"></span><span id="_CPPv2N12ActionHelper12ActionHelperEP12HasActionsIFP14MessageQueueIF"></span><span id="ActionHelper::ActionHelper__HasActionsIFP.MessageQueueIFP"></span><span class="target" id="class_action_helper_1a88405ef30f06687ff5d791b7f85adcff"></span><span class="sig-name descname"><span class="n"><span class="pre">ActionHelper</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv412HasActionsIF" title="HasActionsIF"><span class="n"><span class="pre">HasActionsIF</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">setOwner</span></span>, <a class="reference internal" href="ipc.html#_CPPv414MessageQueueIF" title="MessageQueueIF"><span class="n"><span class="pre">MessageQueueIF</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">useThisQueue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12ActionHelper12ActionHelperEP12HasActionsIFP14MessageQueueIF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructor of the action helper </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setOwner</strong> – Pointer to the owner of the interface </p></li>
+<li><p><strong>useThisQueue</strong> – messageQueue to be used, can be set during initialize function as well. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12ActionHelper19handleActionMessageEP14CommandMessage">
+<span id="_CPPv3N12ActionHelper19handleActionMessageEP14CommandMessage"></span><span id="_CPPv2N12ActionHelper19handleActionMessageEP14CommandMessage"></span><span id="ActionHelper::handleActionMessage__CommandMessageP"></span><span class="target" id="class_action_helper_1a27d15b2acba748bfd41b829a90936fb5"></span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">handleActionMessage</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">CommandMessage</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">command</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12ActionHelper19handleActionMessageEP14CommandMessage" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Function to be called from the owner with a new command message</p>
+<p>If the message is a valid action message the helper will use the executeAction function from <a class="reference internal" href="#class_has_actions_i_f"><span class="std std-ref">HasActionsIF</span></a>. If the message is invalid or the callback fails a message reply will be send to the sender of the message automatically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>command</strong> – Pointer to a command message received by the owner </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>returnvalue::OK if the message is a action message, CommandMessage::UNKNOW_COMMAND if this message ID is unkown </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12ActionHelper10initializeEP14MessageQueueIF">
+<span id="_CPPv3N12ActionHelper10initializeEP14MessageQueueIF"></span><span id="_CPPv2N12ActionHelper10initializeEP14MessageQueueIF"></span><span id="ActionHelper::initialize__MessageQueueIFP"></span><span class="target" id="class_action_helper_1a7a5bd5f3a1021bf55b4a9d2107faa0c8"></span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initialize</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="ipc.html#_CPPv414MessageQueueIF" title="MessageQueueIF"><span class="n"><span class="pre">MessageQueueIF</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">queueToUse_</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12ActionHelper10initializeEP14MessageQueueIF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Helper initialize function. Must be called before use of any other helper function </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>queueToUse_</strong> – Pointer to the messageQueue to be used, optional if queue was set in constructor </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns returnvalue::OK if successful </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12ActionHelper4stepE7uint8_t16MessageQueueId_t10ActionId_t13ReturnValue_t">
+<span id="_CPPv3N12ActionHelper4stepE7uint8_t16MessageQueueId_t10ActionId_t13ReturnValue_t"></span><span id="_CPPv2N12ActionHelper4stepE7uint8_t16MessageQueueId_t10ActionId_t13ReturnValue_t"></span><span id="ActionHelper::step__uint8_t.MessageQueueId_t.ActionId_t.ReturnValue_t"></span><span class="target" id="class_action_helper_1ac857314fe5fc1e455f354805d49a7e62"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">step</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">step</span></span>, <span class="n"><span class="pre">MessageQueueId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">reportTo</span></span>, <span class="n"><span class="pre">ActionId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">commandId</span></span>, <a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">result</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv411returnvalue" title="returnvalue"><span class="n"><span class="pre">returnvalue</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="returnvalue.html#_CPPv4N11returnvalue2OKE" title="returnvalue::OK"><span class="n"><span class="pre">OK</span></span></a><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12ActionHelper4stepE7uint8_t16MessageQueueId_t10ActionId_t13ReturnValue_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Function to be called from the owner to send a step message. Success or failure will be determined by the result value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>step</strong> – Number of steps already done </p></li>
+<li><p><strong>reportTo</strong> – The messageQueueId to report the step message to </p></li>
+<li><p><strong>commandId</strong> – ID of the executed command </p></li>
+<li><p><strong>result</strong> – Result of the execution </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12ActionHelper6finishEb16MessageQueueId_t10ActionId_t13ReturnValue_t">
+<span id="_CPPv3N12ActionHelper6finishEb16MessageQueueId_t10ActionId_t13ReturnValue_t"></span><span id="_CPPv2N12ActionHelper6finishEb16MessageQueueId_t10ActionId_t13ReturnValue_t"></span><span id="ActionHelper::finish__b.MessageQueueId_t.ActionId_t.ReturnValue_t"></span><span class="target" id="class_action_helper_1a65ab4ca0b86f80342575986d60058370"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">finish</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">success</span></span>, <span class="n"><span class="pre">MessageQueueId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">reportTo</span></span>, <span class="n"><span class="pre">ActionId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">commandId</span></span>, <a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">result</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv411returnvalue" title="returnvalue"><span class="n"><span class="pre">returnvalue</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="returnvalue.html#_CPPv4N11returnvalue2OKE" title="returnvalue::OK"><span class="n"><span class="pre">OK</span></span></a><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12ActionHelper6finishEb16MessageQueueId_t10ActionId_t13ReturnValue_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Function to be called by the owner to send a action completion message </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>success</strong> – Specify whether action was completed successfully or not. </p></li>
+<li><p><strong>reportTo</strong> – MessageQueueId_t to report the action completion message to </p></li>
+<li><p><strong>commandId</strong> – ID of the executed command </p></li>
+<li><p><strong>result</strong> – Result of the execution </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12ActionHelper10reportDataE16MessageQueueId_t10ActionId_tP11SerializeIFb">
+<span id="_CPPv3N12ActionHelper10reportDataE16MessageQueueId_t10ActionId_tP11SerializeIFb"></span><span id="_CPPv2N12ActionHelper10reportDataE16MessageQueueId_t10ActionId_tP11SerializeIFb"></span><span id="ActionHelper::reportData__MessageQueueId_t.ActionId_t.SerializeIFP.b"></span><span class="target" id="class_action_helper_1aa8372ec4980501670765b06fa844e1d3"></span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reportData</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">MessageQueueId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">reportTo</span></span>, <span class="n"><span class="pre">ActionId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">replyId</span></span>, <span class="n"><span class="pre">SerializeIF</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">hideSender</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12ActionHelper10reportDataE16MessageQueueId_t10ActionId_tP11SerializeIFb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Function to be called by the owner if an action does report data. Takes a SerializeIF* pointer and serializes it into the IPC store. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reportTo</strong> – MessageQueueId_t to report the action completion message to </p></li>
+<li><p><strong>replyId</strong> – ID of the executed command </p></li>
+<li><p><strong>data</strong> – Pointer to the data </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns returnvalue::OK if successful, otherwise failure code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12ActionHelper10reportDataE16MessageQueueId_t10ActionId_tPK7uint8_t6size_tb">
+<span id="_CPPv3N12ActionHelper10reportDataE16MessageQueueId_t10ActionId_tPK7uint8_t6size_tb"></span><span id="_CPPv2N12ActionHelper10reportDataE16MessageQueueId_t10ActionId_tPK7uint8_t6size_tb"></span><span id="ActionHelper::reportData__MessageQueueId_t.ActionId_t.uint8_tCP.s.b"></span><span class="target" id="class_action_helper_1a01fffbb0fd5b73945b266f25610396b3"></span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reportData</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">MessageQueueId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">reportTo</span></span>, <span class="n"><span class="pre">ActionId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">replyId</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dataSize</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">hideSender</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12ActionHelper10reportDataE16MessageQueueId_t10ActionId_tPK7uint8_t6size_tb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Function to be called by the owner if an action does report data. Takes the raw data and writes it into the IPC store. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reportTo</strong> – MessageQueueId_t to report the action completion message to </p></li>
+<li><p><strong>replyId</strong> – ID of the executed command </p></li>
+<li><p><strong>data</strong> – Pointer to the data </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns returnvalue::OK if successful, otherwise failure code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12ActionHelper13setQueueToUseEP14MessageQueueIF">
+<span id="_CPPv3N12ActionHelper13setQueueToUseEP14MessageQueueIF"></span><span id="_CPPv2N12ActionHelper13setQueueToUseEP14MessageQueueIF"></span><span id="ActionHelper::setQueueToUse__MessageQueueIFP"></span><span class="target" id="class_action_helper_1ac6ff216fb23ac3796b5c57a8b9065917"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setQueueToUse</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="ipc.html#_CPPv414MessageQueueIF" title="MessageQueueIF"><span class="n"><span class="pre">MessageQueueIF</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">queue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12ActionHelper13setQueueToUseEP14MessageQueueIF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Function to setup the MessageQueueIF* of the helper. Can be used to set the MessageQueueIF* if message queue is unavailable at construction and initialize but must be setup before first call of other functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>queue</strong> – Queue to be used by the helper </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="hasactionsif">
+<h2><code class="docutils literal notranslate"><span class="pre">HasActionsIF</span></code><a class="headerlink" href="#hasactionsif" title="Permalink to this heading">¶</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv412HasActionsIF">
+<span id="_CPPv312HasActionsIF"></span><span id="_CPPv212HasActionsIF"></span><span id="HasActionsIF"></span><span class="target" id="class_has_actions_i_f"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HasActionsIF</span></span></span><a class="headerlink" href="#_CPPv412HasActionsIF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Interface for component which uses actions. </p>
+<p>This interface is used to execute actions in the component. Actions, in the sense of this interface, are activities with a well-defined beginning and end in time. They may adjust sub-states of components, but are not supposed to change the main mode of operation, which is handled with the <a class="reference internal" href="modes.html#class_has_modes_i_f"><span class="std std-ref">HasModesIF</span></a> described below.</p>
+<p>The <a class="reference internal" href="#class_has_actions_i_f"><span class="std std-ref">HasActionsIF</span></a> allows components to define such actions and make them available for other components to use. Implementing the interface is straightforward: There’s a single executeAction call, which provides an identifier for the action to execute, as well as arbitrary parameters for input. Aside from direct, software-based actions, it is used in device handler components as an interface to forward commands to devices. Implementing components of the interface are supposed to check identifier (ID) and parameters and immediately start execution of the action. It is, however, not required to immediately finish execution. Instead, this may be deferred to a later point in time, at which the component needs to inform the caller about finished or failed execution. </p>
+<p>Subclassed by <a class="reference internal" href="devicehandler.html#class_device_handler_base"><span class="std std-ref">DeviceHandlerBase</span></a>, <a class="reference internal" href="controller.html#class_extended_controller_base"><span class="std std-ref">ExtendedControllerBase</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK12HasActionsIF15getCommandQueueEv">
+<span id="_CPPv3NK12HasActionsIF15getCommandQueueEv"></span><span id="_CPPv2NK12HasActionsIF15getCommandQueueEv"></span><span id="HasActionsIF::getCommandQueueC"></span><span class="target" id="class_has_actions_i_f_1a945685e10e5f2f9266c3ce04464b44e5"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">MessageQueueId_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getCommandQueue</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK12HasActionsIF15getCommandQueueEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Function to get the MessageQueueId_t of the implementing object </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MessageQueueId_t of the object </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12HasActionsIF13executeActionE10ActionId_t16MessageQueueId_tPK7uint8_t6size_t">
+<span id="_CPPv3N12HasActionsIF13executeActionE10ActionId_t16MessageQueueId_tPK7uint8_t6size_t"></span><span id="_CPPv2N12HasActionsIF13executeActionE10ActionId_t16MessageQueueId_tPK7uint8_t6size_t"></span><span id="HasActionsIF::executeAction__ActionId_t.MessageQueueId_t.uint8_tCP.s"></span><span class="target" id="class_has_actions_i_f_1af34bbdd6f547252cc52d36b250db9842"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><span class="n"><span class="pre">ReturnValue_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">executeAction</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ActionId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">actionId</span></span>, <span class="n"><span class="pre">MessageQueueId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">commandedBy</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N12HasActionsIF13executeActionE10ActionId_t16MessageQueueId_tPK7uint8_t6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Execute or initialize the execution of a certain function. The ActionHelpers will execute this function and behave differently depending on the returnvalue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>-<code class="docutils literal notranslate"><span class="pre">EXECUTION_FINISHED</span></code> Finish reply will be generated -<code class="docutils literal notranslate"><span class="pre">Not</span></code> returnvalue::OK Step failure reply will be generated </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Flight Software Framework</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highlevel.html">High-level overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core.html">Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config.html">Configuring the FSFW</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../osal.html">Operating System Abstraction Layer (OSAL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pus.html">PUS Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devicehandlers.html">Device Handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../localpools.html">Local Data Pools</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cfdp.html">CFDP API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objectmanager.html">Object Manager API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="task.html">Task API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipc.html">IPC Module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="returnvalue.html">Returnvalue API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event.html">Event API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modes.html">Modes API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="health.html">Health API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Action Module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devicehandler.html">Device Handler Base API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controller.html">Controller API</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.uni-stuttgart.de/impressum">Impressum</a></li>
+    
+    <li class="toctree-l1"><a href="https://info.irs.uni-stuttgart.de/datenschutz/datenschutzWebmit.html">Datenschutz</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api.html">API</a><ul>
+      <li>Previous: <a href="health.html" title="previous chapter">Health API</a></li>
+      <li>Next: <a href="devicehandler.html" title="next chapter">Device Handler Base API</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Institute of Space Systems (IRS).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/api/action.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

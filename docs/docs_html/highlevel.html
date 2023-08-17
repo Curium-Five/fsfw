@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>High-level overview &#8212; Flight Software Framework 5.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=ec0e10ea"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Core Modules" href="core.html" />
+    <link rel="prev" title="Getting Started" href="getting_started.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="high-level-overview">
+<span id="highlevel"></span><h1>High-level overview<a class="headerlink" href="#high-level-overview" title="Permalink to this heading">¶</a></h1>
+<section id="structure">
+<h2>Structure<a class="headerlink" href="#structure" title="Permalink to this heading">¶</a></h2>
+<p>The general structure is driven by the usage of interfaces provided by objects.
+The FSFW uses C++17 as baseline. Most modern compilers like GCC should have support for this
+standard, even for micocontrollers.</p>
+<p>The FSFW might use dynamic allocation during program initialization but not during runtime.
+It offers pool objects, static containers and it also exposes the
+<a class="reference external" href="https://www.etlcpp.com/">Embedded Template Library</a> to allow writing code which does not perform
+allocation during runtime. The fsfw uses run-time type information but will not throw exceptions.</p>
+</section>
+<section id="failure-handling">
+<h2>Failure Handling<a class="headerlink" href="#failure-handling" title="Permalink to this heading">¶</a></h2>
+<p>Functions should return a defined <a class="reference internal" href="api/returnvalue.html#_CPPv413ReturnValue_t" title="ReturnValue_t"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">ReturnValue_t</span></code></a> to signal to the caller that something has
+gone wrong. Returnvalues must be unique. For this the function <a class="reference internal" href="api/returnvalue.html#_CPPv4N11returnvalue8makeCodeE7uint8_t7uint8_t" title="returnvalue::makeCode"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">returnvalue::makeCode()</span></code></a>
+or the <a class="reference internal" href="api/returnvalue.html#retvalapi"><span class="std std-ref">macro MAKE_RETURN_CODE</span></a> can be used. The <code class="docutils literal notranslate"><span class="pre">CLASS_ID</span></code> is a unique ID for that type of object.
+See the <a class="reference internal" href="api/returnvalue.html#fwclassids"><span class="std std-ref">FSFW Class IDs file</span></a>. The user can add custom <code class="docutils literal notranslate"><span class="pre">CLASS_ID</span></code>s via the
+<code class="docutils literal notranslate"><span class="pre">fsfwconfig</span></code> folder.</p>
+</section>
+<section id="osal">
+<h2>OSAL<a class="headerlink" href="#osal" title="Permalink to this heading">¶</a></h2>
+<p>The FSFW provides operation system abstraction layers for Linux, FreeRTOS and RTEMS.
+The OSAL provides periodic tasks, message queues, clocks and semaphores as well as mutexes.
+The <a class="reference internal" href="osal.html#osal"><span class="std std-ref">OSAL README</span></a> provides more detailed information on provided components
+and how to use them.</p>
+</section>
+<section id="core-components">
+<h2>Core Components<a class="headerlink" href="#core-components" title="Permalink to this heading">¶</a></h2>
+<p>The FSFW has following core components. More detailed informations can be found in the
+<a class="reference internal" href="core.html#core"><span class="std std-ref">core component section</span></a>:</p>
+<ol class="arabic simple">
+<li><p>Tasks: Abstraction for different (periodic) task types like periodic tasks or tasks
+with fixed timeslots</p></li>
+<li><p>ObjectManager: This module stores all <cite>SystemObjects</cite> by mapping a provided unique object ID
+to the object handles.</p></li>
+<li><p>Static Stores: Different stores are provided to store data of variable size (like telecommands
+or small telemetry) in a pool structure without using dynamic memory allocation.
+These pools are allocated up front.</p></li>
+<li><p>Clock: This module provided common time related functions</p></li>
+<li><p>EventManager: This module allows routing of events generated by <cite>SystemObjects</cite></p></li>
+<li><p>HealthTable: A component which stores the health states of objects</p></li>
+</ol>
+</section>
+<section id="static-ids-in-the-framework">
+<h2>Static IDs in the framework<a class="headerlink" href="#static-ids-in-the-framework" title="Permalink to this heading">¶</a></h2>
+<p>Some parts of the framework use a static routing address for communication.
+An example setup of IDs can be found in the example config in <code class="docutils literal notranslate"><span class="pre">misc/defaultcfg/fsfwconfig/objects</span></code>
+inside the function <code class="docutils literal notranslate"><span class="pre">Factory::setStaticFrameworkObjectIds</span></code>.</p>
+</section>
+<section id="events">
+<h2>Events<a class="headerlink" href="#events" title="Permalink to this heading">¶</a></h2>
+<p>Events are tied to objects. EventIds can be generated by calling the
+<a class="reference internal" href="api/event.html#eventapi"><span class="std std-ref">macro MAKE_EVENT</span></a> or the function <a class="reference internal" href="api/event.html#_CPPv4N5event9makeEventE7uint8_t15UniqueEventId_t15EventSeverity_t" title="event::makeEvent"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">event::makeEvent()</span></code></a>.
+This works analog to the returnvalues. Every object that needs own Event IDs has to get a
+unique <code class="docutils literal notranslate"><span class="pre">SUBSYSTEM_ID</span></code>. Every <a class="reference internal" href="api/objectmanager.html#_CPPv412SystemObject" title="SystemObject"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">SystemObject</span></code></a> can call
+<a class="reference internal" href="api/objectmanager.html#_CPPv4N12SystemObject12triggerEventE5Event8uint32_t8uint32_t" title="SystemObject::triggerEvent"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">SystemObject::triggerEvent()</span></code></a> from the parent class.
+Therefore, event messages contain the specific EventId and the objectId of the object that
+has triggered.</p>
+</section>
+<section id="internal-communication">
+<h2>Internal Communication<a class="headerlink" href="#internal-communication" title="Permalink to this heading">¶</a></h2>
+<p>Components communicate mostly via Messages through Queues.
+Those queues are created by calling the singleton <code class="docutils literal notranslate"><span class="pre">QueueFactory::instance()-&gt;create</span></code> which
+will create <cite>MessageQueue</cite> instances for the used OSAL.</p>
+</section>
+<section id="external-communication">
+<h2>External Communication<a class="headerlink" href="#external-communication" title="Permalink to this heading">¶</a></h2>
+<p>The external communication with the mission control system is mostly up to the user implementation.
+The FSFW provides PUS Services which can be used to but don’t need to be used.
+The services can be seen as a conversion from a TC to a message based communication and back.</p>
+<section id="tmtc-communication">
+<h3>TMTC Communication<a class="headerlink" href="#tmtc-communication" title="Permalink to this heading">¶</a></h3>
+<p>The FSFW provides some components to facilitate TMTC handling via the PUS commands.
+For example, a UDP or TCP PUS server socket can be opened on a specific port using the
+files located in <code class="docutils literal notranslate"><span class="pre">osal/common</span></code>. The FSFW example uses this functionality to allow sending
+telecommands and receiving telemetry using the
+<a class="reference external" href="https://github.com/robamu-org/tmtccmd">TMTC commander application</a>.</p>
+<p>Simple commands like the PUS Service 17 ping service can be tested by simply running the
+<code class="docutils literal notranslate"><span class="pre">tmtc_client_cli.py</span></code> or <code class="docutils literal notranslate"><span class="pre">tmtc_client_gui.py</span></code> utility in
+the <a class="reference external" href="https://egit.irs.uni-stuttgart.de/fsfw/fsfw_example_public/src/branch/master/tmtc">example tmtc folder</a>
+while the <cite>fsfw_example</cite> application is running.</p>
+<p>More generally, any class responsible for handling incoming telecommands and sending telemetry
+can implement the generic <code class="docutils literal notranslate"><span class="pre">TmTcBridge</span></code> class located in <code class="docutils literal notranslate"><span class="pre">tmtcservices</span></code>. Many applications
+also use a dedicated polling task for reading telecommands which passes telecommands
+to the <code class="docutils literal notranslate"><span class="pre">TmTcBridge</span></code> implementation.</p>
+</section>
+<section id="ccsds-frames-ccsds-space-packets-and-pus">
+<h3>CCSDS Frames, CCSDS Space Packets and PUS<a class="headerlink" href="#ccsds-frames-ccsds-space-packets-and-pus" title="Permalink to this heading">¶</a></h3>
+<p>If the communication is based on CCSDS Frames and Space Packets, several classes can be used to
+distributed the packets to the corresponding services. Those can be found in <code class="docutils literal notranslate"><span class="pre">tcdistribution</span></code>.
+If Space Packets are used, a timestamper has to be provided by the user.
+An example can be found in the <code class="docutils literal notranslate"><span class="pre">timemanager</span></code> folder, which uses <code class="docutils literal notranslate"><span class="pre">CCSDSTime::CDS_short</span></code>.</p>
+</section>
+</section>
+<section id="device-handlers">
+<h2>Device Handlers<a class="headerlink" href="#device-handlers" title="Permalink to this heading">¶</a></h2>
+<p>DeviceHandlers are another important component of the FSFW. The idea is, to have a software
+counterpart of every physical device to provide a simple mode, health and commanding interface.
+By separating the underlying Communication Interface with
+<code class="docutils literal notranslate"><span class="pre">DeviceCommunicationIF</span></code>, a device handler (DH) can be tested on different hardware.
+The DH has mechanisms to monitor the communication with the physical device which allow
+for FDIR reaction.  Device Handlers can be created by implementing <code class="docutils literal notranslate"><span class="pre">DeviceHandlerBase</span></code>.
+A standard FDIR component for the DH will be created automatically but can
+be overwritten by the user. More information on DeviceHandlers can be found in the
+related <a class="reference internal" href="devicehandlers.html#dhb-prim-doc"><span class="std std-ref">documentation section</span></a>.</p>
+</section>
+<section id="modes-and-health">
+<h2>Modes and Health<a class="headerlink" href="#modes-and-health" title="Permalink to this heading">¶</a></h2>
+<p>The two interfaces <code class="docutils literal notranslate"><span class="pre">HasModesIF</span></code> and <code class="docutils literal notranslate"><span class="pre">HasHealthIF</span></code> provide access for commanding and monitoring
+of components. On-board mode management is implement in hierarchy system.</p>
+<ul class="simple">
+<li><p>Device handlers and controllers are the lowest part of the hierarchy.</p></li>
+<li><p>The next layer are assemblies. Those assemblies act as a component which handle
+redundancies of handlers. Assemblies share a common core with the top level subsystem components</p></li>
+<li><p>The top level subsystem components are used to group assemblies, controllers and device handlers.
+For example, a spacecraft can have a atttitude control subsystem and a power subsystem.</p></li>
+</ul>
+<p>Those assemblies are intended to act as auto-generated components from a database which describes
+the subsystem modes. The definitions contain transition and target tables which contain the DH,
+Assembly and Controller Modes to be commanded.
+Transition tables contain as many steps as needed to reach the mode from any other mode, e.g. a
+switch into any higher AOCS mode might first turn on the sensors, than the actuators and the
+controller as last component.
+The target table is used to describe the state that is checked continuously by the subsystem.
+All of this allows System Modes to be generated as Subsystem object as well from the same database.
+This System contains list of subsystem modes in the transition and target tables.
+Therefore, it allows a modular system to create system modes and easy commanding of those, because
+only the highest components must be commanded.</p>
+<p>The health state represents if the component is able to perform its tasks.
+This can be used to signal the system to avoid using this component instead of a redundant one.
+The on-board FDIR uses the health state for isolation and recovery.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Flight Software Framework</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">High-level overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#structure">Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#failure-handling">Failure Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#osal">OSAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#core-components">Core Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#static-ids-in-the-framework">Static IDs in the framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#events">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#internal-communication">Internal Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#external-communication">External Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#device-handlers">Device Handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modes-and-health">Modes and Health</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuring the FSFW</a></li>
+<li class="toctree-l1"><a class="reference internal" href="osal.html">Operating System Abstraction Layer (OSAL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pus.html">PUS Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devicehandlers.html">Device Handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="localpools.html">Local Data Pools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.uni-stuttgart.de/impressum">Impressum</a></li>
+    
+    <li class="toctree-l1"><a href="https://info.irs.uni-stuttgart.de/datenschutz/datenschutzWebmit.html">Datenschutz</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="getting_started.html" title="previous chapter">Getting Started</a></li>
+      <li>Next: <a href="core.html" title="next chapter">Core Modules</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Institute of Space Systems (IRS).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/highlevel.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

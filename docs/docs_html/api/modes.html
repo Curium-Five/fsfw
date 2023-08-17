@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Modes API &#8212; Flight Software Framework 5.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ec0e10ea"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Health API" href="health.html" />
+    <link rel="prev" title="Event API" href="event.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="modes-api">
+<h1>Modes API<a class="headerlink" href="#modes-api" title="Permalink to this heading">¶</a></h1>
+<section id="hasmodesif">
+<h2><code class="docutils literal notranslate"><span class="pre">HasModesIF</span></code><a class="headerlink" href="#hasmodesif" title="Permalink to this heading">¶</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv410HasModesIF">
+<span id="_CPPv310HasModesIF"></span><span id="_CPPv210HasModesIF"></span><span id="HasModesIF"></span><span class="target" id="class_has_modes_i_f"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HasModesIF</span></span></span><a class="headerlink" href="#_CPPv410HasModesIF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Subclassed by <a class="reference internal" href="controller.html#class_controller_base"><span class="std std-ref">ControllerBase</span></a>, <a class="reference internal" href="devicehandler.html#class_device_handler_base"><span class="std std-ref">DeviceHandlerBase</span></a>, PowerSwitcherComponent, SubsystemBase</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10HasModesIF13CHANGING_MODEE">
+<span id="_CPPv3N10HasModesIF13CHANGING_MODEE"></span><span id="_CPPv2N10HasModesIF13CHANGING_MODEE"></span><span id="HasModesIF::CHANGING_MODE__EventC"></span><span class="target" id="class_has_modes_i_f_1ab40038c7389c86e8c19831b13628ddbb"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="event.html#_CPPv45Event" title="Event"><span class="n"><span class="pre">Event</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CHANGING_MODE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">MAKE_EVENT</span></span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="event.html#_CPPv48severity" title="severity"><span class="n"><span class="pre">severity</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="event.html#_CPPv4N8severity8Severity4INFOE" title="severity::INFO"><span class="n"><span class="pre">INFO</span></span></a><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N10HasModesIF13CHANGING_MODEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>An object announces changing the mode. p1: target mode. p2: target submode </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10HasModesIF9MODE_INFOE">
+<span id="_CPPv3N10HasModesIF9MODE_INFOE"></span><span id="_CPPv2N10HasModesIF9MODE_INFOE"></span><span id="HasModesIF::MODE_INFO__EventC"></span><span class="target" id="class_has_modes_i_f_1ada751618180f2029a6d98f7af7554310"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="event.html#_CPPv45Event" title="Event"><span class="n"><span class="pre">Event</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MODE_INFO</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">MAKE_EVENT</span></span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="event.html#_CPPv48severity" title="severity"><span class="n"><span class="pre">severity</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="event.html#_CPPv4N8severity8Severity4INFOE" title="severity::INFO"><span class="n"><span class="pre">INFO</span></span></a><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N10HasModesIF9MODE_INFOE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>An Object announces its mode; parameter1 is mode, parameter2 is submode. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10HasModesIF22OBJECT_IN_INVALID_MODEE">
+<span id="_CPPv3N10HasModesIF22OBJECT_IN_INVALID_MODEE"></span><span id="_CPPv2N10HasModesIF22OBJECT_IN_INVALID_MODEE"></span><span id="HasModesIF::OBJECT_IN_INVALID_MODE__EventC"></span><span class="target" id="class_has_modes_i_f_1a9091edcf4219c20c888d5a9fa5f64e48"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="event.html#_CPPv45Event" title="Event"><span class="n"><span class="pre">Event</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OBJECT_IN_INVALID_MODE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">MAKE_EVENT</span></span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">5</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="event.html#_CPPv48severity" title="severity"><span class="n"><span class="pre">severity</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="event.html#_CPPv4N8severity8Severity3LOWE" title="severity::LOW"><span class="n"><span class="pre">LOW</span></span></a><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N10HasModesIF22OBJECT_IN_INVALID_MODEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Indicates a bug or configuration failure: Object is in a mode it should never be in. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10HasModesIF12FORCING_MODEE">
+<span id="_CPPv3N10HasModesIF12FORCING_MODEE"></span><span id="_CPPv2N10HasModesIF12FORCING_MODEE"></span><span id="HasModesIF::FORCING_MODE__EventC"></span><span class="target" id="class_has_modes_i_f_1afc9e115d5fbd46db5604082d5be48532"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="event.html#_CPPv45Event" title="Event"><span class="n"><span class="pre">Event</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FORCING_MODE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">MAKE_EVENT</span></span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="event.html#_CPPv48severity" title="severity"><span class="n"><span class="pre">severity</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="event.html#_CPPv4N8severity8Severity6MEDIUME" title="severity::MEDIUM"><span class="n"><span class="pre">MEDIUM</span></span></a><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N10HasModesIF12FORCING_MODEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The mode is changed, but for some reason, the change is forced, i.e. EXTERNAL_CONTROL ignored. p1: target mode. p2: target submode </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10HasModesIF17MODE_CMD_REJECTEDE">
+<span id="_CPPv3N10HasModesIF17MODE_CMD_REJECTEDE"></span><span id="_CPPv2N10HasModesIF17MODE_CMD_REJECTEDE"></span><span id="HasModesIF::MODE_CMD_REJECTED__EventC"></span><span class="target" id="class_has_modes_i_f_1a7687ff27a9fecd166ff8937fb12202d4"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="event.html#_CPPv45Event" title="Event"><span class="n"><span class="pre">Event</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MODE_CMD_REJECTED</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">MAKE_EVENT</span></span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">7</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="event.html#_CPPv48severity" title="severity"><span class="n"><span class="pre">severity</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="event.html#_CPPv4N8severity8Severity3LOWE" title="severity::LOW"><span class="n"><span class="pre">LOW</span></span></a><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N10HasModesIF17MODE_CMD_REJECTEDE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A mode command was rejected by the called object. Par1: called object id, Par2: return code. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10HasModesIF7MODE_ONE">
+<span id="_CPPv3N10HasModesIF7MODE_ONE"></span><span id="_CPPv2N10HasModesIF7MODE_ONE"></span><span id="HasModesIF::MODE_ON__Mode_tC"></span><span class="target" id="class_has_modes_i_f_1ae4d5362162713dcd9601b234acf9f73a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Mode_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MODE_ON</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N10HasModesIF7MODE_ONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The device is powered and ready to perform operations. In this mode, no commands are sent by the device handler itself, but direct commands van be commanded and will be interpreted </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10HasModesIF8MODE_OFFE">
+<span id="_CPPv3N10HasModesIF8MODE_OFFE"></span><span id="_CPPv2N10HasModesIF8MODE_OFFE"></span><span id="HasModesIF::MODE_OFF__Mode_tC"></span><span class="target" id="class_has_modes_i_f_1a637e6d6457841ca04e77b83e124dc2df"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Mode_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MODE_OFF</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N10HasModesIF8MODE_OFFE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The device is powered off. The only command accepted in this mode is a mode change to on. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10HasModesIF12SUBMODE_NONEE">
+<span id="_CPPv3N10HasModesIF12SUBMODE_NONEE"></span><span id="_CPPv2N10HasModesIF12SUBMODE_NONEE"></span><span id="HasModesIF::SUBMODE_NONE__Submode_tC"></span><span class="target" id="class_has_modes_i_f_1afcd2fd8d0b88180642edbc17050db5be"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Submode_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SUBMODE_NONE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N10HasModesIF12SUBMODE_NONEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>To avoid checks against magic number “0”. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Flight Software Framework</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highlevel.html">High-level overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core.html">Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config.html">Configuring the FSFW</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../osal.html">Operating System Abstraction Layer (OSAL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pus.html">PUS Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devicehandlers.html">Device Handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../localpools.html">Local Data Pools</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cfdp.html">CFDP API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objectmanager.html">Object Manager API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="task.html">Task API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipc.html">IPC Module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="returnvalue.html">Returnvalue API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event.html">Event API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Modes API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="health.html">Health API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="action.html">Action Module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devicehandler.html">Device Handler Base API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controller.html">Controller API</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.uni-stuttgart.de/impressum">Impressum</a></li>
+    
+    <li class="toctree-l1"><a href="https://info.irs.uni-stuttgart.de/datenschutz/datenschutzWebmit.html">Datenschutz</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api.html">API</a><ul>
+      <li>Previous: <a href="event.html" title="previous chapter">Event API</a></li>
+      <li>Next: <a href="health.html" title="next chapter">Health API</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Institute of Space Systems (IRS).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/api/modes.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

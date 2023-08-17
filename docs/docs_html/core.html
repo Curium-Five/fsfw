@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Core Modules &#8212; Flight Software Framework 5.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=ec0e10ea"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Configuring the FSFW" href="config.html" />
+    <link rel="prev" title="High-level overview" href="highlevel.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="core-modules">
+<span id="core"></span><h1>Core Modules<a class="headerlink" href="#core-modules" title="Permalink to this heading">¶</a></h1>
+<p>The core modules provide the most important functionalities of the Flight Software Framework.</p>
+<section id="clock">
+<h2>Clock<a class="headerlink" href="#clock" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>This is a class of static functions that can be used at anytime</p></li>
+<li><p>Leap Seconds must be set if any time conversions from UTC to other times is used</p></li>
+</ul>
+</section>
+<section id="object-manager">
+<h2>Object Manager<a class="headerlink" href="#object-manager" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><p>Must be created during program startup</p></li>
+<li><p>The component which handles all references. All <a class="reference internal" href="api/objectmanager.html#_CPPv412SystemObject" title="SystemObject"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">SystemObject</span></code></a>s register at this
+component.</p></li>
+<li><p>All <a class="reference internal" href="api/objectmanager.html#_CPPv412SystemObject" title="SystemObject"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">SystemObject</span></code></a>s needs to have a unique Object ID. Those can be managed like
+framework objects.</p></li>
+<li><p>A reference to an object can be retrieved by calling the <code class="docutils literal notranslate"><span class="pre">get</span></code> function of
+<a class="reference internal" href="api/objectmanager.html#_CPPv415ObjectManagerIF" title="ObjectManagerIF"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ObjectManagerIF</span></code></a>. The target type must be specified as a template argument.
+A <code class="docutils literal notranslate"><span class="pre">nullptr</span></code> check of the returning pointer must be done. This function is based on
+run-time type information.</p>
+<blockquote>
+<div><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">ObjectManagerIF</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">object_id_t</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>A typical way to create all objects on startup is a handing a static produce function to the
+ObjectManager on creation. By calling <code class="docutils literal notranslate"><span class="pre">ObjectManager::instance()-&gt;initialize(produceFunc)</span></code> the
+produce function will be called and all <a class="reference internal" href="api/objectmanager.html#_CPPv412SystemObject" title="SystemObject"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">SystemObject</span></code></a>s will be initialized
+afterwards.</p></li>
+</ul>
+</section>
+<section id="event-manager">
+<h2>Event Manager<a class="headerlink" href="#event-manager" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Component which allows routing of events</p></li>
+<li><p>Other objects can subscribe to specific events, ranges of events or all events of an object.</p></li>
+<li><p>Subscriptions can be done during runtime but should be done during initialization</p></li>
+<li><p>Amounts of allowed subscriptions can be configured in <code class="docutils literal notranslate"><span class="pre">FSFWConfig.h</span></code></p></li>
+</ul>
+</section>
+<section id="health-table">
+<h2>Health Table<a class="headerlink" href="#health-table" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>A component which holds every health state</p></li>
+<li><p>Provides a thread safe way to access all health states without the need of message exchanges</p></li>
+</ul>
+</section>
+<section id="stores">
+<h2>Stores<a class="headerlink" href="#stores" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>The message based communication can only exchange a few bytes of information inside the message
+itself. Therefore, additional information can  be exchanged with Stores. With this, only the
+store address must be exchanged in the message.</p></li>
+<li><p>Internally, the FSFW uses an IPC Store to exchange data between processes. For incoming TCs a TC
+Store is used. For outgoing TM a TM store is used.</p></li>
+<li><p>All of them should use the Thread Safe Class storagemanager/PoolManager</p></li>
+</ul>
+</section>
+<section id="tasks">
+<h2>Tasks<a class="headerlink" href="#tasks" title="Permalink to this heading">¶</a></h2>
+<p>There are two different types of tasks:</p>
+<ul class="simple">
+<li><p>The PeriodicTask just executes objects that are of type ExecutableObjectIF in the order of the
+insertion to the Tasks.</p></li>
+<li><p>FixedTimeslotTask executes a list of calls in the order of the given list. This is intended for
+DeviceHandlers, where polling should be in a defined order. An example can be found in
+<code class="docutils literal notranslate"><span class="pre">defaultcfg/fsfwconfig/pollingSequence</span></code> folder</p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Flight Software Framework</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="highlevel.html">High-level overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Core Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#clock">Clock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#object-manager">Object Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#event-manager">Event Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#health-table">Health Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stores">Stores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tasks">Tasks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuring the FSFW</a></li>
+<li class="toctree-l1"><a class="reference internal" href="osal.html">Operating System Abstraction Layer (OSAL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pus.html">PUS Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devicehandlers.html">Device Handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="localpools.html">Local Data Pools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.uni-stuttgart.de/impressum">Impressum</a></li>
+    
+    <li class="toctree-l1"><a href="https://info.irs.uni-stuttgart.de/datenschutz/datenschutzWebmit.html">Datenschutz</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="highlevel.html" title="previous chapter">High-level overview</a></li>
+      <li>Next: <a href="config.html" title="next chapter">Configuring the FSFW</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Institute of Space Systems (IRS).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/core.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

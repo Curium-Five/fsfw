@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Operating System Abstraction Layer (OSAL) &#8212; Flight Software Framework 5.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=ec0e10ea"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PUS Services" href="pus.html" />
+    <link rel="prev" title="Configuring the FSFW" href="config.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="operating-system-abstraction-layer-osal">
+<span id="osal"></span><h1>Operating System Abstraction Layer (OSAL)<a class="headerlink" href="#operating-system-abstraction-layer-osal" title="Permalink to this heading">¶</a></h1>
+<p>Some specific information on the provided OSALs are provided.</p>
+<section id="linux">
+<h2>Linux<a class="headerlink" href="#linux" title="Permalink to this heading">¶</a></h2>
+<p>This OSAL can be used to compile for Linux host systems like Ubuntu 20.04 or for
+embedded Linux targets like the Raspberry Pi. This OSAL generally requires threading support
+and real-time functionalities. For most UNIX systems, this is done by adding <code class="docutils literal notranslate"><span class="pre">-lrt</span></code> and
+<code class="docutils literal notranslate"><span class="pre">-lpthread</span></code> to the linked libraries in the compilation process. The CMake build support provided
+will do this automatically for the <code class="docutils literal notranslate"><span class="pre">fsfw</span></code> target. It should be noted that most UNIX systems need
+to be configured specifically to allow the real-time functionalities required by the FSFW.</p>
+</section>
+<section id="hosted-osal">
+<h2>Hosted OSAL<a class="headerlink" href="#hosted-osal" title="Permalink to this heading">¶</a></h2>
+<p>This is the newest OSAL. Support for Semaphores has not been implemented yet and will propably be
+implemented as soon as C++20 with Semaphore support has matured. This OSAL can be used to run the
+FSFW on any host system, but currently has only been tested on Windows 10 and Ubuntu 20.04. Unlike
+the other OSALs, it uses dynamic memory allocation (e.g. for the message queue implementation).
+Cross-platform serial port (USB) support might be added soon.</p>
+</section>
+<section id="freertos-osal">
+<h2>FreeRTOS OSAL<a class="headerlink" href="#freertos-osal" title="Permalink to this heading">¶</a></h2>
+<p>FreeRTOS is not included and the developer needs to take care of compiling the FreeRTOS sources and
+adding the  <code class="docutils literal notranslate"><span class="pre">FreeRTOSConfig.h</span></code> file location to the include path. This OSAL has only been tested
+extensively with the pre-emptive scheduler configuration so far but it should in principle also be
+possible to use a cooperative scheduler. It is recommended to use the <cite>heap_4</cite> allocation scheme.
+When using newlib (nano), it is also recommended to add <code class="docutils literal notranslate"><span class="pre">#define</span> <span class="pre">configUSE_NEWLIB_REENTRANT</span></code> to
+the FreeRTOS configuration file to ensure thread-safety.</p>
+<p>When using this OSAL, developers also need to provide an implementation for the
+<code class="docutils literal notranslate"><span class="pre">vRequestContextSwitchFromISR</span></code> function. This has been done because the call to request a context
+switch from an ISR is generally located in the <code class="docutils literal notranslate"><span class="pre">portmacro.h</span></code> header and is different depending on
+the target architecture or device.</p>
+</section>
+<section id="rtems-osal">
+<h2>RTEMS OSAL<a class="headerlink" href="#rtems-osal" title="Permalink to this heading">¶</a></h2>
+<p>The RTEMS OSAL was the first implemented OSAL which is also used on the active satellite Flying Laptop.</p>
+</section>
+<section id="tcp-ip-socket-abstraction">
+<h2>TCP/IP socket abstraction<a class="headerlink" href="#tcp-ip-socket-abstraction" title="Permalink to this heading">¶</a></h2>
+<p>The Linux and Host OSAL provide abstraction layers for the socket API. Currently, only UDP sockets
+have been imlemented. This is very useful to test TMTC handling either on the host computer
+directly (targeting localhost with a TMTC application) or on embedded Linux devices, sending
+TMTC packets via Ethernet.</p>
+</section>
+<section id="example-applications">
+<h2>Example Applications<a class="headerlink" href="#example-applications" title="Permalink to this heading">¶</a></h2>
+<p>There are example applications available for each OSAL</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://egit.irs.uni-stuttgart.de/fsfw/fsfw-example-hosted">Hosted OSAL</a></p></li>
+<li><p><a class="reference external" href="https://egit.irs.uni-stuttgart.de/fsfw/fsfw-example-linux-mcu">Linux OSAL for MCUs</a></p></li>
+<li><p><a class="reference external" href="https://egit.irs.uni-stuttgart.de/fsfw/fsfw-example-stm32h7-freertos">FreeRTOS OSAL on the STM32H743ZIT</a></p></li>
+<li><p><a class="reference external" href="https://egit.irs.uni-stuttgart.de/fsfw/fsfw-example-stm32h7-rtems">RTEMS OSAL on the STM32H743ZIT</a></p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Flight Software Framework</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="highlevel.html">High-level overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuring the FSFW</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Operating System Abstraction Layer (OSAL)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#linux">Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hosted-osal">Hosted OSAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#freertos-osal">FreeRTOS OSAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rtems-osal">RTEMS OSAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tcp-ip-socket-abstraction">TCP/IP socket abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-applications">Example Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pus.html">PUS Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devicehandlers.html">Device Handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="localpools.html">Local Data Pools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.uni-stuttgart.de/impressum">Impressum</a></li>
+    
+    <li class="toctree-l1"><a href="https://info.irs.uni-stuttgart.de/datenschutz/datenschutzWebmit.html">Datenschutz</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="config.html" title="previous chapter">Configuring the FSFW</a></li>
+      <li>Next: <a href="pus.html" title="next chapter">PUS Services</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Institute of Space Systems (IRS).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/osal.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
